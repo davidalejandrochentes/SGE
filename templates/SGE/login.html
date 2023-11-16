@@ -1,0 +1,33 @@
+{% extends "layout/base.html" %}
+
+{% block 'title'%} Login {% endblock %}
+
+{% block 'styles' %}
+{% load static %}
+<link rel="stylesheet" href="{% static "css/forms.css" %}">
+{% endblock 'styles' %}
+
+{% block 'content' %}
+<div class="container mt-5">
+
+    <h1 class="text-center">Log In</h1>
+
+    <div class="d-flex justify-content-center align-items-center">
+    <form  class="mt-1 p-5 rounded-3 bg-body-tertiary sombra-login" actions="{% url "login" %}" method="POST">
+        {% csrf_token %}
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <div {% if message.tags %} class="alert alert-primary alerta text-center" role="alert"{% endif %}>{{ message }}</div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {{form.as_p}}
+    
+        <input class="btn btn-primary" type="submit" value="Submit">
+    </form>
+    </div>
+
+</div>
+{% endblock %}
