@@ -1,0 +1,58 @@
+{% extends "layout/base.html" %}
+
+{% block 'title'%} Alertas de Area {% endblock %}
+
+{% block 'search' %}
+<form class="d-flex form-inline mr-auto ml-md-3 my-2 my-md-0 ms-3 me-3 mw-100 navbar-search" role="search" action="" method='GET'>
+    <div class="input-group">
+        <input class="form-control bg-light border-0 small" id="search-input" name="search" type="search" placeholder="Search" aria-label="Search">
+        <div class="input-group-append">
+            <button class="btn barra text-light" type="submit">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+    </div>
+</form>
+{% endblock 'search' %}
+
+{% block 'content' %}
+
+<div class="container">
+    <div class="d-flex p-2 justify-content-between">
+        <a class="text-decoration-none text-dark" href="{% url "area" %}">
+            <i class="bi bi-arrow-left fs-1"></i>
+        </a>
+    </div>
+
+    <table class="table table-striped">
+        <tr>
+          <th>TV</th>
+          <th>Fecha de Mantenimiento</th>
+          <th>Hora de Mantenimiento</th>
+        </tr>
+        {% for area in areas %}
+        <tr>
+          <td>{{ area.nombre }}</td>
+          <td>
+            <ul>
+              {% for mantenimiento in area.mantenimiento_set.all %}
+              <li>{{ mantenimiento.fecha }}</li>
+              {% endfor %}
+            </ul>
+          </td>
+          <td>
+            <ul>
+              {% for mantenimiento in area.mantenimiento_set.all %}
+              <li>{{ mantenimiento.hora }}</li>
+              {% endfor %}
+            </ul>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+      
+
+
+</div>
+
+{% endblock %}
