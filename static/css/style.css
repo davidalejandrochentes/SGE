@@ -19,7 +19,7 @@ body{
 }
 
 .lista-menu:hover {
-    color:blueviolet !important;
+    color:rgb(55, 247, 7) !important;
 }
 
 .carta-home{
@@ -28,6 +28,8 @@ body{
 
 .carta-home:hover {
     background-color:rgb(188, 208, 247) !important;
+}
+.carta-home a :hover {
     color: black !important;
 }
 
