@@ -1,5 +1,7 @@
 from django.db import models
 from datetime import date
+from django.db.models.signals import post_save
+from django.dispatch import receiver
     
 class Area(models.Model):
     nombre = models.CharField(max_length=100, null=False, blank=False)
@@ -38,3 +40,9 @@ class MantenimientoArea(models.Model):
     def __str__(self):
         txt = "Area: {}, Tipo: {}, Fecha: {}"
         return txt.format(self.area, self.tipo, self.fecha)
+    
+@receiver(post_save, sender=MantenimientoArea)
+def actualizar_fecha_ultimo_mantenimiento(sender, instance, **kwargs):
+    area = instance.area
+    area.fecha_ultimo_mantenimiento = instance.fecha
+    area.save()    

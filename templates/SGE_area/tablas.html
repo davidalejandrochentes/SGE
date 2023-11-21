@@ -26,9 +26,8 @@
 
     <table class="table table-striped">
         <tr>
-          <th>TV</th>
-          <th>Fecha de Mantenimiento</th>
-          <th>Hora de Mantenimiento</th>
+          <th>Areas</th>
+          <th>Datos de Mantenimiento</th>
         </tr>
         {% for area in areas %}
         <tr>
@@ -36,14 +35,7 @@
           <td>
             <ul>
               {% for mantenimiento in area.mantenimiento_set.all %}
-              <li>{{ mantenimiento.fecha }}</li>
-              {% endfor %}
-            </ul>
-          </td>
-          <td>
-            <ul>
-              {% for mantenimiento in area.mantenimiento_set.all %}
-              <li>{{ mantenimiento.hora }}</li>
+              <li>|{{ mantenimiento.fecha }} - {{ mantenimiento.hora }} - {{ mantenimiento.tipo }}|</li>
               {% endfor %}
             </ul>
           </td>
