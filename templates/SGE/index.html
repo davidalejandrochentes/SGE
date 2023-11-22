@@ -3,22 +3,12 @@
 {% block 'title'%} Index {% endblock %}
 
 {% block 'search' %}
-<form class="d-flex form-inline mr-auto ml-md-3 my-2 my-md-0 ms-3 me-3 mw-100 navbar-search" role="search" action="" method='GET'>
-    <div class="input-group">
-        <input class="form-control bg-light border-0 small" id="search-input" name="search" type="search" placeholder="Search" aria-label="Search">
-        <div class="input-group-append">
-            <button class="btn barra text-light" type="submit">
-                <i class="bi bi-search"></i>
-            </button>
-        </div>
-    </div>
-</form>
 {% endblock 'search' %}
 
 {% block 'content' %}
 <div class="container">
 <div class="row mt-5 d-flex justify-content-center align-item-center">
-    <div class="col-3 card text-bg-primary carta-home m-3" style="min-height: 240px;">
+    <div class="col-3 card text-bg-secondary carta-home m-3" style="min-height: 240px;">
         <a class="text-decoration-none text-light" href="{% url "area" %}">
         <div class="card-header">Areas</div>
         <div class="card-body">
@@ -27,7 +17,7 @@
         </div>
         </a>
     </div>
-    <div class="col-3 card text-bg-secondary carta-home m-3" style="min-height: 240px;">
+    <div class="col-3 card text-bg-primary carta-home m-3" style="min-height: 240px;">
         <div class="card-header">Maquinarias</div>
         <div class="card-body">
             <h5 class="card-title">Secondary card title</h5>

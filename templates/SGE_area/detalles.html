@@ -1,0 +1,75 @@
+{% extends "layout/base.html" %}
+
+{% block 'title'%} Detalles Area {% endblock %}
+
+{% block 'content' %}
+<div class="container mb-5">
+    <div class="d-flex p-2 justify-content-between">
+        <a class="text-decoration-none text-dark" href="{% url "area" %}">
+            <i class="bi bi-arrow-left fs-1"></i>
+        </a>
+        <span class="p-3">
+            <a class="btn btn-success" href="" role="button">Descargar <i class="bi bi-box-arrow-down"></i></a>
+            <a class="btn btn-warning" href="" role="button">Mantenimiento <i class="bi bi-tools"></i></a>
+            <a class="btn btn-primary" href="" role="button">Editar <i class="bi bi-pencil-square"></i></a>
+            <a class="btn btn-danger" href="" role="button">Eliminar <i class="bi bi-trash"></i></a>
+        </span>
+    </div>
+    
+    <h3>Datos</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Tamaño</th>
+                <th scope="col">Encargado</th>
+                <th scope="col">Teléfono_encargado</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Ubicación</th>
+                <th scope="col">Capacidad</th>
+                <th scope="col">Tipo de área</th>
+                <th scope="col">Estado de ocupación</th>
+                <th scope="col">Intervalo mantenimiento</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ area.nombre }}</td>
+                <td>{{ area.tamaño }}</td>
+                <td>{{ area.encargado }}</td>
+                <td>{{ area.teléfono_encargado }}</td>
+                <td>{{ area.descripción }}</td>
+                <td>{{ area.ubicación }}</td>
+                <td>{{ area.capacidad }}</td>
+                <td>{{ area.tipo_de_área }}</td>
+                <td>{{ area.estado_de_ocupación }}</td>
+                <td>{{ area.intervalo_mantenimiento }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Mantenimientos</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Areas</th>
+                <th>Datos de Mantenimiento</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ area.nombre }}</td>
+                <td>
+                    <ul>
+                        {% for mantenimiento in area.mantenimiento_set.all %}
+                        <li>|{{ mantenimiento.fecha }} - {{ mantenimiento.hora }} - {{ mantenimiento.tipo }}|</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}

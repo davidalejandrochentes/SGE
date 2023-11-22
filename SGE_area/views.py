@@ -1,7 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Area, TipoMantenimientoArea, MantenimientoArea
+from .forms import AreaForm
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required
 def area(request):
     alert = Area.objects.all()
     areas = Area.objects.filter(nombre__icontains=request.GET.get('search', ''))
@@ -25,8 +29,9 @@ def area(request):
     }
     return render(request, 'SGE_area/area.html', context)
 
+@login_required
 def alertas(request):
-    alert = Area.objects.all()
+    alert = Area.objects.filter(nombre__icontains=request.GET.get('search', ''))
     alertas = []
     for area in alert:
         dias_restantes = area.dias_restantes_mantenimiento()
@@ -44,9 +49,38 @@ def alertas(request):
     }
     return render(request, 'SGE_area/alertas.html', context)
 
+@login_required
 def tabla_mantenimientos(request):
     areas = Area.objects.all()
     context = {
         'areas': areas
     }
     return render(request, 'SGE_area/tablas.html', context)
+
+@login_required
+def crear_area(request):
+    if request.method == 'GET':
+        form = AreaForm()
+        context = {
+            'form': form
+        }
+        return render(request, 'SGE_area/nueva.html', context)
+    if request.method == 'POST':
+        form = AreaForm(request.POST)
+        if form.is_valid:
+            form.save()
+        else:
+            context = {
+                'form': form
+            }
+            messages.danger(request, "Alguno de los datos introducidos no son validos") 
+            return render(request, 'SGE_area/nueva.html', context)
+        return redirect('area')
+
+@login_required    
+def detalles(request, id):
+    area = get_object_or_404(Area, id = id)
+    context = {
+        'area': area 
+    }
+    return render(request, 'SGE_area/detalles.html', context)    
