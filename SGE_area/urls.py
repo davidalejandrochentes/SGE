@@ -6,5 +6,6 @@ urlpatterns = [
     path('alertas/', views.alertas, name="area_alertas"),
     path('tabla/', views.tabla_mantenimientos, name="area_tabla_mantenimientos"),
     path('nueva/', views.crear_area, name="area_nueva"),
-    path('detalles/<int:id>', views.detalles, name="detalles_area")
+    path('detalles/<int:id>', views.detalles, name="detalles_area"),
+    path('delete/<int:id>', views.eliminar, name="eliminar_area"),
 ]

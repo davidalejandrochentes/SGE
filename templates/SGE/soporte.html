@@ -1,0 +1,50 @@
+{% extends "layout/base.html" %}
+
+{% block 'title'%} Soporte {% endblock %}
+
+{% block 'content' %}
+
+<div class="container">
+    <div class="d-flex p-2 justify-content-between">
+        <a class="text-decoration-none text-dark" href="{% url "area" %}">
+            <i class="bi bi-arrow-left fs-1"></i>
+        </a>
+    </div>
+    
+    <div>
+        <section class="align-items-lg-center pt-1 px-lg-5">
+            <article class="text-center">
+                <h1>Contáctenos</h1>
+                <p class="fs-5">no dude en hacernos saber su inquietud o propuesta</p>
+            </article>  
+            <article class="col-12" >     
+                <form action="https://formsubmit.co/t3ddesigncompany@gmail.com" method="POST">
+                    <div class="mb-3">
+                        <input class="form-control p-3 border border-primary border-1" id="name" name="name" placeholder="Nombre" type="text" required>
+                    </div>
+                
+                    <div class="mb-3">
+                        <input class="form-control p-3 border border-primary border-1" id="email" name="email" placeholder="Email" type="email" required>
+                    </div>
+                
+                    <div class="mb-3">
+                        <input class="form-control p-3 border border-primary border-1" id="phone" name="phone" placeholder="Teléfono" type="tel" required>
+                    </div>
+                
+                    <div class="mb-3">
+                        <textarea rows="5" class="form-control p-3 border border-primary border-1" id="comments" name="comments" placeholder="Reporte" required></textarea>
+                    </div>
+                
+                    <div class="mb-3 d-grid gap-2 mt-3">
+                        <button type="submit" class="btn btn-primary text-ling">Enviar</button>
+                        <input type="hidden" name="_next" value="">
+                        <input type="hidden" name="_subject" value="comentario desde la pagina web!">
+                    </div>       
+                </form>          
+            </article>
+        </section>
+    </div>
+
+</div>
+
+{% endblock %}

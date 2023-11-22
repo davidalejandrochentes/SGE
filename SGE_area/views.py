@@ -79,8 +79,37 @@ def crear_area(request):
 
 @login_required    
 def detalles(request, id):
+    if request.method == 'GET':
+        area = get_object_or_404(Area, id = id)
+        form = AreaForm(instance= area)
+        context = {
+            'area': area,
+            'form': form,
+            'id': id, 
+        }
+        return render(request, 'SGE_area/detalles.html', context)   
+    if request.method == 'POST':
+        area = get_object_or_404(Area, id = id)
+        form = AreaForm(request.POST, instance= area)
+        if form.is_valid():
+            form.save()
+            context = {
+                'area': area,
+                'form': form,
+                'id': id, 
+                }
+            return render(request, 'SGE_area/detalles.html', context) 
+        else:
+            context = {
+                'area': area,
+                'form': form,
+                'id': id, 
+                }
+            messages.danger(request, "Alguno de los datos introducidos no son validos") 
+            return render(request, 'SGE_area/detalles.html', context) 
+
+@login_required
+def eliminar(request, id):
     area = get_object_or_404(Area, id = id)
-    context = {
-        'area': area 
-    }
-    return render(request, 'SGE_area/detalles.html', context)    
+    area.delete()
+    return redirect ('area') 

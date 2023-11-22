@@ -24,4 +24,8 @@ def log_in(request):
 @login_required
 def log_out(request):
     logout(request)
-    return redirect('index')          
+    return redirect('index')  
+
+@login_required
+def soporte(request):
+    return render(request, 'SGE/soporte.html', {})        

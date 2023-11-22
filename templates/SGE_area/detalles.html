@@ -11,10 +11,69 @@
         <span class="p-3">
             <a class="btn btn-success" href="" role="button">Descargar <i class="bi bi-box-arrow-down"></i></a>
             <a class="btn btn-warning" href="" role="button">Mantenimiento <i class="bi bi-tools"></i></a>
-            <a class="btn btn-primary" href="" role="button">Editar <i class="bi bi-pencil-square"></i></a>
-            <a class="btn btn-danger" href="" role="button">Eliminar <i class="bi bi-trash"></i></a>
+            
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-editar">
+                Editar <i class="bi bi-pencil-square"></i>
+            </button>
+            <div class="modal fade modal-lg" id="modal-editar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Editar <b>{{ area.nombre }}</b></h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="p-5 rounded-3 bg-body-tertiary sombra-login" action="{% url "detalles_area" id=area.id %}" method='POST'>
+                                {% csrf_token %}
+                                <table>
+                                    {{ form }}
+                                </table>
+                                <div class="d-grid gap-2 mt-3">
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-eliminar">
+                Eliminar <i class="bi bi-trash"></i>
+            </button>
+            <div class="modal fade" id="modal-eliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Atención</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Esta seguro de <b>eliminar</b> el area <b>"{{ area.nombre }}"</b>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <form method="post" action="{% url "eliminar_area" id=area.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="area_id" value="{{ area.id }}">
+                            <button class="btn btn-danger" type="submit">Estoy seguro</button>
+                        </form>
+                    </div>
+                    </div>
+                </div>
+            </div>
         </span>
     </div>
+    
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <div {% if message.tags %} class="alert alert-primary alerta" role="alert"{% endif %}>{{ message }}</div>
+            {% endfor %}
+        </ul>
+    {% endif %}
     
     <h3>Datos</h3>
     <table class="table table-striped">
