@@ -10,7 +10,33 @@
         </a>
         <span class="p-3">
             <a class="btn btn-success" href="" role="button">Descargar <i class="bi bi-box-arrow-down"></i></a>
-            <a class="btn btn-warning" href="" role="button">Mantenimiento <i class="bi bi-tools"></i></a>
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal-mantenimiento">
+                Mantenimiento <i class="bi bi-tools"></i>
+            </button>
+            <div class="modal fade modal-lg" id="modal-mantenimiento" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo mantenimineto para <b>{{ area.nombre }}</b></h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="p-5 rounded-3 bg-body-tertiary sombra-login" action="{% url "detalles_area" id=area.id %}" method='POST'>
+                                {% csrf_token %}
+                                <table>
+                                    {{ form_mantenimiento }}
+                                </table>
+                                <div class="d-grid gap-2 mt-3">
+                                    <button type="submit" class="btn btn-warning">Guardar</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-editar">
                 Editar <i class="bi bi-pencil-square"></i>

@@ -1,6 +1,6 @@
 from django import forms
-from .models import Area
-from django.forms import Textarea
+from .models import Area, MantenimientoArea
+from django.forms import Textarea, Select
 
 class AreaForm(forms.ModelForm):
     
@@ -19,4 +19,14 @@ class AreaForm(forms.ModelForm):
             'tipo_de_área': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: "Oficina", "Comedor"...'}),
             'estado_de_ocupación': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: "ocupada", "En reparación"'}),
             'intervalo_mantenimiento': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number'}),
+        }
+
+class MantenimientoAreaForm(forms.ModelForm):
+    class Meta:
+        model = MantenimientoArea
+        exclude = ['area']  # Excluir el campo "area" del formulario
+        widgets = {
+            'fecha': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha'}),
+            'hora': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora'}),
+            'tipo': forms.Select(attrs={'class': 'form-select m-2', 'placeholder': 'Tipo de mantenimiento'}),
         }

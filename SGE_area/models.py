@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import date
+from datetime import datetime
 from django.db.models.signals import post_save
 from django.dispatch import receiver
     
@@ -32,10 +33,10 @@ class TipoMantenimientoArea(models.Model):
         return self.tipo
 
 class MantenimientoArea(models.Model):
-    area = models.ForeignKey(Area, on_delete=models.CASCADE)
-    tipo = models.ForeignKey(TipoMantenimientoArea, on_delete=models.CASCADE)
-    fecha = models.DateField()
-    hora = models.TimeField()   
+    area = models.ForeignKey(Area, on_delete=models.CASCADE, blank=False, null=False)
+    tipo = models.ForeignKey(TipoMantenimientoArea, on_delete=models.CASCADE, blank=False, null=False)
+    fecha = models.DateField(default=date.today, blank=False, null=False)
+    hora = models.TimeField(default=datetime.now().time, null=False, blank=False)   
 
     def __str__(self):
         txt = "Area: {}, Tipo: {}, Fecha: {}"

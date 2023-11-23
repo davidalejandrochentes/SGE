@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Area, TipoMantenimientoArea, MantenimientoArea
-from .forms import AreaForm
+from .forms import AreaForm, MantenimientoAreaForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
@@ -82,9 +82,11 @@ def detalles(request, id):
     if request.method == 'GET':
         area = get_object_or_404(Area, id = id)
         form = AreaForm(instance= area)
+        form_mantenimiento = MantenimientoAreaForm(initial={'area': area})
         context = {
             'area': area,
             'form': form,
+            'form_mantenimiento': form_mantenimiento,
             'id': id, 
         }
         return render(request, 'SGE_area/detalles.html', context)   
