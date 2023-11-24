@@ -8,4 +8,5 @@ urlpatterns = [
     path('nueva/', views.crear_area, name="area_nueva"),
     path('detalles/<int:id>', views.detalles, name="detalles_area"),
     path('delete/<int:id>', views.eliminar, name="eliminar_area"),
+    path('generar_documento_mantenimientos_por_mes/', views.generar_documento_mantenimientos_por_mes, name='generar_documento_mantenimientos_por_mes'),
 ]

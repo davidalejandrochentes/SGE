@@ -24,9 +24,9 @@ class AreaForm(forms.ModelForm):
 class MantenimientoAreaForm(forms.ModelForm):
     class Meta:
         model = MantenimientoArea
-        exclude = ['area']  # Excluir el campo "area" del formulario
+        fields = ['tipo', 'fecha', 'hora']  # Excluir el campo "area" del formulario
         widgets = {
-            'fecha': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha'}),
-            'hora': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora'}),
+            'fecha': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha'}),
+            'hora': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora'}),
             'tipo': forms.Select(attrs={'class': 'form-select m-2', 'placeholder': 'Tipo de mantenimiento'}),
         }

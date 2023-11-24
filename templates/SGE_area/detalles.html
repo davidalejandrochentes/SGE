@@ -9,7 +9,6 @@
             <i class="bi bi-arrow-left fs-1"></i>
         </a>
         <span class="p-3">
-            <a class="btn btn-success" href="" role="button">Descargar <i class="bi bi-box-arrow-down"></i></a>
             <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal-mantenimiento">
                 Mantenimiento <i class="bi bi-tools"></i>
             </button>
@@ -137,17 +136,31 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Areas</th>
-                <th>Datos de Mantenimiento</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Tipo</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>{{ area.nombre }}</td>
                 <td>
                     <ul>
-                        {% for mantenimiento in area.mantenimiento_set.all %}
-                        <li>|{{ mantenimiento.fecha }} - {{ mantenimiento.hora }} - {{ mantenimiento.tipo }}|</li>
+                        {% for mantenimiento in area.mantenimientoarea_set.all %}
+                        <li>{{ mantenimiento.fecha }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        {% for mantenimiento in area.mantenimientoarea_set.all %}
+                        <li>{{ mantenimiento.hora }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        {% for mantenimiento in area.mantenimientoarea_set.all %}
+                        <li>{{ mantenimiento.tipo }}</li>
                         {% endfor %}
                     </ul>
                 </td>

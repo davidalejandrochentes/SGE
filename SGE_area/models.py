@@ -23,8 +23,7 @@ class Area(models.Model):
         return dias_restantes
     
     def __str__(self):
-        txt = "Nombre: {}, encargado: {}, ultimo mantenimiento: {}"
-        return txt.format(self.nombre, self.encargado, self.fecha_ultimo_mantenimiento)
+        return self.nombre
 
 class TipoMantenimientoArea(models.Model):
     tipo = models.CharField(max_length=100, blank=False, null=False)
