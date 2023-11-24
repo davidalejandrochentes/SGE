@@ -130,6 +130,7 @@ def detalles(request, id):
                 }
             return render(request, 'SGE_area/detalles.html', context) 
 
+@login_required
 def generar_documento_mantenimientos_por_mes(request):
     mes = request.GET.get('mes')
     anio = request.GET.get('anio')
@@ -177,7 +178,7 @@ def generar_documento_mantenimientos_por_mes(request):
 
     return response
 
-
+@login_required
 def generar_documento_mantenimientos_area(request, id):
     mes = request.GET.get('mes')
     anio = request.GET.get('anio')
@@ -226,4 +227,3 @@ def generar_documento_mantenimientos_area(request, id):
     response.write(pdf)
 
     return response    
-    
