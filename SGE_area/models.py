@@ -20,7 +20,7 @@ class Area(models.Model):
     def dias_restantes_mantenimiento(self):
         dias_pasados = (date.today() - self.fecha_ultimo_mantenimiento).days
         dias_restantes = self.intervalo_mantenimiento - dias_pasados
-        return dias_restantes
+        return dias_restantes 
     
     def __str__(self):
         return self.nombre
