@@ -11,6 +11,17 @@ body{
     background-color: #fafafa;
 }
 
+.prueba{
+    background-image: url("../images/bg-masthead.jpg");
+    min-height: 788px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-size: cover;
+    background-color: #ffffff;
+    background-blend-mode: multiply;
+}
+
 .barra{
     background-color: blue;
 }
