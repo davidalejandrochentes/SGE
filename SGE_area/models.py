@@ -32,10 +32,10 @@ class TipoMantenimientoArea(models.Model):
         return self.tipo
 
 class MantenimientoArea(models.Model):
-    area = models.ForeignKey(Area, on_delete=models.CASCADE, blank=False, null=False)
-    tipo = models.ForeignKey(TipoMantenimientoArea, on_delete=models.CASCADE, blank=False, null=False)
-    fecha = models.DateField(default=date.today, blank=False, null=False)
-    hora = models.TimeField(default=datetime.now().time, null=False, blank=False)   
+    area = models.ForeignKey(Area, on_delete=models.CASCADE)
+    tipo = models.ForeignKey(TipoMantenimientoArea, on_delete=models.CASCADE)
+    fecha = models.DateField(default=date.today)
+    hora = models.TimeField(default=datetime.now().time)   
 
     def __str__(self):
         txt = "Area: {}, Tipo: {}, Fecha: {}"

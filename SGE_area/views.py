@@ -95,25 +95,20 @@ def detalles(request, id):
     if request.method == 'GET':
         area = get_object_or_404(Area, id = id)
         form = AreaForm(instance= area)
-        form_mantenimiento = MantenimientoAreaForm(initial={'area': area})
+        form_mant = MantenimientoAreaForm()
         context = {
             'area': area,
             'form': form,
-            'form_mantenimiento': form_mantenimiento,
             'id': id, 
+            'form_mant': form_mant
         }
         return render(request, 'SGE_area/detalles.html', context)   
     
     if request.method == 'POST':
         area = get_object_or_404(Area, id = id)
         form = AreaForm(request.POST, instance= area)
-        form_mantenimiento = MantenimientoAreaForm(request.POST)
-        if form.is_valid() and form_mantenimiento.is_valid():
+        if form.is_valid():
             form.save()
-            mantenimiento = form_mantenimiento.save(commit=False)
-            mantenimiento.area = area
-            mantenimiento.save()
-            print("Mantenimiento guardado correctamente")
             context = {
                 'area': area,
                 'form': form,
@@ -121,15 +116,31 @@ def detalles(request, id):
                 }
             return render(request, 'SGE_area/detalles.html', context) 
         else:
-            print(form_mantenimiento.errors)  # Imprimir los errores del formulario de mantenimiento
-            print("Los datos del mantenimiento no son válidos")
             context = {
                 'area': area,
                 'form': form,
                 'id': id, 
                 }
             return render(request, 'SGE_area/detalles.html', context) 
-
+        
+@login_required
+def nuevo_mantenimineto(request, id=id):
+    area = get_object_or_404(Area, id = id)
+    if request.method == 'POST':
+        form = MantenimientoAreaForm(request.POST)
+        if form.is_valid():
+            mantenimiento = form.save(commit=False)
+            mantenimiento.area = area
+            mantenimiento.save()
+            return redirect('area')
+    else:    
+        form = MantenimientoAreaForm()
+        context = {
+            'form': form
+        }
+        return render(request, 'SGE_area/mantenimineto.html', context)   
+        #return redirect('detalles_area', id=id)  
+    
 @login_required
 def generar_documento_mantenimientos_por_mes(request):
     mes = request.GET.get('mes')

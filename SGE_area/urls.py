@@ -10,4 +10,5 @@ urlpatterns = [
     path('delete/<int:id>', views.eliminar, name="eliminar_area"),
     path('generar_documento_mantenimientos_por_mes/', views.generar_documento_mantenimientos_por_mes, name='generar_documento_mantenimientos_por_mes'),
     path('generar_documento_mantenimientos_area/<int:id>/', views.generar_documento_mantenimientos_area, name='generar_documento_mantenimientos_area'),
+    path('mantenimiento/<int:id>', views.nuevo_mantenimineto, name="mantenimientos")
 ]

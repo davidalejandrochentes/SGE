@@ -1,6 +1,6 @@
 from django import forms
 from .models import Area, MantenimientoArea
-from django.forms import Textarea, Select
+from django.forms import Textarea
 
 class AreaForm(forms.ModelForm):
     
@@ -24,7 +24,7 @@ class AreaForm(forms.ModelForm):
 class MantenimientoAreaForm(forms.ModelForm):
     class Meta:
         model = MantenimientoArea
-        fields = ['tipo', 'fecha', 'hora']  # Excluir el campo "area" del formulario
+        fields = ['fecha', 'hora', 'tipo']
         widgets = {
             'fecha': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha'}),
             'hora': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora'}),
