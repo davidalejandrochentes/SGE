@@ -61,9 +61,7 @@
                 </div>
             </div>
 
-
-            <a class="btn btn-warning" href="{% url "mantenimientos" id=area.id %}" role="button">Mantenimiento <i class="bi bi-tools"></i></a>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-mantenimiento">
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal-mantenimiento">
                 Mantenimiento <i class="bi bi-tools"></i>
             </button>
             <div class="modal fade" id="modal-mantenimiento" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -76,8 +74,10 @@
                     <div class="modal-body">
                         <form method="post">
                             {% csrf_token %}
-                            {{ form_mant. }}
-                            <input type="submit" value="Guardar Mantenimiento">
+                            {{ form_mant }}
+                            <div class="d-grid gap-2 mt-3">
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                            </div>
                         </form> 
                     </div>
                     <div class="modal-footer">
@@ -182,6 +182,7 @@
                 <th>Fecha</th>
                 <th>Hora</th>
                 <th>Tipo</th>
+                <th><th>
             </tr>
         </thead>
         <tbody>
@@ -204,6 +205,13 @@
                     <ul>
                         {% for mantenimiento in area.mantenimientoarea_set.all %}
                         <li>{{ mantenimiento.tipo }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        {% for mantenimiento in area.mantenimientoarea_set.all %}
+                            <a class="text-danger" href="{% url "eliminar_mantenimiento_area" id=mantenimiento.id %}"><li>eliminar</li></a>
                         {% endfor %}
                     </ul>
                 </td>

@@ -1,15 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Area, TipoMantenimientoArea, MantenimientoArea
+from .models import Area, MantenimientoArea
 from .forms import AreaForm, MantenimientoAreaForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from io import BytesIO
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
-from datetime import datetime
 
 # Create your views here.
 @login_required
@@ -90,6 +89,13 @@ def eliminar(request, id):
     area.delete()
     return redirect ('area') 
 
+@login_required
+def eliminar_mantenimiento(request, id):
+    mantenimiento = get_object_or_404(MantenimientoArea, id=id)
+    mantenimiento.delete()
+    previous_url = request.META.get('HTTP_REFERER')
+    return HttpResponseRedirect(previous_url)
+
 @login_required    
 def detalles(request, id):
     if request.method == 'GET':
@@ -106,40 +112,41 @@ def detalles(request, id):
     
     if request.method == 'POST':
         area = get_object_or_404(Area, id = id)
+        form_mant = MantenimientoAreaForm(request.POST)
+        form = AreaForm(instance= area)
         form = AreaForm(request.POST, instance= area)
+
         if form.is_valid():
             form.save()
+            form_mant = MantenimientoAreaForm()
             context = {
-                'area': area,
-                'form': form,
-                'id': id, 
-                }
-            return render(request, 'SGE_area/detalles.html', context) 
-        else:
-            context = {
-                'area': area,
-                'form': form,
-                'id': id, 
-                }
+            'area': area,
+            'form': form,
+            'form_mant': form_mant,
+            'id': id, 
+            }
             return render(request, 'SGE_area/detalles.html', context) 
         
-@login_required
-def nuevo_mantenimineto(request, id=id):
-    area = get_object_or_404(Area, id = id)
-    if request.method == 'POST':
-        form = MantenimientoAreaForm(request.POST)
-        if form.is_valid():
-            mantenimiento = form.save(commit=False)
+        if form_mant.is_valid():
+            mantenimiento = form_mant.save(commit=False)
             mantenimiento.area = area
             mantenimiento.save()
-            return redirect('area')
-    else:    
-        form = MantenimientoAreaForm()
-        context = {
-            'form': form
-        }
-        return render(request, 'SGE_area/mantenimineto.html', context)   
-        #return redirect('detalles_area', id=id)  
+            form = AreaForm(instance= area)
+            context = {
+            'area': area,
+            'form': form,
+            'form_mant': form_mant,
+            'id': id, 
+            }
+            return render(request, 'SGE_area/detalles.html', context)  
+        else:
+            context = {
+            'area': area,
+            'form': form,
+            'form_mant': form_mant,
+            'id': id, 
+            }
+            return render(request, 'SGE_area/detalles.html', context) 
     
 @login_required
 def generar_documento_mantenimientos_por_mes(request):

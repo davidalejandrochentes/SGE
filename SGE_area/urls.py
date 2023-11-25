@@ -8,7 +8,7 @@ urlpatterns = [
     path('nueva/', views.crear_area, name="area_nueva"),
     path('detalles/<int:id>', views.detalles, name="detalles_area"),
     path('delete/<int:id>', views.eliminar, name="eliminar_area"),
-    path('generar_documento_mantenimientos_por_mes/', views.generar_documento_mantenimientos_por_mes, name='generar_documento_mantenimientos_por_mes'),
+    path('delete_mantenimiento/<int:id>', views.eliminar_mantenimiento, name="eliminar_mantenimiento_area"),
+    path('generar_documento_mantenimientos_por_mes/', views.generar_documento_mantenimientos_por_mes, name='generar_documento_mantenimientos_general_area'),
     path('generar_documento_mantenimientos_area/<int:id>/', views.generar_documento_mantenimientos_area, name='generar_documento_mantenimientos_area'),
-    path('mantenimiento/<int:id>', views.nuevo_mantenimineto, name="mantenimientos")
 ]
