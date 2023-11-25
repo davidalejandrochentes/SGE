@@ -156,11 +156,18 @@ def generar_documento_mantenimientos_por_mes(request):
         for mantenimiento in mantenimientos:
             data.append([mantenimiento.area, mantenimiento.tipo, mantenimiento.fecha, mantenimiento.hora])
     else:
-        data.append(['Area', 'Tipo', 'Fecha', 'Mes', 'Año'])
+        data.append(['Area', 'Tipo', 'Mes', 'Año', 'Dia', 'Hora'])
         for mantenimiento in mantenimientos:
-            data.append([mantenimiento.area, mantenimiento.tipo, mantenimiento.fecha, mantenimiento.fecha.month, mantenimiento.fecha.year])
+            data.append([mantenimiento.area, mantenimiento.tipo, mantenimiento.fecha.month, mantenimiento.fecha.year, mantenimiento.fecha.day, mantenimiento.hora])
 
     table = Table(data)
+    table.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+                                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                                ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                                ('GRID', (0, 0), (-1, -1), 1, colors.black)]))
     elements.append(table)
 
     doc.build(elements)
@@ -169,3 +176,54 @@ def generar_documento_mantenimientos_por_mes(request):
     response.write(pdf)
 
     return response
+
+
+def generar_documento_mantenimientos_area(request, id):
+    mes = request.GET.get('mes')
+    anio = request.GET.get('anio')
+
+    area = get_object_or_404(Area, pk=id)
+
+    if mes:  # Si se seleccionó un mes
+        mantenimientos = MantenimientoArea.objects.filter(fecha__month=mes, fecha__year=anio, area=area)
+    else:  # Si no se seleccionó un mes
+        mantenimientos = MantenimientoArea.objects.filter(fecha__year=anio, area=area)
+
+    response = HttpResponse(content_type='application/pdf')
+    if mes:
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_areas_{}_{}_{}.pdf"'.format(area.nombre,mes, anio)
+    else:
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_areas_{}_{}.pdf"'.format(area.nombre,anio)   
+
+    buffer = BytesIO()
+
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+    elements = []
+
+    data = []
+    if mes:
+        data.append(['Tipo', 'Fecha', 'Hora'])
+        for mantenimiento in mantenimientos:
+            data.append([mantenimiento.area, mantenimiento.tipo, mantenimiento.fecha, mantenimiento.hora])
+    else:
+        data.append(['Tipo', 'Mes', 'Año', 'Dia', 'Hora'])
+        for mantenimiento in mantenimientos:
+            data.append([mantenimiento.tipo, mantenimiento.fecha.month, mantenimiento.fecha.year, mantenimiento.fecha.day, mantenimiento.hora])
+
+    table = Table(data)
+    table.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+                                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                                ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                                ('GRID', (0, 0), (-1, -1), 1, colors.black)]))
+    elements.append(table)
+
+    doc.build(elements)
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
+
+    return response    
+    
