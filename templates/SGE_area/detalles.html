@@ -186,36 +186,16 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>
-                    <ul>
-                        {% for mantenimiento in area.mantenimientoarea_set.all %}
-                        <li>{{ mantenimiento.fecha }}</li>
-                        {% endfor %}
-                    </ul>
-                </td>
-                <td>
-                    <ul>
-                        {% for mantenimiento in area.mantenimientoarea_set.all %}
-                        <li>{{ mantenimiento.hora }}</li>
-                        {% endfor %}
-                    </ul>
-                </td>
-                <td>
-                    <ul>
-                        {% for mantenimiento in area.mantenimientoarea_set.all %}
-                        <li>{{ mantenimiento.tipo }}</li>
-                        {% endfor %}
-                    </ul>
-                </td>
-                <td>
-                    <ul>
-                        {% for mantenimiento in area.mantenimientoarea_set.all %}
-                            <a class="text-danger" href="{% url "eliminar_mantenimiento_area" id=mantenimiento.id %}"><li>eliminar</li></a>
-                        {% endfor %}
-                    </ul>
-                </td>
-            </tr>
+            {% for mantenimiento in mantenimientos %}
+    <tr>
+        <td>{{ mantenimiento.fecha }}</td>
+        <td>{{ mantenimiento.hora }}</td>
+        <td>{{ mantenimiento.tipo }}</td>
+        <td>
+            <a class="text-danger" href="{% url "eliminar_mantenimiento_area" id=mantenimiento.id %}">eliminar</a>
+        </td>
+    </tr>
+    {% endfor %}
         </tbody>
     </table>
 

@@ -41,8 +41,10 @@ class MantenimientoArea(models.Model):
         txt = "Area: {}, Tipo: {}, Fecha: {}"
         return txt.format(self.area, self.tipo, self.fecha)
     
+
 @receiver(post_save, sender=MantenimientoArea)
 def actualizar_fecha_ultimo_mantenimiento(sender, instance, **kwargs):
     area = instance.area
-    area.fecha_ultimo_mantenimiento = instance.fecha
-    area.save()    
+    if instance.fecha > area.fecha_ultimo_mantenimiento:
+        area.fecha_ultimo_mantenimiento = instance.fecha
+        area.save()    

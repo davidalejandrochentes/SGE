@@ -58,8 +58,10 @@ def alertas(request):
 @login_required
 def tabla_mantenimientos(request):
     areas = Area.objects.all()
+    for area in areas:
+        area.mantenimientos = area.mantenimientoarea_set.all().order_by('-fecha', '-hora')
     context = {
-        'areas': areas
+        'areas': areas,
     }
     return render(request, 'SGE_area/tablas.html', context)
 
@@ -99,16 +101,18 @@ def eliminar_mantenimiento(request, id):
 @login_required    
 def detalles(request, id):
     if request.method == 'GET':
-        area = get_object_or_404(Area, id = id)
-        form = AreaForm(instance= area)
+        area = get_object_or_404(Area, id=id)
+        mantenimientos = area.mantenimientoarea_set.all().order_by('-fecha', '-hora')
+        form = AreaForm(instance=area)
         form_mant = MantenimientoAreaForm()
         context = {
             'area': area,
             'form': form,
-            'id': id, 
-            'form_mant': form_mant
-        }
-        return render(request, 'SGE_area/detalles.html', context)   
+            'id': id,
+            'form_mant': form_mant,
+            'mantenimientos': mantenimientos
+            }
+        return render(request, 'SGE_area/detalles.html', context)
     
     if request.method == 'POST':
         area = get_object_or_404(Area, id = id)
@@ -119,11 +123,13 @@ def detalles(request, id):
         if form.is_valid():
             form.save()
             form_mant = MantenimientoAreaForm()
+            mantenimientos = area.mantenimientoarea_set.all().order_by('-fecha', '-hora')
             context = {
             'area': area,
             'form': form,
+            'id': id,
             'form_mant': form_mant,
-            'id': id, 
+            'mantenimientos': mantenimientos
             }
             return render(request, 'SGE_area/detalles.html', context) 
         
@@ -132,19 +138,22 @@ def detalles(request, id):
             mantenimiento.area = area
             mantenimiento.save()
             form = AreaForm(instance= area)
+            mantenimientos = area.mantenimientoarea_set.all().order_by('-fecha', '-hora')
             context = {
             'area': area,
             'form': form,
+            'id': id,
             'form_mant': form_mant,
-            'id': id, 
+            'mantenimientos': mantenimientos
             }
             return render(request, 'SGE_area/detalles.html', context)  
         else:
             context = {
             'area': area,
             'form': form,
+            'id': id,
             'form_mant': form_mant,
-            'id': id, 
+            'mantenimientos': mantenimientos
             }
             return render(request, 'SGE_area/detalles.html', context) 
     
@@ -154,9 +163,9 @@ def generar_documento_mantenimientos_por_mes(request):
     anio = request.GET.get('anio')
 
     if mes:  # Si se seleccionó un mes
-        mantenimientos = MantenimientoArea.objects.filter(fecha__month=mes, fecha__year=anio)
+        mantenimientos = MantenimientoArea.objects.filter(fecha__month=mes, fecha__year=anio).order_by('-fecha', '-hora')
     else:  # Si no se seleccionó un mes
-        mantenimientos = MantenimientoArea.objects.filter(fecha__year=anio)
+        mantenimientos = MantenimientoArea.objects.filter(fecha__year=anio).order_by('-fecha', '-hora')
 
     response = HttpResponse(content_type='application/pdf')
     if mes:
@@ -204,9 +213,9 @@ def generar_documento_mantenimientos_area(request, id):
     area = get_object_or_404(Area, pk=id)
 
     if mes:  # Si se seleccionó un mes
-        mantenimientos = MantenimientoArea.objects.filter(fecha__month=mes, fecha__year=anio, area=area)
+        mantenimientos = MantenimientoArea.objects.filter(fecha__month=mes, fecha__year=anio, area=area).order_by('-fecha', '-hora')
     else:  # Si no se seleccionó un mes
-        mantenimientos = MantenimientoArea.objects.filter(fecha__year=anio, area=area)
+        mantenimientos = MantenimientoArea.objects.filter(fecha__year=anio, area=area).order_by('-fecha', '-hora')    
 
     response = HttpResponse(content_type='application/pdf')
     if mes:
