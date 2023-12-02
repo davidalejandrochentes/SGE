@@ -42,8 +42,8 @@
     <h5 class="text-center">Cantidad total de areas "{{ total_areas }}"</h5>
     <div class="row mt-3 d-flex justify-content-center align-item-center">
         {% for area in areas %}
-        <div class="col-3 card text-bg-secondary carta-home m-3" style="min-height: 200px;">
-            <a class="text-decoration-none text-light" href="{% url "detalles_area" id=area.id %}">
+        <div class="col-3 card carta-home m-3" style="min-height: 200px;">
+            <a class="text-decoration-none text-dark" href="{% url "detalles_area" id=area.id %}">
                 <div class="card-header">{{ area.nombre }}</div>
                 <div class="card-body">
                     <p class="card-text m-0"><b>Tamaño:</b> {{ area.tamaño }}</p>
