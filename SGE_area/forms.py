@@ -2,8 +2,7 @@ from django import forms
 from .models import Area, MantenimientoArea
 from django.forms import Textarea
 
-class AreaForm(forms.ModelForm):
-    
+class AreaForm(forms.ModelForm):    
     class Meta:
         model = Area
         fields = '__all__' 

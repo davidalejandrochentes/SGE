@@ -3,6 +3,7 @@ from datetime import date
 from datetime import datetime
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
     
 class Area(models.Model):
     nombre = models.CharField(max_length=100, null=False, blank=False)
