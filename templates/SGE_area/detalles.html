@@ -187,15 +187,15 @@
         </thead>
         <tbody>
             {% for mantenimiento in mantenimientos %}
-    <tr>
-        <td>{{ mantenimiento.fecha }}</td>
-        <td>{{ mantenimiento.hora }}</td>
-        <td>{{ mantenimiento.tipo }}</td>
-        <td>
-            <a class="text-danger" href="{% url "eliminar_mantenimiento_area" id=mantenimiento.id %}">eliminar</a>
-        </td>
-    </tr>
-    {% endfor %}
+                <tr>
+                    <td>{{ mantenimiento.fecha }}</td>
+                    <td>{{ mantenimiento.hora }}</td>
+                    <td>{{ mantenimiento.tipo }}</td>
+                    <td>
+                        <a class="text-danger" href="{% url "eliminar_mantenimiento_area" id=mantenimiento.id %}">eliminar</a>
+                    </td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 

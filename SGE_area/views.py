@@ -3,6 +3,7 @@ from .models import Area, MantenimientoArea
 from .forms import AreaForm, MantenimientoAreaForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 
 from django.http import HttpResponse, HttpResponseRedirect
 from io import BytesIO
@@ -75,15 +76,23 @@ def crear_area(request):
         return render(request, 'SGE_area/nueva.html', context)
     if request.method == 'POST':
         form = AreaForm(request.POST)
-        if form.is_valid:
-            form.save()
+        if form.is_valid():
+            intervalo_mantenimiento = form.cleaned_data.get('intervalo_mantenimiento')
+            if intervalo_mantenimiento < 0:
+                form.add_error('intervalo_mantenimiento', 'El intervalo de mantenimiento no puede ser un número negativo')
+                context = {
+                    'form': form
+                }
+                return render(request, 'SGE_area/nueva.html', context)
+            else:
+                form.save()
+                return redirect('area')
         else:
             context = {
                 'form': form
             }
-            messages.danger(request, "Alguno de los datos introducidos no son validos") 
+            messages.danger(request, "Alguno de los datos introducidos no son válidos") 
             return render(request, 'SGE_area/nueva.html', context)
-        return redirect('area')
 
 @login_required
 def eliminar(request, id):
