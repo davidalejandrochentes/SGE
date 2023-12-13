@@ -130,17 +130,32 @@ def detalles(request, id):
         form = AreaForm(request.POST, instance= area)
 
         if form.is_valid():
-            form.save()
-            form_mant = MantenimientoAreaForm()
-            mantenimientos = area.mantenimientoarea_set.all().order_by('-fecha', '-hora')
-            context = {
-            'area': area,
-            'form': form,
-            'id': id,
-            'form_mant': form_mant,
-            'mantenimientos': mantenimientos
-            }
-            return render(request, 'SGE_area/detalles.html', context) 
+            intervalo_mantenimiento = form.cleaned_data.get('intervalo_mantenimiento')
+            if intervalo_mantenimiento < 0:
+                form_mant = MantenimientoAreaForm()
+                mantenimientos = area.mantenimientoarea_set.all().order_by('-fecha', '-hora')
+                form.add_error('intervalo_mantenimiento', 'El intervalo de mantenimiento no puede ser un número negativo')
+                context = {
+                    'area': area,
+                    'form': form,
+                    'id': id,
+                    'form_mant': form_mant,
+                    'mantenimientos': mantenimientos
+                }
+                previous_url = request.META.get('HTTP_REFERER')
+                return HttpResponseRedirect(previous_url)
+            else:
+                form.save()
+                form_mant = MantenimientoAreaForm()
+                mantenimientos = area.mantenimientoarea_set.all().order_by('-fecha', '-hora')
+                context = {
+                    'area': area,
+                    'form': form,
+                    'id': id,
+                    'form_mant': form_mant,
+                    'mantenimientos': mantenimientos
+                }
+                return render(request, 'SGE_area/detalles.html', context) 
         
         if form_mant.is_valid():
             mantenimiento = form_mant.save(commit=False)
