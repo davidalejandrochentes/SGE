@@ -1,7 +1,7 @@
 from django.db import models
 from datetime import date
 from datetime import datetime
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 
     
@@ -48,4 +48,16 @@ def actualizar_fecha_ultimo_mantenimiento(sender, instance, **kwargs):
     area = instance.area
     if instance.fecha > area.fecha_ultimo_mantenimiento:
         area.fecha_ultimo_mantenimiento = instance.fecha
-        area.save()    
+        area.save()   
+
+@receiver(pre_delete, sender=MantenimientoArea)
+def revertir_fecha_ultimo_mantenimiento(sender, instance, **kwargs):
+    area = instance.area
+    mantenimientos_restantes = MantenimientoArea.objects.filter(area=area).exclude(id=instance.id).order_by('-fecha')
+    if mantenimientos_restantes.exists():
+        ultimo_mantenimiento = mantenimientos_restantes.first()
+        area.fecha_ultimo_mantenimiento = ultimo_mantenimiento.fecha
+    else:
+        area.fecha_ultimo_mantenimiento = None  # Otra opción si no hay mantenimientos restantes
+    area.save()
+
