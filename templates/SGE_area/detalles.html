@@ -120,7 +120,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form class="p-5 rounded-3 bg-body-tertiary sombra-login" action="{% url "detalles_area" id=area.id %}" method='POST'>
+                            <form class="p-5 rounded-3 bg-body-tertiary sombra-login" action="{% url "detalles_area" id=area.id %}" method='POST' enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <table>
                                     {{ form }}
@@ -164,7 +164,9 @@
         </span>
     </div>
     
-    <h3>Datos de ({{ area.nombre }})</h3>
+    <img src="{{ area.image.url }}" class="card-img-top" alt="..." style="max-height: 300px; ">
+
+    <h3 class="mt-2">Datos de ({{ area.nombre }})</h3>
     <table class="table table-striped">
         <thead>
             <tr>

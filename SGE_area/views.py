@@ -77,7 +77,7 @@ def crear_area(request):
         }
         return render(request, 'SGE_area/nueva.html', context)
     if request.method == 'POST':
-        form = AreaForm(request.POST)
+        form = AreaForm(request.POST, request.FILES)  # Asegúrate de pasar request.FILES al formulario
         if form.is_valid():
             intervalo_mantenimiento = form.cleaned_data.get('intervalo_mantenimiento')
             if intervalo_mantenimiento < 0:
@@ -87,6 +87,10 @@ def crear_area(request):
                 }
                 return render(request, 'SGE_area/nueva.html', context)
             else:
+                # Manejo del archivo de imagen
+                if 'image' in request.FILES:
+                    form.instance.image = request.FILES['image']
+
                 form.save()
                 return redirect('area')
         else:
@@ -95,6 +99,7 @@ def crear_area(request):
             }
             messages.danger(request, "Alguno de los datos introducidos no son válidos") 
             return render(request, 'SGE_area/nueva.html', context)
+
 
 @login_required
 def eliminar(request, id):
@@ -131,7 +136,7 @@ def detalles(request, id):
         area = get_object_or_404(Area, id = id)
         form_mant = MantenimientoAreaForm(request.POST)
         form = AreaForm(instance= area)
-        form = AreaForm(request.POST, instance= area)
+        form = AreaForm(request.POST, request.FILES, instance= area)
 
         if form.is_valid():
             intervalo_mantenimiento = form.cleaned_data.get('intervalo_mantenimiento')

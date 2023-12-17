@@ -1,8 +1,9 @@
 from django.db import models
 from datetime import date
 from datetime import datetime
-from django.db.models.signals import post_save, pre_delete
+from django.db.models.signals import post_save, pre_delete, pre_save
 from django.dispatch import receiver
+import os
 
     
 class Area(models.Model):
@@ -17,6 +18,7 @@ class Area(models.Model):
     estado_de_ocupación = models.CharField(max_length=100, null=True, blank=True)
     fecha_ultimo_mantenimiento = models.DateField(default=date.today, blank=False, null=False)
     intervalo_mantenimiento = models.IntegerField(default=30, blank=False, null=False)
+    image = models.ImageField(upload_to="area/image", null=False, blank=False)
 
     def dias_restantes_mantenimiento(self):
         dias_pasados = (date.today() - self.fecha_ultimo_mantenimiento).days
@@ -36,7 +38,7 @@ class MantenimientoArea(models.Model):
     area = models.ForeignKey(Area, on_delete=models.CASCADE)
     tipo = models.ForeignKey(TipoMantenimientoArea, on_delete=models.CASCADE)
     fecha = models.DateField(default=date.today)
-    hora = models.TimeField(default=datetime.now().time)   
+    hora = models.TimeField(default=datetime.now().time())   
 
     def __str__(self):
         txt = "Area: {}, Tipo: {}, Fecha: {}"
@@ -61,3 +63,25 @@ def revertir_fecha_ultimo_mantenimiento(sender, instance, **kwargs):
         area.fecha_ultimo_mantenimiento = area.fecha_ultimo_mantenimiento  # Otra opción si no hay mantenimientos restantes
     area.save()
 
+@receiver(pre_delete, sender=Area)
+def eliminar_imagen_de_area(sender, instance, **kwargs):
+    # Verificar si el área tiene una imagen asociada y eliminarla
+    if instance.image:
+        if os.path.isfile(instance.image.path):
+            os.remove(instance.image.path)
+
+@receiver(pre_save, sender=Area)
+def eliminar_imagen_anterior_al_actualizar(sender, instance, **kwargs):
+    if not instance.pk:  # El área es nueva, no hay imagen anterior que eliminar
+        return False
+
+    try:
+        area_anterior = Area.objects.get(pk=instance.pk)  # Obtener el área anterior de la base de datos
+    except Area.DoesNotExist:
+        return False  # El área anterior no existe, no hay imagen anterior que eliminar
+
+    if area_anterior.image:  # Verificar si el área anterior tiene una imagen
+        nueva_imagen = instance.image
+        if area_anterior.image != nueva_imagen:  # Verificar si se ha seleccionado una nueva imagen
+            if os.path.isfile(area_anterior.image.path):  # Verificar si el archivo de imagen existe en el sistema de archivos
+                os.remove(area_anterior.image.path)
