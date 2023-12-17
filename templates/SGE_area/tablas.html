@@ -53,7 +53,7 @@
         <td>
           <ul class="list-group list-group-flush">
             {% for mantenimiento in area.mantenimientos %}
-            <li class="list-group-item">|{{ mantenimiento.fecha }} - {{ mantenimiento.hora }} - {{ mantenimiento.tipo }}|</li>
+            <li class="list-group-item">* {{ mantenimiento.fecha }} - {{ mantenimiento.hora }} - {{ mantenimiento.tipo }} *</li>
             {% endfor %}
           </ul>
         </td>
