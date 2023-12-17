@@ -12,7 +12,7 @@ body{
 }
 
 .prueba{
-    background-image: url("../images/bg-masthead.jpg");
+    background-image: url("../images/login.jpg");
     min-height: 788px;
     background-position: center;
     background-repeat: no-repeat;
@@ -33,9 +33,20 @@ body{
     color:rgb(55, 247, 7) !important;
 }
 
+.cabecera{
+    height: 200px;
+    max-width: 1240px;
+    background-image: url("../images/IMG_2757.JPG");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-size: cover;
+    background-blend-mode: multiply;
+}
+
 .carta-home{
-    box-shadow: rgb(0, 0, 255) 10px 10px 20px 5px;
-    background-color: rgb(93, 241, 56);
+    box-shadow: rgb(0, 0, 255) 5px 5px 12px 2px;
+    background-color: #e9ecef;
 }
 
 .carta-home:hover {
