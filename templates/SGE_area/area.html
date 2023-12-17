@@ -23,6 +23,7 @@
         <a class="text-decoration-none text-dark" href="{% url "index" %}">
             <i class="bi bi-arrow-left fs-1"></i>
         </a>
+        <h5 class="text-center text-dark fst-italic mt-auto mb-auto">Cantidad total de areas "{{ total_areas }}"</h5>
         <div class="pt-2">
             <a class="ms-1 fs-3 me-4 text-decoration-none text-secondary" href="{% url "area_nueva" %}">
                 <i class="bi bi-plus-circle"></i>
@@ -41,8 +42,8 @@
     </div>
 
     <div class="container cabecera d-flex justify-content-center align-items-center shadow">
-        <h3 class="text-center text-light"><mark>Cantidad total de areas "{{ total_areas }}"</mark></h3>
     </div>
+    
     <div class="row mt-3 d-flex justify-content-center align-item-center">
         {% for area in areas %}
         <div class="col-3 card carta-home m-3" style="min-height: 200px;">
