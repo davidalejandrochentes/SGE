@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Area, MantenimientoArea
+from .models import Area, MantenimientoArea, TipoMantenimientoArea
 from .forms import AreaForm, MantenimientoAreaForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -59,10 +59,12 @@ def alertas(request):
 @login_required
 def tabla_mantenimientos(request):
     areas = Area.objects.all()
+    tipos_mantenimiento = TipoMantenimientoArea.objects.all()
     for area in areas:
         area.mantenimientos = area.mantenimientoarea_set.all().order_by('-fecha', '-hora')
     context = {
         'areas': areas,
+        'tipos_mantenimiento': tipos_mantenimiento,
     }
     return render(request, 'SGE_area/tablas.html', context)
 
@@ -114,12 +116,14 @@ def detalles(request, id):
         mantenimientos = area.mantenimientoarea_set.all().order_by('-fecha', '-hora')
         form = AreaForm(instance=area)
         form_mant = MantenimientoAreaForm()
+        tipos_mantenimiento = TipoMantenimientoArea.objects.all()
         context = {
             'area': area,
             'form': form,
             'id': id,
             'form_mant': form_mant,
-            'mantenimientos': mantenimientos
+            'mantenimientos': mantenimientos,
+            'tipos_mantenimiento': tipos_mantenimiento,
             }
         return render(request, 'SGE_area/detalles.html', context)
     
@@ -133,6 +137,7 @@ def detalles(request, id):
             intervalo_mantenimiento = form.cleaned_data.get('intervalo_mantenimiento')
             if intervalo_mantenimiento < 0:
                 form_mant = MantenimientoAreaForm()
+                tipos_mantenimiento = TipoMantenimientoArea.objects.all()
                 mantenimientos = area.mantenimientoarea_set.all().order_by('-fecha', '-hora')
                 form.add_error('intervalo_mantenimiento', 'El intervalo de mantenimiento no puede ser un número negativo')
                 context = {
@@ -140,20 +145,23 @@ def detalles(request, id):
                     'form': form,
                     'id': id,
                     'form_mant': form_mant,
-                    'mantenimientos': mantenimientos
+                    'mantenimientos': mantenimientos,
+                    'tipos_mantenimiento': tipos_mantenimiento,
                 }
                 previous_url = request.META.get('HTTP_REFERER')
                 return HttpResponseRedirect(previous_url)
             else:
                 form.save()
                 form_mant = MantenimientoAreaForm()
+                tipos_mantenimiento = TipoMantenimientoArea.objects.all()
                 mantenimientos = area.mantenimientoarea_set.all().order_by('-fecha', '-hora')
                 context = {
                     'area': area,
                     'form': form,
                     'id': id,
                     'form_mant': form_mant,
-                    'mantenimientos': mantenimientos
+                    'mantenimientos': mantenimientos,
+                    'tipos_mantenimiento': tipos_mantenimiento,
                 }
                 return render(request, 'SGE_area/detalles.html', context) 
         
@@ -162,13 +170,15 @@ def detalles(request, id):
             mantenimiento.area = area
             mantenimiento.save()
             form = AreaForm(instance= area)
+            tipos_mantenimiento = TipoMantenimientoArea.objects.all()
             mantenimientos = area.mantenimientoarea_set.all().order_by('-fecha', '-hora')
             context = {
             'area': area,
             'form': form,
             'id': id,
             'form_mant': form_mant,
-            'mantenimientos': mantenimientos
+            'mantenimientos': mantenimientos,
+            'tipos_mantenimiento': tipos_mantenimiento,
             }
             return render(request, 'SGE_area/detalles.html', context)  
         else:
@@ -177,7 +187,8 @@ def detalles(request, id):
             'form': form,
             'id': id,
             'form_mant': form_mant,
-            'mantenimientos': mantenimientos
+            'mantenimientos': mantenimientos,
+            'tipos_mantenimiento': tipos_mantenimiento,
             }
             return render(request, 'SGE_area/detalles.html', context) 
     
@@ -185,11 +196,18 @@ def detalles(request, id):
 def generar_documento_mantenimientos_por_mes(request):
     mes = request.GET.get('mes')
     anio = request.GET.get('anio')
+    tipo_mantenimiento_id = request.GET.get('tipo_mantenimiento')
 
-    if mes:  # Si se seleccionó un mes
-        mantenimientos = MantenimientoArea.objects.filter(fecha__month=mes, fecha__year=anio).order_by('-fecha', '-hora')
-    else:  # Si no se seleccionó un mes
-        mantenimientos = MantenimientoArea.objects.filter(fecha__year=anio).order_by('-fecha', '-hora')
+    mantenimientos = MantenimientoArea.objects.filter(fecha__year=anio)
+
+    if mes:
+        mantenimientos = mantenimientos.filter(fecha__month=mes)
+
+    if tipo_mantenimiento_id:  # Si se seleccionó un tipo de mantenimiento
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoArea, pk=tipo_mantenimiento_id)
+        mantenimientos = mantenimientos.filter(tipo=tipo_mantenimiento)
+
+    mantenimientos = mantenimientos.order_by('-fecha', '-hora')
 
     response = HttpResponse(content_type='application/pdf')
     if mes:
@@ -233,13 +251,21 @@ def generar_documento_mantenimientos_por_mes(request):
 def generar_documento_mantenimientos_area(request, id):
     mes = request.GET.get('mes')
     anio = request.GET.get('anio')
+    tipo_mantenimiento_id = request.GET.get('tipo_mantenimiento')
 
     area = get_object_or_404(Area, pk=id)
+    
+    mantenimientos = MantenimientoArea.objects.filter(area=area).order_by('-fecha', '-hora')
 
-    if mes:  # Si se seleccionó un mes
-        mantenimientos = MantenimientoArea.objects.filter(fecha__month=mes, fecha__year=anio, area=area).order_by('-fecha', '-hora')
-    else:  # Si no se seleccionó un mes
-        mantenimientos = MantenimientoArea.objects.filter(fecha__year=anio, area=area).order_by('-fecha', '-hora')    
+
+    if mes:
+        mantenimientos = mantenimientos.filter(fecha__month=mes)
+    if anio:
+        mantenimientos = mantenimientos.filter(fecha__year=anio)
+    if tipo_mantenimiento_id:  # Si se seleccionó un tipo de mantenimiento
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoArea, pk=tipo_mantenimiento_id)
+        mantenimientos = mantenimientos.filter(tipo=tipo_mantenimiento)
+
 
     response = HttpResponse(content_type='application/pdf')
     if mes:
