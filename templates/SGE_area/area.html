@@ -46,7 +46,7 @@
 
     <div class="row mt-5 d-flex justify-content-center align-item-center">
         {% for area in areas %}
-        <div class="col-12 col-md-3 card carta-home m-3">
+        <div class="col-12 col-md-3 card carta-home p-0 m-3">
             <a class="text-decoration-none text-dark" href="{% url "detalles_area" id=area.id %}">
                 <img src="{{ area.image.url }}" class="card-img-top" alt="..." style="max-height: 200px;">
                 <div class="card-body">
