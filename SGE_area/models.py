@@ -58,6 +58,6 @@ def revertir_fecha_ultimo_mantenimiento(sender, instance, **kwargs):
         ultimo_mantenimiento = mantenimientos_restantes.first()
         area.fecha_ultimo_mantenimiento = ultimo_mantenimiento.fecha
     else:
-        area.fecha_ultimo_mantenimiento = None  # Otra opción si no hay mantenimientos restantes
+        area.fecha_ultimo_mantenimiento = area.fecha_ultimo_mantenimiento  # Otra opción si no hay mantenimientos restantes
     area.save()
 
