@@ -22,4 +22,58 @@ desactivar el entorno : deactivate
 exportar los requeriminetos de mi VENV : pip freeze > requirements.txt
 importar los requeriminetos de mi VENV : pip install -r requirements.txt
 
+mkvirtualenv --python=/usr/bin/python3.10 venv
+
 limpiar consola : cls
+
+---------------------------------------------------------------------
+# This file contains the WSGI configuration required to serve up your
+# web application at http://davidale.pythonanywhere.com/
+# It works by setting the variable 'application' to a WSGI handler of some
+# description.
+#
+# The below has been auto-generated for your Django project
+
+import os
+import sys
+
+# add your project directory to the sys.path
+project_home = '/home/davidale/generator_password'
+if project_home not in sys.path:
+    sys.path.insert(0, project_home)
+
+# set environment variable to tell django where your settings.py is
+os.environ['DJANGO_SETTINGS_MODULE'] = 'password.settings'
+
+
+# serve django via WSGI
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
+---------------------------------------------------------
+---------------------------------------------------------
+DATABASES = {
+    'default': {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "agenda",
+        "USER": "postgres",
+        "PASSWORD": "DAT121596#",
+        "HOST": "127.0.0.1",
+        "PORT": "5432",
+    }
+}
+---------------------------------------------------------
+---------------------------------------------------------
+STATIC_URL = 'static/'
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# default static files settings for PythonAnywhere.
+# see https://help.pythonanywhere.com/pages/DjangoStaticFiles for more info
+MEDIA_ROOT = '/home/davidale/mysite/media'
+MEDIA_URL = '/media/'
+STATIC_ROOT = '/home/davidale/mysite/static'
+STATIC_URL = '/static/'
+---------------------------------------------------------
