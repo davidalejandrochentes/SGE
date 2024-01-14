@@ -17,7 +17,7 @@ class Area(models.Model):
     tipo_de_área = models.CharField(max_length=100, null=True, blank=True)
     estado_de_ocupación = models.CharField(max_length=100, null=True, blank=True)
     fecha_ultimo_mantenimiento = models.DateField(default=date.today, blank=False, null=False)
-    intervalo_mantenimiento = models.IntegerField(default=30, blank=False, null=False)
+    intervalo_mantenimiento = models.IntegerField(blank=False, null=False)
     image = models.ImageField(upload_to="area/image", null=False, blank=False)
 
     def dias_restantes_mantenimiento(self):

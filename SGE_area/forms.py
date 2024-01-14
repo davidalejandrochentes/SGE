@@ -8,7 +8,7 @@ class AreaForm(forms.ModelForm):
         fields = '__all__' 
         exclude = ['fecha_ultimo_mantenimiento']
         widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre del Area'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre del area de trabajo'}),
             'tamaño': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: "4x4", "5x9"'}),
             'encargado': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'David A. Chentes'}),
             'teléfono_encargado': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: "+53589874"'}),
@@ -17,7 +17,7 @@ class AreaForm(forms.ModelForm):
             'capacidad': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: "4 personas", "3 Carros"...'}),
             'tipo_de_área': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: "Oficina", "Comedor"...'}),
             'estado_de_ocupación': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: "ocupada", "En reparación"'}),
-            'intervalo_mantenimiento': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number'}),
+            'intervalo_mantenimiento': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Número determinado de "Días"'}),
             
         }
 
