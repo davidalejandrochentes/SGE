@@ -29,7 +29,7 @@
         
         <div class="row">
             
-            <div class="col-12 col-md-2 m-0 p-0 text-light text-center barra">
+            <div class="col-12 col-md-2 m-0 p-0 text-light text-center barra d-none d-md-block">
                 <li class="nav-item active text-center fs-3 lista-menu m-3" style="transition: background-color 0.5s ease">
                     <a class="nav-link" href="{% url "index" %}">
                         <img src="{% static "images/Innovaplast.png" %}" alt="Innovaplast" style="max-height: 70px;">
@@ -69,17 +69,13 @@
                             <a class="text-light text-decoration-none lista-menu" href="{% url "login" %}"><i class="bi bi-box-arrow-right"></i><p>Login</p></a>
                         </li>
                     {% endif %}
-                    
                 </ul>
             </div> 
 
             <div class="col-12 col-md-10 m-0 p-0">
-                <nav class="row navbar bg-body-secondary p-2 m-0 shadow sticky-top"> 
+                <nav class="row navbar bg-body-secondary p-2 m-0 shadow sticky-top navbar-expand-lg"> 
                         <div class="col-12 col-md-6 order-lg-first order-last">
-                            
                             {% block 'search' %}{% endblock 'search' %}
-                            
-                            
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="me-5 d-flex justify-content-center justify-content-md-end align-items-center">
@@ -94,6 +90,55 @@
                                 <i class="bi bi-person-circle fs-3 ms-2 icono-persona"></i>
                             </div>
                         </div>
+                        <p class="d-inline-flex gap-1">
+                            <button class="btn text-light boton-menu ms-auto me-auto" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                Menu
+                            </button>
+                        </p>
+                        <div class="collapse m-0 p-0" id="collapseExample">
+                            <div class="text-light text-center barra p-3">
+                                <li class="nav-item active text-center fs-3 lista-menu m-3" style="transition: background-color 0.5s ease">
+                                    <a class="nav-link" href="{% url "index" %}">
+                                        <img src="{% static "images/Innovaplast.png" %}" alt="Innovaplast" style="max-height: 70px;">
+                                    </a>
+                                </li>
+                                <ul class="flex-column align-items-stretch p-2 border-top">
+                                    <li class="nav-item mt-1 pt-2 lista-menu text-center" style="transition: background-color 0.5s ease">
+                                        <a class="text-light text-decoration-none lista-menu" href="{% url "area" %}"><i class="bi bi-geo-fill"></i><p>Areas</p></a>
+                                    </li>
+                                    <li class="nav-item lista-menu" style="transition: background-color 0.5s ease">
+                                        <i class="bi bi-gear-wide-connected"></i><p>Maquinarias</p>
+                                    </li>
+                                    <li class="nav-item lista-menu" style="transition: background-color 0.5s ease">
+                                        <i class="bi bi-gear-wide"></i><p>Componentes</p>
+                                    </li>
+                                    <li class="nav-item lista-menu" style="transition: background-color 0.5s ease">
+                                        <i class="bi bi-car-front-fill"></i><p>Vehículos</p>
+                                    </li>
+                                    <li class="nav-item lista-menu" style="transition: background-color 0.5s ease">
+                                        <i class="bi bi-pc-display"></i><p>Equipos de Cómputo</p>
+                                    </li>
+                                    <li class="nav-item border-bottom lista-menu" style="transition: background-color 0.5s ease">
+                                        <i class="bi bi-tools"></i><p>Herramientas</p>
+                                    </li>
+                                    <li class="nav-item pt-3 lista-menu" style="transition: background-color 0.5s ease">
+                                        <i class="bi bi-info-circle"></i><p>Información</p>
+                                    </li>
+                                    <li class="nav-item lista-menu" style="transition: background-color 0.5s ease">
+                                        <a class="text-light text-decoration-none lista-menu" href="{% url "soporte" %}">  <i class="bi bi-person-up"></i><p>Soporte</p></a>
+                                    </li>
+                                    {% if user.is_authenticated %}
+                                        <li class="nav-item lista-menu border-bottom" style="transition: background-color 0.5s ease">
+                                            <a class="text-light text-decoration-none lista-menu" href="{% url "logout" %}"><i class="bi bi-box-arrow-left"></i><p>logout</p></a>
+                                        </li>
+                                    {% else %}
+                                        <li class="nav-item lista-menu border-bottom" style="transition: background-color 0.5s ease">
+                                            <a class="text-light text-decoration-none lista-menu" href="{% url "login" %}"><i class="bi bi-box-arrow-right"></i><p>Login</p></a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
                 </nav>
                 
                 {% block 'content' %}{% endblock %}
@@ -104,7 +149,7 @@
     <footer class="footer">
         <div class="small text-center p-4 text-white">Copyright &copy; 2023 - Innovaplast</div>
     </footer>
-
+    
     <script src="{% static "js/animacion.js" %}"></script>
     <script src="{% static "js/main.js" %}"></script>
 </body>

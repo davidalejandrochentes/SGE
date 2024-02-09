@@ -24,14 +24,14 @@
             <i class="bi bi-arrow-left fs-1"></i>
         </a>
         <h5 class="text-center text-dark fst-italic mt-auto mb-auto mas">Cantidad total de areas "{{ total_areas }}"</h5>
-        <div class="pt-2">
-            <a class="ms-1 fs-3 me-4 text-decoration-none text-secondary mas" href="{% url "area_nueva" %}">
+        <div class="pt-2 me-3 me-md-0">
+            <a class="ms-1 fs-3 me-1 me-md-4 text-decoration-none text-secondary mas" href="{% url "area_nueva" %}">
                 <i class="bi bi-plus-circle"></i>
             </a>        
-            <a class="ms-1 fs-3 me-4 text-decoration-none text-success tabla" href="{% url "area_tabla_mantenimientos" %}">
+            <a class="ms-1 fs-3 me-1 me-md-4 text-decoration-none text-success tabla" href="{% url "area_tabla_mantenimientos" %}">
                 <i class="bi bi-inboxes"></i>
             </a>
-            <a type="button" class="btn btn-tranparent position-relative p-0 mb-0 me-5 alert" href="{% url "area_alertas" %}">
+            <a type="button" class="btn btn-tranparent position-relative p-0 mb-0 me-1 me-md-5 alert" href="{% url "area_alertas" %}">
                 <i class="bi bi-bell-fill fs-3 text-warning"></i>
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                     {{ total_alertas }}+
@@ -44,7 +44,7 @@
     <div class="container cabecera shadow bg-primary bg-opacity-50">
     </div>
 
-    <div class="row mt-5 d-flex justify-content-center align-item-center">
+    <div class="row mt-5 d-flex justify-content-center align-item-center ps-5 pe-5">
         {% for area in areas %}
         <div class="col-12 col-md-3 card carta-home p-0 m-3">
             <a class="text-decoration-none text-dark" href="{% url "detalles_area" id=area.id %}">

@@ -25,6 +25,18 @@ body{
 .barra{
     background-color: blue;
 }
+
+.boton-menu{
+    background-color: blue;
+}
+.boton-menu:hover{
+    background-color: blue;
+}
+
+ul {
+    list-style-type: none;
+  }
+
 .icono-persona{
     color: blue;
 }
