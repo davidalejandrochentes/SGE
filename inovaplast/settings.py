@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'SGE',
     'SGE_area',
+    'SGE_pc',
+    'SGE_herramienta',
 ]
 
 MIDDLEWARE = [
