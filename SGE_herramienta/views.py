@@ -55,3 +55,15 @@ def alertas(request):
         'total_alertas': total_alertas,
     }
     return render(request, 'SGE_herramienta/alertas.html', context)    
+
+@login_required
+def tabla_mantenimientos(request):
+    herramientas = Herramienta.objects.all()
+    tipos_mantenimiento = TipoMantenimientoHerramienta.objects.all()
+    for herramienta in herramientas:
+        herramienta.mantenimientos = herramienta.mantenimientoherramienta_set.all().order_by('-fecha', '-hora')
+    context = {
+        'herramientas': herramientas,
+        'tipos_mantenimiento': tipos_mantenimiento,
+    }
+    return render(request, 'SGE_herramienta/tablas.html', context)    
