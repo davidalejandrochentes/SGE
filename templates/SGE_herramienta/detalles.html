@@ -34,7 +34,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="" action="" method="get">
+                        <form class="" action="{% url 'generar_documento_mantenimientos_herramienta' id=herramienta.id %}" method="get">
                             <label class="" for="mes">Mes:</label>
                             <select class="form-select form-select-sm" name="mes" id="mes">
                                 <option value="">Todos los meses</option>
@@ -53,7 +53,6 @@
                             </select>
                             <label class="" for="anio">Año:</label>
                             <select class="form-select form-select-sm" name="anio" id="anio">
-                                <option value="2023">2023</option>
                                 <option value="2024">2024</option>
                                 <option value="2025">2025</option>
                                 <option value="2026">2026</option>
@@ -148,7 +147,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Esta seguro de <b>eliminar</b> el area <b>"{{ herramienta.nombre }}"</b>
+                        Esta seguro de <b>eliminar</b> la herramienta <b>"{{ herramienta.nombre }}"</b>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

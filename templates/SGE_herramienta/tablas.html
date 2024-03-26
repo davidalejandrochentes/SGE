@@ -23,7 +23,7 @@
             <i class="bi bi-arrow-left fs-1"></i>
         </a>
         
-        <form class="d-flex mt-auto mb-auto" action="{% url 'generar_documento_mantenimientos_general_area' %}" method="get" style="max-height: 50px; min-width: 600px;">
+        <form class="d-flex mt-auto mb-auto" action="{% url 'generar_documento_mantenimientos_general_herramienta' %}" method="get" style="max-height: 50px; min-width: 600px;">
           <label class="mt-auto mb-auto m-1" for="tipo_mantenimiento">Tipo:</label>
             <select class="form-select form-select-sm m-1" name="tipo_mantenimiento" id="tipo_mantenimiento">
                 <option value="">Todos los tipos de mantenimiento</option>
@@ -49,7 +49,6 @@
           </select>
           <label class="mt-auto mb-auto m-1" for="anio">Año:</label>
           <select class="form-select form-select-sm m-1" name="anio" id="anio">
-              <option value="2023">2023</option>
               <option value="2024">2024</option>
               <option value="2025">2025</option>
               <option value="2026">2026</option>
