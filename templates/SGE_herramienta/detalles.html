@@ -1,6 +1,6 @@
 {% extends "layout/base.html" %}
 
-{% block 'title'%} Detalles Area {% endblock %}
+{% block 'title'%} Detalles Herramienta {% endblock %}
 
 {% block 'search' %}
 <form class="d-flex form-inline mr-auto ml-md-3 my-2 my-md-0 ms-3 me-3 mw-100 navbar-search" role="search" action="" method='GET'>
@@ -18,7 +18,7 @@
 {% block 'content' %}
 <div class="container mb-5">
     <div class="d-flex p-2 justify-content-between">
-        <a class="text-decoration-none text-dark flecha-atras" href="{% url "area" %}">
+        <a class="text-decoration-none text-dark flecha-atras" href="{% url "herramienta" %}">
             <i class="bi bi-arrow-left fs-1"></i>
         </a>
         <span class="p-3">
@@ -34,7 +34,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="" action="{% url 'generar_documento_mantenimientos_area' id=area.id %}" method="get">
+                        <form class="" action="" method="get">
                             <label class="" for="mes">Mes:</label>
                             <select class="form-select form-select-sm" name="mes" id="mes">
                                 <option value="">Todos los meses</option>
@@ -116,11 +116,11 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Editar <b>{{ area.nombre }}</b></h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Editar <b>{{ herramienta.nombre }}</b></h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form class="p-5 rounded-3 bg-body-tertiary sombra-login" action="{% url "detalles_area" id=area.id %}" method='POST' enctype="multipart/form-data">
+                            <form class="p-5 rounded-3 bg-body-tertiary sombra-login" action="{% url "detalles_herramienta" id=herramienta.id %}" method='POST' enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <table>
                                     {{ form }}
@@ -148,13 +148,13 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Esta seguro de <b>eliminar</b> el area <b>"{{ area.nombre }}"</b>
+                        Esta seguro de <b>eliminar</b> el area <b>"{{ herramienta.nombre }}"</b>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <form method="post" action="{% url "eliminar_area" id=area.id %}">
+                        <form method="post" action="{% url "eliminar_herramienta" id=herramienta.id %}">
                             {% csrf_token %}
-                            <input type="hidden" name="area_id" value="{{ area.id }}">
+                            <input type="hidden" name="herramienta_id" value="{{ herramienta.id }}">
                             <button class="btn btn-danger" type="submit">Estoy seguro</button>
                         </form>
                     </div>
@@ -165,37 +165,39 @@
     </div>
 
     <div class="d-flex"> 
-        <img src="{{ area.image.url }}" class="card-img-top ms-auto me-auto ms-md-5 carta-home rounded imagen-detalle" alt="..." style="max-height: 200px; max-width: 300px;">
+        <img src="{{ herramienta.image.url }}" class="card-img-top ms-auto me-auto ms-md-5 carta-home rounded imagen-detalle" alt="..." style="max-height: 200px; max-width: 300px;">
     </div>
 
-    <h3 class="mt-4">Datos de ({{ area.nombre }})</h3>
+    <h3 class="mt-4">Datos de ({{ herramienta.nombre }})</h3>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th scope="col">Nombre</th>
-                <th scope="col">Tamaño</th>
+                <th scope="col">Número de serie</th>
                 <th scope="col">Encargado</th>
                 <th scope="col">Teléfono_encargado</th>
                 <th scope="col">Descripción</th>
+                <th scope="col">fecha de adquisición</th>
+                <th scope="col">Costo</th>
+                <th scope="col">Proveedor</th>
                 <th scope="col">Ubicación</th>
-                <th scope="col">Capacidad</th>
-                <th scope="col">Tipo de área</th>
-                <th scope="col">Estado de ocupación</th>
+                <th scope="col">Estado de la herramienta</th>
                 <th scope="col">Intervalo mantenimiento</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>{{ area.nombre }}</td>
-                <td>{{ area.tamaño }}</td>
-                <td>{{ area.encargado }}</td>
-                <td>{{ area.teléfono_encargado }}</td>
-                <td>{{ area.descripción }}</td>
-                <td>{{ area.ubicación }}</td>
-                <td>{{ area.capacidad }}</td>
-                <td>{{ area.tipo_de_área }}</td>
-                <td>{{ area.estado_de_ocupación }}</td>
-                <td>{{ area.intervalo_mantenimiento }}</td>
+                <td>{{ herramienta.nombre }}</td>
+                <td>{{ herramienta.número_de_serie }}</td>
+                <td>{{ herramienta.encargado }}</td>
+                <td>{{ herramienta.teléfono_encargado }}</td>
+                <td>{{ herramienta.descripción }}</td>
+                <td>{{ herramienta.fecha_de_adquisición }}</td>
+                <td>{{ herramienta.costo }}</td>
+                <td>{{ herramienta.proveedor }}</td>
+                <td>{{ herramienta.ubicación }}</td>
+                <td>{{ herramienta.estado_de_la_herramienta }}</td>
+                <td>{{ herramienta.intervalo_mantenimiento }}</td>
             </tr>
         </tbody>
     </table>
@@ -217,7 +219,7 @@
                     <td>{{ mantenimiento.hora }}</td>
                     <td>{{ mantenimiento.tipo }}</td>
                     <td>
-                        <a class="text-danger" href="{% url "eliminar_mantenimiento_area" id=mantenimiento.id %}">eliminar</a>
+                        <a class="text-danger" href="{% url "eliminar_mantenimiento_herramienta" id=mantenimiento.id %}">eliminar</a>
                     </td>
                 </tr>
             {% endfor %}

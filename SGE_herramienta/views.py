@@ -100,3 +100,99 @@ def crear_herramienta(request):
             }
             messages.danger(request, "Alguno de los datos introducidos no son válidos") 
             return render(request, 'SGE_herramienta/nueva.html', context)    
+
+@login_required
+def eliminar(request, id):
+    herramienta = get_object_or_404(Herramienta, id = id)
+    herramienta.delete()
+    return redirect ('herramienta') 
+
+@login_required
+def eliminar_mantenimiento(request, id):
+    mantenimiento = get_object_or_404(MantenimientoHerramienta, id=id)
+    mantenimiento.delete()
+    previous_url = request.META.get('HTTP_REFERER')
+    return HttpResponseRedirect(previous_url)    
+
+@login_required    
+def detalles(request, id):
+    if request.method == 'GET':
+        herramienta = get_object_or_404(Herramienta, id=id)
+        mantenimientos = herramienta.mantenimientoherramienta_set.all().order_by('-fecha', '-hora')
+        form = HerramientaForm(instance=herramienta)
+        form_mant = MantenimientoHerramientaForm()
+        tipos_mantenimiento = TipoMantenimientoHerramienta.objects.all()
+        context = {
+            'herramienta': herramienta,
+            'form': form,
+            'id': id,
+            'form_mant': form_mant,
+            'mantenimientos': mantenimientos,
+            'tipos_mantenimiento': tipos_mantenimiento,
+            }
+        return render(request, 'SGE_herramienta/detalles.html', context)
+    
+    if request.method == 'POST':
+        herramienta = get_object_or_404(Herramienta, id = id)
+        form_mant = MantenimientoHerramientaForm(request.POST)
+        form = HerramientaForm(instance= herramienta)
+        form = HerramientaForm(request.POST, request.FILES, instance= herramienta)
+
+        if form.is_valid():
+            intervalo_mantenimiento = form.cleaned_data.get('intervalo_mantenimiento')
+            if intervalo_mantenimiento < 0:
+                form_mant = MantenimientoHerramientaForm()
+                tipos_mantenimiento = TipoMantenimientoHerramienta.objects.all()
+                mantenimientos = herramienta.mantenimientoherramienta_set.all().order_by('-fecha', '-hora')
+                form.add_error('intervalo_mantenimiento', 'El intervalo de mantenimiento no puede ser un número negativo')
+                context = {
+                    'herramienta': herramienta,
+                    'form': form,
+                    'id': id,
+                    'form_mant': form_mant,
+                    'mantenimientos': mantenimientos,
+                    'tipos_mantenimiento': tipos_mantenimiento,
+                }
+                previous_url = request.META.get('HTTP_REFERER')
+                return HttpResponseRedirect(previous_url)
+            else:
+                form.save()
+                form_mant = MantenimientoHerramientaForm()
+                tipos_mantenimiento = TipoMantenimientoHerramienta.objects.all()
+                mantenimientos = herramienta.mantenimientoherramienta_set.all().order_by('-fecha', '-hora')
+                context = {
+                    'herramienta': herramienta,
+                    'form': form,
+                    'id': id,
+                    'form_mant': form_mant,
+                    'mantenimientos': mantenimientos,
+                    'tipos_mantenimiento': tipos_mantenimiento,
+                }
+                return render(request, 'SGE_herramienta/detalles.html', context) 
+        
+        if form_mant.is_valid():
+            mantenimiento = form_mant.save(commit=False)
+            mantenimiento.herramienta = herramienta
+            mantenimiento.save()
+            form = HerramientaForm(instance= herramienta)
+            tipos_mantenimiento = TipoMantenimientoHerramienta.objects.all()
+            mantenimientos = herramienta.mantenimientoherramienta_set.all().order_by('-fecha', '-hora')
+            context = {
+            'herramienta': herramienta,
+            'form': form,
+            'id': id,
+            'form_mant': form_mant,
+            'mantenimientos': mantenimientos,
+            'tipos_mantenimiento': tipos_mantenimiento,
+            }
+            return render(request, 'SGE_herramienta/detalles.html', context)  
+        else:
+            context = {
+            'herramienta': herramienta,
+            'form': form,
+            'id': id,
+            'form_mant': form_mant,
+            'mantenimientos': mantenimientos,
+            'tipos_mantenimiento': tipos_mantenimiento,
+            }
+            return render(request, 'SGE_herramienta/detalles.html', context)             

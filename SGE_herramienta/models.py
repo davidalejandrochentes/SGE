@@ -9,14 +9,14 @@ import os
 class Herramienta(models.Model):
     nombre = models.CharField(max_length=100, null=False, blank=False)
     número_de_serie = models.CharField(max_length=100, null=False, blank=False)
-    encargado = models.CharField(max_length=100, blank=True, null=True)
-    teléfono_encargado = models.CharField(max_length=100, blank=True, null=True)
-    descripción = models.TextField(max_length=500, null=True, blank=True)
-    fecha_de_adquisición = models.DateField(default=date.today, blank=True, null=True)
-    costo = models.IntegerField(blank=True, null=True)
-    proveedor = models.CharField(max_length=100, null=True, blank=True)
-    ubicación = models.CharField(max_length=100, null=True, blank=True)
-    estado_de_la_herramienta = models.CharField(max_length=100, null=True, blank=True)
+    encargado = models.CharField(max_length=100, blank=False, null=False)
+    teléfono_encargado = models.CharField(max_length=100, blank=False, null=False)
+    descripción = models.TextField(max_length=500, null=False, blank=False)
+    fecha_de_adquisición = models.DateField(default=date.today, blank=False, null=False)
+    costo = models.IntegerField(blank=False, null=False)
+    proveedor = models.CharField(max_length=100, null=False, blank=False)
+    ubicación = models.CharField(max_length=100, null=False, blank=False)
+    estado_de_la_herramienta = models.CharField(max_length=100, null=False, blank=False)
     fecha_ultimo_mantenimiento = models.DateField(default=date.today, blank=False, null=False)
     intervalo_mantenimiento = models.IntegerField(blank=False, null=False)
     image = models.ImageField(upload_to="herramienta/image", null=False, blank=False)
@@ -49,7 +49,7 @@ class MantenimientoHerramienta(models.Model):
 @receiver(post_save, sender=MantenimientoHerramienta)
 def actualizar_fecha_ultimo_mantenimiento(sender, instance, **kwargs):
     herramienta = instance.herramienta
-    if instance.fecha > area.fecha_ultimo_mantenimiento:
+    if instance.fecha > herramienta.fecha_ultimo_mantenimiento:
         herramienta.fecha_ultimo_mantenimiento = instance.fecha
         herramienta.save()   
 
