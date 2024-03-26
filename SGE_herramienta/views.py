@@ -12,10 +12,6 @@ from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 
 # Create your views here.
-def herramienta(request):
-    return HttpResponse("todo funciona")
-
-# Create your views here.
 @login_required
 def herramienta(request):
     alert = Herramienta.objects.all()
@@ -39,3 +35,23 @@ def herramienta(request):
         'total_alertas': total_alertas,
     }
     return render(request, 'SGE_herramienta/herramienta.html', context)    
+
+@login_required
+def alertas(request):
+    alert = Herramienta.objects.filter(nombre__icontains=request.GET.get('search', ''))
+    alertas = []
+    for herramienta in alert:
+        dias_restantes = herramienta.dias_restantes_mantenimiento()
+        if dias_restantes <= 7:
+            
+            alertas.append({
+                'herramienta': herramienta,
+                'dias_restantes': dias_restantes
+            })
+    alertas_ordenadas = sorted(alertas, key=lambda x: x['dias_restantes'])
+    total_alertas = len(alertas_ordenadas)
+    context = {
+        'alertas': alertas_ordenadas,
+        'total_alertas': total_alertas,
+    }
+    return render(request, 'SGE_herramienta/alertas.html', context)    
