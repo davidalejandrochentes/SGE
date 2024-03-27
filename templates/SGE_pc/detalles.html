@@ -147,7 +147,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        Esta seguro de <b>eliminar</b> el PC <b>"{{ pc.nombre }}"</b>
+                                        Esta seguro de <b>eliminar</b> el equipo <b>"{{ pc.nombre }}"</b>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -172,28 +172,34 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Nombre</th>
-                                    <th scope="col">Tamaño</th>
+                                    <th scope="col">Modelo</th>
+                                    <th scope="col">Número de inventario</th>
                                     <th scope="col">Encargado</th>
-                                    <th scope="col">Teléfono_encargado</th>
+                                    <th scope="col">Teléfono encargado</th>
                                     <th scope="col">Descripción</th>
                                     <th scope="col">Ubicación</th>
-                                    <th scope="col">Capacidad</th>
-                                    <th scope="col">Tipo de área</th>
-                                    <th scope="col">Estado de ocupación</th>
+                                    <th scope="col">Costo de adquisición</th>
+                                    <th scope="col">Fecha de adquisición</th>
+                                    <th scope="col">Estado</th>
+                                    <th scope="col">Garantía</th>
+                                    <th scope="col">Software instalado</th>
                                     <th scope="col">Intervalo mantenimiento</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>{{ pc.nombre }}</td>
-                                    <td>{{ pc.tamaño }}</td>
+                                    <td>{{ pc.modelo }}</td>
                                     <td>{{ pc.encargado }}</td>
                                     <td>{{ pc.teléfono_encargado }}</td>
                                     <td>{{ pc.descripción }}</td>
                                     <td>{{ pc.ubicación }}</td>
-                                    <td>{{ pc.capacidad }}</td>
-                                    <td>{{ pc.tipo_de_área }}</td>
-                                    <td>{{ pc.estado_de_ocupación }}</td>
+                                    <td>{{ pc.costo_de_adquisición }}</td>
+                                    <td>{{ pc.fecha_de_adquisición }}</td>
+                                    <td>{{ pc.fecha_de_retirada }}</td>
+                                    <td>{{ pc.estado }}</td>
+                                    <td>{{ pc.garantía }}</td>
+                                    <td>{{ pc.software_instalado }}</td>
                                     <td>{{ pc.intervalo_mantenimiento }}</td>
                                 </tr>
                             </tbody>

@@ -10,7 +10,7 @@ class PCForm(forms.ModelForm):
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre del PC'}),
             'modelo': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: DEll, HP, Azuz'}),
-            'numero_de_inventario': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: B145C394'}),
+            'número_de_inventario': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: B145C394'}),
             'encargado': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: David A. Chentes'}),
             'teléfono_encargado': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: +53589874'}),
             'descripción': Textarea(attrs={'class': 'form-control', 'placeholder': 'Observaciones'}),
