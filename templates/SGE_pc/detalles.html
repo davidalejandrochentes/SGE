@@ -1,0 +1,229 @@
+{% extends "layout/base.html" %}
+
+{% block 'title'%} Detalles PC {% endblock %}
+
+{% block 'search' %}
+<form class="d-flex form-inline mr-auto ml-md-3 my-2 my-md-0 ms-3 me-3 mw-100 navbar-search" role="search" action="" method='GET'>
+    <div class="input-group">
+        <input class="form-control bg-light border-0 small" id="search-input" name="search" type="search" placeholder="Search" aria-label="Search">
+        <div class="input-group-append">
+            <button class="btn barra text-light" type="submit">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+    </div>
+</form>
+{% endblock 'search' %}
+
+{% block 'content' %}
+<div class="container mb-5">
+    <div class="d-flex p-2 justify-content-between">
+        <a class="text-decoration-none text-dark flecha-atras" href="{% url "pc" %}">
+            <i class="bi bi-arrow-left fs-1"></i>
+        </a>
+        <span class="p-3">
+
+            <button type="button" class="btn btn-success descargar" data-bs-toggle="modal" data-bs-target="#modal-descargar">
+                Descargar <i class="bi bi-box-arrow-down "></i>
+            </button>
+            <div class="modal fade" id="modal-descargar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Descargar </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="" action="{% url 'generar_documento_mantenimientos_pc' id=pc.id %}" method="get">
+                            <label class="" for="mes">Mes:</label>
+                            <select class="form-select form-select-sm" name="mes" id="mes">
+                                <option value="">Todos los meses</option>
+                                <option value="1">Enero</option>
+                                <option value="2">Febrero</option>
+                                <option value="3">Marzo</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Mayo</option>
+                                <option value="6">Junio</option>
+                                <option value="7">Julio</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Septiembre</option>
+                                <option value="10">Octubre</option>
+                                <option value="11">Noviembre</option>
+                                <option value="12">Diciembre</option>
+                            </select>
+                            <label class="" for="anio">Año:</label>
+                            <select class="form-select form-select-sm" name="anio" id="anio">
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                                <option value="2027">2027</option>
+                                <option value="2028">2028</option>
+                                <option value="2029">2029</option>
+                                <option value="2030">2030</option>
+                            </select>
+                            <label class="" for="tipo_mantenimiento">Tipo de Mantenimiento:</label>
+                            <select class="form-select form-select-sm" name="tipo_mantenimiento" id="tipo_mantenimiento">
+                                <option value="">Todos los tipos de mantenimiento</option>
+                                {% for tipo_mantenimiento in tipos_mantenimiento %}
+                                    <option value="{{ tipo_mantenimiento.id }}">{{ tipo_mantenimiento.tipo }}</option>
+                                {% endfor %}
+                            </select>
+                            
+                            <div class="d-grid gap-2 mt-3">
+                                <button type="submit" value="Submit" class="btn btn-success">Descargar <i class="bi bi-box-arrow-down"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-warning mantenimineto" data-bs-toggle="modal" data-bs-target="#modal-mantenimiento">
+                Mantenimiento <i class="bi bi-tools"></i>
+            </button>
+            <div class="modal fade" id="modal-mantenimiento" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Mantenimiento</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form_mant }}
+                            <div class="d-grid gap-2 mt-3">
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                            </div>
+                        </form> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <button type="button" class="btn btn-primary editar" data-bs-toggle="modal" data-bs-target="#modal-editar">
+                Editar <i class="bi bi-pencil-square"></i>
+            </button>
+            <div class="modal fade modal-lg" id="modal-editar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Editar <b>{{ pc.nombre }}</b></h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="p-5 rounded-3 bg-body-tertiary sombra-login" action="{% url "detalles_pc" id=pc.id %}" method='POST' enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <table>
+                                    {{ form }}
+                                </table>
+                                <div class="d-grid gap-2 mt-3">
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        
+                        <button type="button" class="btn btn-danger eliminar mt-md-0 mt-2" data-bs-toggle="modal" data-bs-target="#modal-eliminar">
+                            Eliminar <i class="bi bi-trash"></i>
+                        </button>
+                        <div class="modal fade" id="modal-eliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Atención</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Esta seguro de <b>eliminar</b> el PC <b>"{{ pc.nombre }}"</b>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <form method="post" action="{% url "eliminar_pc" id=pc.id %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="pc_id" value="{{ pc.id }}">
+                                            <button class="btn btn-danger" type="submit">Estoy seguro</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </span>
+                        </div>
+                        
+                        <div class="d-flex"> 
+                            <img src="{{ pc.image.url }}" class="card-img-top ms-auto me-auto ms-md-5 carta-home rounded imagen-detalle" alt="..." style="max-height: 200px; max-width: 300px;">
+                        </div>
+                        
+                        <h3 class="mt-4">Datos de ({{ pc.nombre }})</h3>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Tamaño</th>
+                                    <th scope="col">Encargado</th>
+                                    <th scope="col">Teléfono_encargado</th>
+                                    <th scope="col">Descripción</th>
+                                    <th scope="col">Ubicación</th>
+                                    <th scope="col">Capacidad</th>
+                                    <th scope="col">Tipo de área</th>
+                                    <th scope="col">Estado de ocupación</th>
+                                    <th scope="col">Intervalo mantenimiento</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ pc.nombre }}</td>
+                                    <td>{{ pc.tamaño }}</td>
+                                    <td>{{ pc.encargado }}</td>
+                                    <td>{{ pc.teléfono_encargado }}</td>
+                                    <td>{{ pc.descripción }}</td>
+                                    <td>{{ pc.ubicación }}</td>
+                                    <td>{{ pc.capacidad }}</td>
+                                    <td>{{ pc.tipo_de_área }}</td>
+                                    <td>{{ pc.estado_de_ocupación }}</td>
+                                    <td>{{ pc.intervalo_mantenimiento }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <h3>Mantenimientos realizados</h3>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Hora</th>
+                                    <th>Tipo</th>
+                                    <th><th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for mantenimiento in mantenimientos %}
+                                    <tr>
+                                        <td>{{ mantenimiento.fecha }}</td>
+                                        <td>{{ mantenimiento.hora }}</td>
+                                        <td>{{ mantenimiento.tipo }}</td>
+                                        <td>
+                                            <a class="text-danger" href="{% url "eliminar_mantenimiento_pc" id=mantenimiento.id %}">eliminar</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        
+                        </div>
+                        
+                        {% endblock %}
+                        
