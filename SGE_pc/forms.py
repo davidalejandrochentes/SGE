@@ -9,14 +9,18 @@ class PCForm(forms.ModelForm):
         exclude = ['fecha_ultimo_mantenimiento']
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre del PC'}),
-            'tamaño': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: "4x4", "5x9"'}),
-            'encargado': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'David A. Chentes'}),
-            'teléfono_encargado': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: "+53589874"'}),
+            'modelo': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: DEll, HP, Azuz'}),
+            'numero_de_inventario': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: B145C394'}),
+            'encargado': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: David A. Chentes'}),
+            'teléfono_encargado': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: +53589874'}),
             'descripción': Textarea(attrs={'class': 'form-control', 'placeholder': 'Observaciones'}),
-            'ubicación': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: primer piso'}),
-            'capacidad': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: "4 personas", "3 Carros"...'}),
-            'tipo_de_área': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: "Oficina", "Comedor"...'}),
-            'estado_de_ocupación': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: "ocupada", "En reparación"'}),
+            'ubicación': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: oficina de ...'}),
+            'costo_de_adquisición': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': '$'}),
+            'fecha_de_adquisición': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha'}),
+            'fecha_de_retirada': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha'}),
+            'estado': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: bueno, malo, regular'}),
+            'garantía': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: si, no'}),
+            'software_instalado': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: windows, linux, mac'}),
             'intervalo_mantenimiento': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Número determinado de "Días"'}),
             
         }

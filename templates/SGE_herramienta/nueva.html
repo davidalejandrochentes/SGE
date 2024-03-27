@@ -32,16 +32,15 @@
     <h2 class="text-center">Nueva herramienta</h2>
     <div class="d-flex justify-content-center align-items-center">
 
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <div {% if message.tags %} class="alert alert-primary alerta" role="alert"{% endif %}>{{ message }}</div>
-            {% endfor %}
-        </ul>
-        {% endif %}
-
         <form class="p-5 rounded-3 bg-body-tertiary sombra-login" action="{% url "herramienta_nueva" %}" method='POST' enctype="multipart/form-data">
             {% csrf_token %}
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <div {% if message.tags %} class="alert alert-primary alerta" role="alert"{% endif %}>{{ message }}</div>
+                    {% endfor %}
+                </ul>
+            {% endif %}
             <table>
                 {{ form }}
             </table>

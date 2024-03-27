@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import PC, MantenimientoPC, TipoMantenimientoPC
-#from .forms import AreaForm, MantenimientoAreaForm
+from .forms import PCForm, MantenimientoPCForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
@@ -96,7 +96,7 @@ def crear_pc(request):
             context = {
                 'form': form
             }
-            messages.danger(request, "Alguno de los datos introducidos no son válidos") 
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo") 
             return render(request, 'SGE_pc/nueva.html', context)
 
 @login_required

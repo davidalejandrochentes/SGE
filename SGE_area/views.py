@@ -97,7 +97,7 @@ def crear_area(request):
             context = {
                 'form': form
             }
-            messages.danger(request, "Alguno de los datos introducidos no son válidos") 
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo") 
             return render(request, 'SGE_area/nueva.html', context)
 
 
