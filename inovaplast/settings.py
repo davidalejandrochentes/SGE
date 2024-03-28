@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'SGE_area',
     'SGE_pc',
     'SGE_herramienta',
+    'SGE_maquina',
 ]
 
 MIDDLEWARE = [

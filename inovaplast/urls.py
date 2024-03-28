@@ -8,7 +8,8 @@ urlpatterns = [
     path('', include('SGE.urls')),
     path('area/', include('SGE_area.urls')),
     path('pc/', include('SGE_pc.urls')),
-    path('herramienta/', include('SGE_herramienta.urls'))
+    path('herramienta/', include('SGE_herramienta.urls')),
+    path('maquina/', include('SGE_maquina.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
