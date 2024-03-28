@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Maquina, MantenimientoMaquina, TipoMantenimientoMaquina
-#from .forms import AreaForm, MantenimientoAreaForm
+from .forms import MaquinaForm, MantenimientoMaquinaForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError

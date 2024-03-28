@@ -1,6 +1,6 @@
 {% extends "layout/base.html" %}
 
-{% block 'title'%} Detalles Area {% endblock %}
+{% block 'title'%} Detalles Maquina {% endblock %}
 
 {% block 'search' %}
 <form class="d-flex form-inline mr-auto ml-md-3 my-2 my-md-0 ms-3 me-3 mw-100 navbar-search" role="search" action="" method='GET'>
@@ -18,7 +18,7 @@
 {% block 'content' %}
 <div class="container mb-5">
     <div class="d-flex p-2 justify-content-between">
-        <a class="text-decoration-none text-dark flecha-atras" href="{% url "area" %}">
+        <a class="text-decoration-none text-dark flecha-atras" href="{% url "maquina" %}">
             <i class="bi bi-arrow-left fs-1"></i>
         </a>
         <span class="p-3">
@@ -34,7 +34,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="" action="{% url 'generar_documento_mantenimientos_area' id=area.id %}" method="get">
+                        <form class="" action="{% url 'generar_documento_mantenimientos_maquina' id=maquina.id %}" method="get">
                             <label class="" for="mes">Mes:</label>
                             <select class="form-select form-select-sm" name="mes" id="mes">
                                 <option value="">Todos los meses</option>
@@ -81,7 +81,7 @@
                 </div>
             </div>
 
-            <button type="button" class="btn btn-warning mantenimineto" data-bs-toggle="modal" data-bs-target="#modal-mantenimiento">
+            <button type="button" class="btn btn-warning mantenimiento" data-bs-toggle="modal" data-bs-target="#modal-mantenimiento">
                 Mantenimiento <i class="bi bi-tools"></i>
             </button>
             <div class="modal fade" id="modal-mantenimiento" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -94,7 +94,7 @@
                     <div class="modal-body">
                         <form method="post">
                             {% csrf_token %}
-                            {{ form_mant }}
+                            {{ form_mantenimiento }}
                             <div class="d-grid gap-2 mt-3">
                                 <button type="submit" class="btn btn-primary">Guardar</button>
                             </div>
@@ -115,11 +115,11 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Editar <b>{{ area.nombre }}</b></h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Editar <b>{{ maquina.nombre }}</b></h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form class="p-5 rounded-3 bg-body-tertiary sombra-login" action="{% url "detalles_area" id=area.id %}" method='POST' enctype="multipart/form-data">
+                            <form class="p-5 rounded-3 bg-body-tertiary sombra-login" action="{% url "detalles_maquina" id=maquina.id %}" method='POST' enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <table>
                                     {{ form }}
@@ -147,13 +147,13 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Esta seguro de <b>eliminar</b> el area <b>"{{ area.nombre }}"</b>
+                        Esta seguro de <b>eliminar</b> la maquina <b>"{{ maquina.nombre }}"</b>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <form method="post" action="{% url "eliminar_area" id=area.id %}">
+                        <form method="post" action="{% url "eliminar_maquina" id=maquina.id %}">
                             {% csrf_token %}
-                            <input type="hidden" name="area_id" value="{{ area.id }}">
+                            <input type="hidden" name="maquina_id" value="{{ maquina.id }}">
                             <button class="btn btn-danger" type="submit">Estoy seguro</button>
                         </form>
                     </div>
@@ -164,10 +164,10 @@
     </div>
 
     <div class="d-flex"> 
-        <img src="{{ area.image.url }}" class="card-img-top ms-auto me-auto ms-md-5 carta-home rounded imagen-detalle" alt="..." style="max-height: 200px; max-width: 300px;">
+        <img src="{{ maquina.image.url }}" class="card-img-top ms-auto me-auto ms-md-5 carta-home rounded imagen-detalle" alt="..." style="max-height: 200px; max-width: 300px;">
     </div>
 
-    <h3 class="mt-4">Datos de ({{ area.nombre }})</h3>
+    <h3 class="mt-4">Datos de ({{ maquina.nombre }})</h3>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -178,23 +178,23 @@
                 <th scope="col">Descripción</th>
                 <th scope="col">Ubicación</th>
                 <th scope="col">Capacidad</th>
-                <th scope="col">Tipo de área</th>
+                <th scope="col">Tipo de máquina</th>
                 <th scope="col">Estado de ocupación</th>
                 <th scope="col">Intervalo mantenimiento</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>{{ area.nombre }}</td>
-                <td>{{ area.tamaño }}</td>
-                <td>{{ area.encargado }}</td>
-                <td>{{ area.teléfono_encargado }}</td>
-                <td>{{ area.descripción }}</td>
-                <td>{{ area.ubicación }}</td>
-                <td>{{ area.capacidad }}</td>
-                <td>{{ area.tipo_de_área }}</td>
-                <td>{{ area.estado_de_ocupación }}</td>
-                <td>{{ area.intervalo_mantenimiento }}</td>
+                <td>{{ maquina.nombre }}</td>
+                <td>{{ maquina.tamaño }}</td>
+                <td>{{ maquina.encargado }}</td>
+                <td>{{ maquina.teléfono_encargado }}</td>
+                <td>{{ maquina.descripción }}</td>
+                <td>{{ maquina.ubicación }}</td>
+                <td>{{ maquina.capacidad }}</td>
+                <td>{{ maquina.tipo_de_máquina }}</td>
+                <td>{{ maquina.estado_de_ocupación }}</td>
+                <td>{{ maquina.intervalo_mantenimiento }}</td>
             </tr>
         </tbody>
     </table>
@@ -216,7 +216,7 @@
                     <td>{{ mantenimiento.hora }}</td>
                     <td>{{ mantenimiento.tipo }}</td>
                     <td>
-                        <a class="text-danger" href="{% url "eliminar_mantenimiento_area" id=mantenimiento.id %}">eliminar</a>
+                        <a class="text-danger" href="{% url "eliminar_mantenimiento_maquina" id=mantenimiento.id %}">eliminar</a>
                     </td>
                 </tr>
             {% endfor %}

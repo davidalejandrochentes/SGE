@@ -1,6 +1,6 @@
 {% extends "layout/base.html" %}
 
-{% block 'title'%} Tablas de mantenimineto {% endblock %}
+{% block 'title'%} Tablas de mantenimiento {% endblock %}
 
 {% block 'search' %}
 <form class="d-flex form-inline mr-auto ml-md-3 my-2 my-md-0 ms-3 me-3 mw-100 navbar-search" role="search" action="" method='GET'>
@@ -19,11 +19,11 @@
 
 <div class="container">
     <div class="d-flex p-2 justify-content-between">
-        <a class="text-decoration-none text-dark" href="{% url "area" %}">
+        <a class="text-decoration-none text-dark" href="{% url "maquina" %}">
             <i class="bi bi-arrow-left fs-1"></i>
         </a>
         
-        <form class="d-flex mt-auto mb-auto" action="{% url 'generar_documento_mantenimientos_general_area' %}" method="get" style="max-height: 50px; min-width: 600px;">
+        <form class="d-flex mt-auto mb-auto" action="{% url 'generar_documento_mantenimientos_general_maquina' %}" method="get" style="max-height: 50px; min-width: 600px;">
           <label class="mt-auto mb-auto m-1" for="tipo_mantenimiento">Tipo:</label>
             <select class="form-select form-select-sm m-1" name="tipo_mantenimiento" id="tipo_mantenimiento">
                 <option value="">Todos los tipos de mantenimiento</option>
@@ -63,15 +63,15 @@
 
     <table class="table mt-4">
       <tr>
-        <th>Areas</th>
+        <th>Maquinas</th>
         <th>Datos de Mantenimiento</th>
       </tr>
-      {% for area in areas %}
+      {% for maquina in maquinas %}
       <tr>
-        <td>{{ area.nombre }}</td>
+        <td>{{ maquina.nombre }}</td>
         <td>
           <ul class="list-group list-group-flush">
-            {% for mantenimiento in area.mantenimientos %}
+            {% for mantenimiento in maquina.mantenimientos %}
             <li class="list-group-item">* {{ mantenimiento.fecha }} - {{ mantenimiento.hora }} - {{ mantenimiento.tipo }} *</li>
             {% endfor %}
           </ul>

@@ -1,9 +1,9 @@
 {% extends "layout/base.html" %}
 
-{% block 'title'%} Alertas de Area {% endblock %}
+{% block 'title'%} Alertas de Maquina {% endblock %}
 
 {% block 'search' %}
-<form class="d-flex form-inline mr-auto ml-md-3 my-2 my-md-0 ms-3 me-3 mw-100 navbar-search" role="search" action="{% url "area_alertas" %}" method='GET'>
+<form class="d-flex form-inline mr-auto ml-md-3 my-2 my-md-0 ms-3 me-3 mw-100 navbar-search" role="search" action="{% url "maquina_alertas" %}" method='GET'>
     <div class="input-group">
         <input class="form-control bg-light border-0 small" id="search-input" name="search" type="search" placeholder="Search" aria-label="Search">
         <div class="input-group-append">
@@ -19,7 +19,7 @@
 
 <div class="container">
     <div class="d-flex p-2 justify-content-between">
-        <a class="text-decoration-none text-dark" href="{% url "area" %}">
+        <a class="text-decoration-none text-dark" href="{% url "maquina" %}">
             <i class="bi bi-arrow-left fs-1"></i>
         </a>
     </div>
@@ -28,12 +28,12 @@
     <div class="row mt-3 d-flex justify-content-center align-item-center ps-5 pe-5">
         {% for alerta in alertas %}
         <div class="col-12 col-md-4 p-0 card text-bg-danger carta-home m-3">
-            <a class="text-decoration-none text-light" href="{% url "detalles_area" id=alerta.area.id %}">
-                <img src="{{ alerta.area.image.url }}" class="card-img-top" alt="..." style="max-height: 200px;">
+            <a class="text-decoration-none text-light" href="{% url "detalles_maquina" id=alerta.maquina.id %}">
+                <img src="{{ alerta.maquina.image.url }}" class="card-img-top" alt="..." style="max-height: 200px;">
                 <div class="card-body">
-                    <h5 class="card-title">{{ alerta.area.nombre }}</h5>
-                    <p class="card-text m-0"><b>Ultimo mantenimiento:</b> {{ alerta.area.fecha_ultimo_mantenimiento }}</p>
-                    <p class="card-text m-0 fs-5"><b>Dias restantes para el mantenimineto:</b> {{ alerta.dias_restantes }}</p>
+                    <h5 class="card-title">{{ alerta.maquina.nombre }}</h5>
+                    <p class="card-text m-0"><b>Ultimo mantenimiento:</b> {{ alerta.maquina.fecha_ultimo_mantenimiento }}</p>
+                    <p class="card-text m-0 fs-5"><b>Dias restantes para el mantenimiento:</b> {{ alerta.dias_restantes }}</p>
                 </div>
             </a>
         </div>
