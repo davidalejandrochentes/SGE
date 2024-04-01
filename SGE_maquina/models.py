@@ -8,17 +8,22 @@ import os
     
 class Maquina(models.Model):
     nombre = models.CharField(max_length=100, null=False, blank=False)
-    tamaño = models.CharField(max_length=100, blank=False, null=False)
     encargado = models.CharField(max_length=100, blank=False, null=False)
     teléfono_encargado = models.CharField(max_length=100, blank=False, null=False)
     descripción = models.TextField(max_length=500, null=False, blank=False)
     ubicación = models.CharField(max_length=100, null=False, blank=False)
-    capacidad = models.CharField(max_length=100, null=False, blank=False)
-    tipo_de_área = models.CharField(max_length=100, null=False, blank=False)
-    estado_de_ocupación = models.CharField(max_length=100, null=False, blank=False)
+    tipo_de_máquina = models.CharField(max_length=100, null=False, blank=False)
+    número_de_serie_o_modelo = models.CharField(max_length=100, null=False, blank=False)
+    proveedor = models.CharField(max_length=100, null=False, blank=False)
+    costo_de_adquisición = models.IntegerField(blank=False, null=False)
+    fecha_de_adquisición = models.DateField(default=date.today, blank=False, null=False)
+    fecha_de_instalación = models.DateField(default=date.today, blank=False, null=False)
+    estado_de_garantía = models.CharField(max_length=100, null=False, blank=False)
+    consumo_de_energía = models.CharField(max_length=100, null=False, blank=False)
+
     fecha_ultimo_mantenimiento = models.DateField(default=date.today, blank=False, null=False)
     intervalo_mantenimiento = models.IntegerField(blank=False, null=False)
-    image = models.ImageField(upload_to="area/image", null=False, blank=False)
+    image = models.ImageField(upload_to="maquina/image", null=False, blank=False)
 
     def dias_restantes_mantenimiento(self):
         dias_pasados = (date.today() - self.fecha_ultimo_mantenimiento).days

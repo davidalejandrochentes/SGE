@@ -176,11 +176,6 @@
                 <th scope="col">Encargado</th>
                 <th scope="col">Teléfono_encargado</th>
                 <th scope="col">Descripción</th>
-                <th scope="col">Ubicación</th>
-                <th scope="col">Capacidad</th>
-                <th scope="col">Tipo de área</th>
-                <th scope="col">Estado de ocupación</th>
-                <th scope="col">Intervalo mantenimiento</th>
             </tr>
         </thead>
         <tbody>
@@ -190,6 +185,22 @@
                 <td>{{ area.encargado }}</td>
                 <td>{{ area.teléfono_encargado }}</td>
                 <td>{{ area.descripción }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Ubicación</th>
+                <th scope="col">Capacidad</th>
+                <th scope="col">Tipo de área</th>
+                <th scope="col">Estado de ocupación</th>
+                <th scope="col">Intervalo mantenimiento</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
                 <td>{{ area.ubicación }}</td>
                 <td>{{ area.capacidad }}</td>
                 <td>{{ area.tipo_de_área }}</td>

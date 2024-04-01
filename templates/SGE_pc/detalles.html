@@ -178,8 +178,27 @@
                                     <th scope="col">Teléfono encargado</th>
                                     <th scope="col">Descripción</th>
                                     <th scope="col">Ubicación</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ pc.nombre }}</td>
+                                    <td>{{ pc.modelo }}</td>
+                                    <td>{{ pc.número_de_inventario }}</td>
+                                    <td>{{ pc.encargado }}</td>
+                                    <td>{{ pc.teléfono_encargado }}</td>
+                                    <td>{{ pc.descripción }}</td>
+                                    <td>{{ pc.ubicación }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
                                     <th scope="col">Costo de adquisición</th>
                                     <th scope="col">Fecha de adquisición</th>
+                                    <th scope="col">Fecha de retirada</th>
                                     <th scope="col">Estado</th>
                                     <th scope="col">Garantía</th>
                                     <th scope="col">Software instalado</th>
@@ -188,12 +207,6 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>{{ pc.nombre }}</td>
-                                    <td>{{ pc.modelo }}</td>
-                                    <td>{{ pc.encargado }}</td>
-                                    <td>{{ pc.teléfono_encargado }}</td>
-                                    <td>{{ pc.descripción }}</td>
-                                    <td>{{ pc.ubicación }}</td>
                                     <td>{{ pc.costo_de_adquisición }}</td>
                                     <td>{{ pc.fecha_de_adquisición }}</td>
                                     <td>{{ pc.fecha_de_retirada }}</td>

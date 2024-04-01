@@ -177,11 +177,6 @@
                 <th scope="col">Teléfono_encargado</th>
                 <th scope="col">Descripción</th>
                 <th scope="col">fecha de adquisición</th>
-                <th scope="col">Costo</th>
-                <th scope="col">Proveedor</th>
-                <th scope="col">Ubicación</th>
-                <th scope="col">Estado de la herramienta</th>
-                <th scope="col">Intervalo mantenimiento</th>
             </tr>
         </thead>
         <tbody>
@@ -192,6 +187,22 @@
                 <td>{{ herramienta.teléfono_encargado }}</td>
                 <td>{{ herramienta.descripción }}</td>
                 <td>{{ herramienta.fecha_de_adquisición }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Costo</th>
+                <th scope="col">Proveedor</th>
+                <th scope="col">Ubicación</th>
+                <th scope="col">Estado de la herramienta</th>
+                <th scope="col">Intervalo mantenimiento</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
                 <td>{{ herramienta.costo }}</td>
                 <td>{{ herramienta.proveedor }}</td>
                 <td>{{ herramienta.ubicación }}</td>
