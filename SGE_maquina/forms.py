@@ -21,7 +21,7 @@ class MaquinaForm(forms.ModelForm):
             'fecha_de_instalación': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha'}),
             'estado_de_garantía': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: si, no'}),
             'consumo_de_energía': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: 200KW'}),
-            'intervalo_mantenimiento': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Intervalo de mantenimiento'}),
+            'intervalo_mantenimiento': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Número determinado de Días'}),
         }
 
 class MantenimientoMaquinaForm(forms.ModelForm):

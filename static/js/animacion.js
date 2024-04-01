@@ -35,10 +35,8 @@ sr.reveal('.cabecera', {
     distance: '-100px',
 });
 
-sr.reveal('.imagen-detalle', {
-    duration: 3000,
-    origin: 'butoon',
-    distance: '-100px',
+sr.reveal('.imagen', {
+    duration: 500,
 });
 
 sr.reveal('.descargar', {

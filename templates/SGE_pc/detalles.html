@@ -23,6 +23,23 @@
         </a>
         <span class="p-3">
 
+            <button type="button" class="btn btn-secondary imagen" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Ver Imagen
+            </button>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Imagen</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <img src="{{ pc.image.url }}" class="img-fluid" alt="Imagen">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <button type="button" class="btn btn-success descargar" data-bs-toggle="modal" data-bs-target="#modal-descargar">
                 Descargar <i class="bi bi-box-arrow-down "></i>
             </button>
@@ -161,10 +178,6 @@
                             </div>
                         </div>
                         </span>
-                        </div>
-                        
-                        <div class="d-flex"> 
-                            <img src="{{ pc.image.url }}" class="card-img-top ms-auto me-auto ms-md-5 carta-home rounded imagen-detalle" alt="..." style="max-height: 200px; max-width: 300px;">
                         </div>
                         
                         <h3 class="mt-4">Datos de ({{ pc.nombre }})</h3>
