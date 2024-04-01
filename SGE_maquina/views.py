@@ -504,19 +504,19 @@ def detallesComp(request, id):
             return render(request, 'SGE_maquina/componente/detalles.html', context)
 
 @login_required
-def generar_documento_mantenimientos_por_mesComp(request):
+def generar_documento_mantenimientos_por_mes_componente(request):
     mes = request.GET.get('mes')
     anio = request.GET.get('anio')
-    tipo_componente_id = request.GET.get('tipo_componente')
+    tipo_mantenimiento_id = request.GET.get('tipo_mantenimiento')
 
     mantenimientos = MantenimientoComponente.objects.filter(fecha__year=anio)
 
     if mes:
         mantenimientos = mantenimientos.filter(fecha__month=mes)
 
-    if tipo_componente_id:  # Si se seleccionó un tipo de componente
-        tipo_componente = get_object_or_404(TipoComponente, pk=tipo_componente_id)
-        mantenimientos = mantenimientos.filter(tipo=tipo_componente)
+    if tipo_mantenimiento_id:  # Si se seleccionó un tipo de mantenimiento
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoComponente, pk=tipo_mantenimiento_id)
+        mantenimientos = mantenimientos.filter(tipo=tipo_mantenimiento)
 
     mantenimientos = mantenimientos.order_by('-fecha', '-hora')
 
@@ -563,7 +563,7 @@ def generar_documento_mantenimientos_por_mesComp(request):
 def generar_documento_mantenimientos_componente(request, id):
     mes = request.GET.get('mes')
     anio = request.GET.get('anio')
-    tipo_componente_id = request.GET.get('tipo_componente')
+    tipo_mantenimiento_id = request.GET.get('tipo_mantenimiento')
 
     componente = get_object_or_404(Componente, pk=id)
     
@@ -573,9 +573,9 @@ def generar_documento_mantenimientos_componente(request, id):
         mantenimientos = mantenimientos.filter(fecha__month=mes)
     if anio:
         mantenimientos = mantenimientos.filter(fecha__year=anio)
-    if tipo_componente_id:  # Si se seleccionó un tipo de componente
-        tipo_componente = get_object_or_404(TipoComponente, pk=tipo_componente_id)
-        mantenimientos = mantenimientos.filter(tipo=tipo_componente)
+    if tipo_mantenimiento_id:  # Si se seleccionó un tipo de mantenimiento
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoComponente, pk=tipo_mantenimiento_id)
+        mantenimientos = mantenimientos.filter(tipo=tipo_mantenimiento)
 
     response = HttpResponse(content_type='application/pdf')
     if mes:

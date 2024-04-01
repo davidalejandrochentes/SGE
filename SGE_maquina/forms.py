@@ -36,10 +36,15 @@ class MantenimientoMaquinaForm(forms.ModelForm):
 
 
 class ComponenteForm(forms.ModelForm):    
+    
+
     class Meta:
         model = Componente
         fields = '__all__' 
         exclude = ['fecha_ultimo_mantenimiento']
+        labels = {
+            'maquina': 'Máquina',  # Aquí especificamos la etiqueta con tilde
+        }
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre del componente'}),
             'maquina': forms.Select(attrs={'class': 'form-select m-2'}),

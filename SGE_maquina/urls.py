@@ -19,7 +19,7 @@ urlpatterns = [
     path('detallesComp/<int:id>', views.detallesComp, name="detalles_componente"),
     path('deleteComp/<int:id>', views.eliminarComp, name="eliminar_componente"),
     path('delete_mantenimientoComp/<int:id>', views.eliminar_mantenimientoComp, name="eliminar_mantenimiento_componente"),
-    path('generar_documento_mantenimientos_por_mesComp/', views.generar_documento_mantenimientos_por_mesComp, name='generar_documento_mantenimientos_general_componente'),
-    path('generar_documento_mantenimientos_componenteComp/<int:id>/', views.generar_documento_mantenimientos_componente, name='generar_documento_mantenimientos_componente'),
+    path('generar_documento_mantenimientos_por_mes_componente/', views.generar_documento_mantenimientos_por_mes_componente, name='generar_documento_mantenimientos_general_componente'),
+    path('generar_documento_mantenimientos_componente/<int:id>/', views.generar_documento_mantenimientos_componente, name='generar_documento_mantenimientos_componente'),
 
 ]
