@@ -1,5 +1,5 @@
 from django import forms
-from .models import Maquina, MantenimientoMaquina
+from .models import Maquina, MantenimientoMaquina, Componente, MantenimientoComponente
 from django.forms import Textarea
 
 class MaquinaForm(forms.ModelForm):    
@@ -27,6 +27,32 @@ class MaquinaForm(forms.ModelForm):
 class MantenimientoMaquinaForm(forms.ModelForm):
     class Meta:
         model = MantenimientoMaquina
+        fields = ['fecha', 'hora', 'tipo']
+        widgets = {
+            'fecha': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha'}),
+            'hora': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora'}),
+            'tipo': forms.Select(attrs={'class': 'form-select m-2', 'placeholder': 'Tipo de mantenimiento'}),
+        }
+
+
+class ComponenteForm(forms.ModelForm):    
+    class Meta:
+        model = Componente
+        fields = '__all__' 
+        exclude = ['fecha_ultimo_mantenimiento']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre del componente'}),
+            'maquina': forms.Select(attrs={'class': 'form-select m-2'}),
+            'descripción': Textarea(attrs={'class': 'form-control', 'placeholder': 'Observaciones'}),
+            'número_de_serie_o_modelo': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: B145C394'}),
+            'proveedor': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: "Makita'}),
+            'costo_de_adquisición': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': '$'}),
+            'intervalo_mantenimiento': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Número determinado de Días'}),
+        }        
+
+class MantenimientoComponenteForm(forms.ModelForm):
+    class Meta:
+        model = MantenimientoComponente
         fields = ['fecha', 'hora', 'tipo']
         widgets = {
             'fecha': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha'}),
