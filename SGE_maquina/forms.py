@@ -9,13 +9,19 @@ class MaquinaForm(forms.ModelForm):
         exclude = ['fecha_ultimo_mantenimiento']
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre de la máquina'}),
-            'modelo': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Modelo de la máquina'}),
-            'marca': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Marca de la máquina'}),
-            'descripcion': Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción de la máquina'}),
-            'ubicacion': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Ubicación de la máquina'}),
-            'estado': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Estado de la máquina'}),
+            'tipo_de_máquina': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre de la máquina'}),
+            'encargado': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: David A. Chentes'}),
+            'teléfono_encargado': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: +53589874'}),
+            'descripción': Textarea(attrs={'class': 'form-control', 'placeholder': 'Observaciones'}),
+            'ubicación': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: oficina de ...'}),
+            'número_de_serie_o_modelo': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: B145C394'}),
+            'proveedor': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: "Makita'}),
+            'costo_de_adquisición': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': '$'}),
+            'fecha_de_adquisición': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha'}),
+            'fecha_de_instalación': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha'}),
+            'estado_de_garantía': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: si, no'}),
+            'consumo_de_energía': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: 200KW'}),
             'intervalo_mantenimiento': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Intervalo de mantenimiento'}),
-            
         }
 
 class MantenimientoMaquinaForm(forms.ModelForm):
