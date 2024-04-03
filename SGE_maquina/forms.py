@@ -7,6 +7,9 @@ class MaquinaForm(forms.ModelForm):
         model = Maquina
         fields = '__all__' 
         exclude = ['fecha_ultimo_mantenimiento']
+        labels = {
+            'image': 'Imagen',  # Aquí especificamos la etiqueta con tilde
+        }
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre de la máquina'}),
             'tipo_de_máquina': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre de la máquina'}),
@@ -43,7 +46,8 @@ class ComponenteForm(forms.ModelForm):
         fields = '__all__' 
         exclude = ['fecha_ultimo_mantenimiento']
         labels = {
-            'maquina': 'Máquina',  # Aquí especificamos la etiqueta con tilde
+            'maquina': 'Máquina',
+            'image': 'Imagen',   # Aquí especificamos la etiqueta con tilde
         }
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre del componente'}),

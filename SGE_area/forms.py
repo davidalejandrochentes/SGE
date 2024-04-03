@@ -7,6 +7,9 @@ class AreaForm(forms.ModelForm):
         model = Area
         fields = '__all__' 
         exclude = ['fecha_ultimo_mantenimiento']
+        labels = {
+            'image': 'Imagen',  # Aquí especificamos la etiqueta con tilde
+        }
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre del area de trabajo'}),
             'tamaño': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: 4x4, 5x9'}),

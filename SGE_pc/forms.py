@@ -7,6 +7,9 @@ class PCForm(forms.ModelForm):
         model = PC
         fields = '__all__' 
         exclude = ['fecha_ultimo_mantenimiento']
+        labels = {
+            'image': 'Imagen',  # Aquí especificamos la etiqueta con tilde
+        }
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre del PC'}),
             'modelo': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: DEll, HP, Azuz'}),

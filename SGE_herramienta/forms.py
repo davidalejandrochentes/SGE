@@ -7,6 +7,9 @@ class HerramientaForm(forms.ModelForm):
         model = Herramienta
         fields = '__all__' 
         exclude = ['fecha_ultimo_mantenimiento']
+        labels = {
+            'image': 'Imagen',  # Aquí especificamos la etiqueta con tilde
+        }
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre de la herramienta'}),
             'número_de_serie': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: B145C394'}),
