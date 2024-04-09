@@ -20,9 +20,10 @@ class Maquina(models.Model):
     fecha_de_instalación = models.DateField(default=date.today, blank=False, null=False)
     estado_de_garantía = models.CharField(max_length=100, null=False, blank=False)
     consumo_de_energía = models.CharField(max_length=100, null=False, blank=False)
-
-    fecha_ultimo_mantenimiento = models.DateField(default=date.today, blank=False, null=False)
+    
+    horas_máquina_trabajada = models.IntegerField(blank=False, null=False, default=0)
     intervalo_mantenimiento = models.IntegerField(blank=False, null=False)
+    fecha_ultimo_mantenimiento = models.DateField(default=date.today, blank=False, null=False)
     image = models.ImageField(upload_to="maquina/image", null=False, blank=False)
 
     def dias_restantes_mantenimiento(self):
@@ -42,15 +43,15 @@ class TipoMantenimientoMaquina(models.Model):
 
 class MantenimientoMaquina(models.Model):
     maquina = models.ForeignKey(Maquina, on_delete=models.CASCADE)
-    tipo = models.ForeignKey(TipoMantenimientoMaquina, on_delete=models.CASCADE)
     fecha_inicio = models.DateField(default=date.today)
     hora_inicio = models.TimeField(default=datetime.now().time()) 
     fecha = models.DateField(default=date.today)
     hora = models.TimeField(default=datetime.now().time())
-    partes_y_piezas = models.TextField(max_length=500, null=False, blank=False)
-    image = models.ImageField(upload_to="maquina/mantenimiento/image", null=False, blank=False)  
-    descripción = models.TextField(max_length=500, null=False, blank=False)
-
+    tipo = models.ForeignKey(TipoMantenimientoMaquina, on_delete=models.CASCADE)
+    partes_y_piezas = models.TextField(max_length=500, null=False, blank=False, default="")
+    descripción = models.TextField(max_length=500, null=False, blank=False, default="")
+    image = models.ImageField(upload_to="maquina/mantenimiento/image", null=False, blank=False, default='')  
+    
     def __str__(self):
         txt = "Maquina: {}, Tipo: {}, Fecha: {}"
         return txt.format(self.maquina, self.tipo, self.fecha)
