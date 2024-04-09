@@ -36,35 +36,3 @@ class MantenimientoMaquinaForm(forms.ModelForm):
             'hora': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora'}),
             'tipo': forms.Select(attrs={'class': 'form-select m-2', 'placeholder': 'Tipo de mantenimiento'}),
         }
-
-
-class ComponenteForm(forms.ModelForm):    
-    
-
-    class Meta:
-        model = Componente
-        fields = '__all__' 
-        exclude = ['fecha_ultimo_mantenimiento']
-        labels = {
-            'maquina': 'Máquina',
-            'image': 'Imagen',   # Aquí especificamos la etiqueta con tilde
-        }
-        widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre del componente'}),
-            'maquina': forms.Select(attrs={'class': 'form-select m-2'}),
-            'descripción': Textarea(attrs={'class': 'form-control', 'placeholder': 'Observaciones'}),
-            'número_de_serie_o_modelo': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: B145C394'}),
-            'proveedor': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: "Makita'}),
-            'costo_de_adquisición': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': '$'}),
-            'intervalo_mantenimiento': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Número determinado de Días'}),
-        }        
-
-class MantenimientoComponenteForm(forms.ModelForm):
-    class Meta:
-        model = MantenimientoComponente
-        fields = ['fecha', 'hora', 'tipo']
-        widgets = {
-            'fecha': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha'}),
-            'hora': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora'}),
-            'tipo': forms.Select(attrs={'class': 'form-select m-2', 'placeholder': 'Tipo de mantenimiento'}),
-        }

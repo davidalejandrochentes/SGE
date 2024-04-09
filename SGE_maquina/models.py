@@ -33,6 +33,7 @@ class Maquina(models.Model):
     def __str__(self):
         return self.nombre
 
+
 class TipoMantenimientoMaquina(models.Model):
     tipo = models.CharField(max_length=100, blank=False, null=False)
 
@@ -42,8 +43,13 @@ class TipoMantenimientoMaquina(models.Model):
 class MantenimientoMaquina(models.Model):
     maquina = models.ForeignKey(Maquina, on_delete=models.CASCADE)
     tipo = models.ForeignKey(TipoMantenimientoMaquina, on_delete=models.CASCADE)
+    fecha_inicio = models.DateField(default=date.today)
+    hora_inicio = models.TimeField(default=datetime.now().time()) 
     fecha = models.DateField(default=date.today)
-    hora = models.TimeField(default=datetime.now().time())   
+    hora = models.TimeField(default=datetime.now().time())
+    partes_y_piezas = models.TextField(max_length=500, null=False, blank=False)
+    image = models.ImageField(upload_to="maquina/mantenimiento/image", null=False, blank=False)  
+    descripción = models.TextField(max_length=500, null=False, blank=False)
 
     def __str__(self):
         txt = "Maquina: {}, Tipo: {}, Fecha: {}"
@@ -90,83 +96,3 @@ def eliminar_imagen_anterior_al_actualizar(sender, instance, **kwargs):
         if maquina_anterior.image != nueva_imagen:  # Verificar si se ha seleccionado una nueva imagen
             if os.path.isfile(maquina_anterior.image.path):  # Verificar si el archivo de imagen existe en el sistema de archivos
                 os.remove(maquina_anterior.image.path)
-
-
-
-class Componente(models.Model):
-    nombre = models.CharField(max_length=100, null=False, blank=False)
-    maquina = models.ForeignKey(Maquina, on_delete=models.CASCADE)
-    descripción = models.TextField(max_length=500, null=False, blank=False)
-    número_de_serie_o_modelo = models.CharField(max_length=100, null=False, blank=False)
-    proveedor = models.CharField(max_length=100, null=False, blank=False)
-    costo_de_adquisición = models.IntegerField(blank=False, null=False)
-
-    fecha_ultimo_mantenimiento = models.DateField(default=date.today, blank=False, null=False)
-    intervalo_mantenimiento = models.IntegerField(blank=False, null=False)
-    image = models.ImageField(upload_to="componente/image", null=False, blank=False)
-
-    def dias_restantes_mantenimiento(self):
-        dias_pasados = (date.today() - self.fecha_ultimo_mantenimiento).days
-        dias_restantes = self.intervalo_mantenimiento - dias_pasados
-        return dias_restantes 
-    
-    def __str__(self):
-        return self.nombre
-
-class TipoMantenimientoComponente(models.Model):
-    tipo = models.CharField(max_length=100, blank=False, null=False)
-
-    def __str__(self):
-        return self.tipo
-
-class MantenimientoComponente(models.Model):
-    componente = models.ForeignKey(Componente, on_delete=models.CASCADE)
-    tipo = models.ForeignKey(TipoMantenimientoComponente, on_delete=models.CASCADE)
-    fecha = models.DateField(default=date.today)
-    hora = models.TimeField(default=datetime.now().time())   
-
-    def __str__(self):
-        txt = "Componente: {}, Tipo: {}, Fecha: {}"
-        return txt.format(self.componente, self.tipo, self.fecha)
-    
-
-@receiver(post_save, sender=MantenimientoComponente)
-def actualizar_fecha_ultimo_mantenimiento(sender, instance, **kwargs):
-    componente = instance.componente
-    if instance.fecha > componente.fecha_ultimo_mantenimiento:
-        componente.fecha_ultimo_mantenimiento = instance.fecha
-        componente.save()   
-
-@receiver(pre_delete, sender=MantenimientoComponente)
-def revertir_fecha_ultimo_mantenimiento(sender, instance, **kwargs):
-    componente = instance.componente
-    mantenimientos_restantes = MantenimientoComponente.objects.filter(componente=componente).exclude(id=instance.id).order_by('-fecha')
-    if mantenimientos_restantes.exists():
-        ultimo_mantenimiento = mantenimientos_restantes.first()
-        componente.fecha_ultimo_mantenimiento = ultimo_mantenimiento.fecha
-    else:
-        componente.fecha_ultimo_mantenimiento = componente.fecha_ultimo_mantenimiento  # Otra opción si no hay mantenimientos restantes
-    componente.save()
-
-@receiver(pre_delete, sender=Componente)
-def eliminar_imagen_de_componente(sender, instance, **kwargs):
-    # Verificar si el componente tiene una imagen asociada y eliminarla
-    if instance.image:
-        if os.path.isfile(instance.image.path):
-            os.remove(instance.image.path)
-
-@receiver(pre_save, sender=Componente)
-def eliminar_imagen_anterior_al_actualizar(sender, instance, **kwargs):
-    if not instance.pk:  # El componente es nuevo, no hay imagen anterior que eliminar
-        return False
-
-    try:
-        componente_anterior = Componente.objects.get(pk=instance.pk)  # Obtener el componente anterior de la base de datos
-    except Componente.DoesNotExist:
-        return False  # El componente anterior no existe, no hay imagen anterior que eliminar
-
-    if componente_anterior.image:  # Verificar si el componente anterior tiene una imagen
-        nueva_imagen = instance.image
-        if componente_anterior.image != nueva_imagen:  # Verificar si se ha seleccionado una nueva imagen
-            if os.path.isfile(componente_anterior.image.path):  # Verificar si el archivo de imagen existe en el sistema de archivos
-                os.remove(componente_anterior.image.path)
