@@ -19,14 +19,14 @@ def maquina(request):
     total_maquinas = len(maquinas)
     alertas = []
     for maquina in alert:
-        dias_restantes = maquina.dias_restantes_mantenimiento()
-        if dias_restantes <= 7:
+        horas_restantes = maquina.horas_restantes_mantenimiento()
+        if horas_restantes <= 10:
             
             alertas.append({
                 'maquina': maquina,
-                'dias_restantes': dias_restantes
+                'horas_restantes': horas_restantes
             })
-    alertas_ordenadas = sorted(alertas, key=lambda x: x['dias_restantes'])
+    alertas_ordenadas = sorted(alertas, key=lambda x: x['horas_restantes'])
     total_alertas = len(alertas_ordenadas)
     context = {
         'maquinas': maquinas,
@@ -42,14 +42,14 @@ def alertas(request):
     alert = Maquina.objects.filter(nombre__icontains=request.GET.get('search', ''))
     alertas = []
     for maquina in alert:
-        dias_restantes = maquina.dias_restantes_mantenimiento()
-        if dias_restantes <= 7:
+        horas_restantes = maquina.horas_restantes_mantenimiento()
+        if horas_restantes <= 7:
             
             alertas.append({
                 'maquina': maquina,
-                'dias_restantes': dias_restantes
+                'horas_restantes': horas_restantes
             })
-    alertas_ordenadas = sorted(alertas, key=lambda x: x['dias_restantes'])
+    alertas_ordenadas = sorted(alertas, key=lambda x: x['horas_restantes'])
     total_alertas = len(alertas_ordenadas)
     context = {
         'alertas': alertas_ordenadas,
@@ -138,7 +138,7 @@ def detalles(request, id):
     
     if request.method == 'POST':
         maquina = get_object_or_404(Maquina, id=id)
-        form_mant = MantenimientoMaquinaForm(request.POST)
+        form_mant = MantenimientoMaquinaForm(request.POST, request.FILES)
         form = MaquinaForm(instance=maquina)
         form = MaquinaForm(request.POST, request.FILES, instance=maquina)
 
@@ -174,9 +174,12 @@ def detalles(request, id):
                 }
                 return render(request, 'SGE_maquina/detalles.html', context) 
         
+
         if form_mant.is_valid():
             mantenimiento = form_mant.save(commit=False)
             mantenimiento.maquina = maquina
+            if 'image' in request.FILES:
+                mantenimiento.image = request.FILES['image'] 
             mantenimiento.save()
             form = MaquinaForm(instance=maquina)
             tipos_mantenimiento = TipoMantenimientoMaquina.objects.all()
@@ -189,8 +192,12 @@ def detalles(request, id):
                 'mantenimientos': mantenimientos,
                 'tipos_mantenimiento': tipos_mantenimiento,
             }
-            return render(request, 'SGE_maquina/detalles.html', context)  
+            previous_url = request.META.get('HTTP_REFERER')
+            return HttpResponseRedirect(previous_url)
         else:
+            tipos_mantenimiento = TipoMantenimientoMaquina.objects.all()
+            form = MaquinaForm(instance=maquina)
+            mantenimientos = maquina.mantenimientomaquina_set.all().order_by('-fecha', '-hora')
             context = {
                 'maquina': maquina,
                 'form': form,
@@ -200,6 +207,7 @@ def detalles(request, id):
                 'tipos_mantenimiento': tipos_mantenimiento,
             }
             return render(request, 'SGE_maquina/detalles.html', context)
+
 
     
 @login_required

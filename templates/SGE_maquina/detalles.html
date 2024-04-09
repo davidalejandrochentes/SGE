@@ -109,14 +109,14 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form method="post">
+                        <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             {{ form_mant }}
                             <div class="d-grid gap-2 mt-3">
                                 <button type="submit" class="btn btn-primary">Guardar</button>
                             </div>
                         </form> 
-                    </div>
+                    </div>                    
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     </div>
@@ -215,6 +215,7 @@
                 <th scope="col">Fecha de instalación</th>
                 <th scope="col">estado de garantía</th>
                 <th scope="col">consumo de energía</th>
+                <th scope="col">Horas máquina trabajada</th>
                 <th scope="col">Intervalo mantenimiento</th>
             </tr>
         </thead>
@@ -226,6 +227,7 @@
                 <td>{{ maquina.fecha_de_instalación }}</td>
                 <td>{{ maquina.estado_de_garantía }}</td>
                 <td>{{ maquina.consumo_de_energía }}</td>
+                <td>{{ maquina.horas_máquina_trabajada }}</td>
                 <td>{{ maquina.intervalo_mantenimiento }}</td>
             </tr>
         </tbody>
@@ -235,18 +237,45 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Fecha</th>
-                <th>Hora</th>
+                <th>Fecha inicio</th>
+                <th>Hora inicio</th>
+                <th>Fecha final</th>
+                <th>Hora final</th>
                 <th>Tipo</th>
-                <th><th>
+                <th>Partes y piezas</th>
+                <th>Descripción</th>
+                <th>Imagen</th>
+                <th>Eliminar<th>
             </tr>
         </thead>
         <tbody>
             {% for mantenimiento in mantenimientos %}
                 <tr>
+                    <td>{{ mantenimiento.fecha_inicio }}</td>
+                    <td>{{ mantenimiento.hora_inicio }}</td>
                     <td>{{ mantenimiento.fecha }}</td>
                     <td>{{ mantenimiento.hora }}</td>
                     <td>{{ mantenimiento.tipo }}</td>
+                    <td>{{ mantenimiento.partes_y_piezas }}</td>
+                    <td>{{ mantenimiento.descripción }}</td>
+                    <td>
+                        <button type="button" class="btn btn-secondary btn-sm imagen" data-bs-toggle="modal" data-bs-target="#exampleModal{{ mantenimiento.id }}">
+                            Ver Imagen <i class="bi bi-image"></i>
+                        </button>
+                        <div class="modal fade" id="exampleModal{{ mantenimiento.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Imagen</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <img src="{{ mantenimiento.image.url }}" class="img-fluid" alt="Imagen">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
                     <td>
                         <a class="text-danger" href="{% url "eliminar_mantenimiento_maquina" id=mantenimiento.id %}">eliminar</a>
                     </td>

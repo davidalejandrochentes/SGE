@@ -26,10 +26,10 @@ class Maquina(models.Model):
     fecha_ultimo_mantenimiento = models.DateField(default=date.today, blank=False, null=False)
     image = models.ImageField(upload_to="maquina/image", null=False, blank=False)
 
-    def dias_restantes_mantenimiento(self):
-        dias_pasados = (date.today() - self.fecha_ultimo_mantenimiento).days
-        dias_restantes = self.intervalo_mantenimiento - dias_pasados
-        return dias_restantes 
+    def horas_restantes_mantenimiento(self):
+        horas_restantes = self.intervalo_mantenimiento - (self.horas_máquina_trabajada % self.intervalo_mantenimiento)
+        return horas_restantes
+    
     
     def __str__(self):
         return self.nombre
@@ -50,7 +50,7 @@ class MantenimientoMaquina(models.Model):
     tipo = models.ForeignKey(TipoMantenimientoMaquina, on_delete=models.CASCADE)
     partes_y_piezas = models.TextField(max_length=500, null=False, blank=False, default="")
     descripción = models.TextField(max_length=500, null=False, blank=False, default="")
-    image = models.ImageField(upload_to="maquina/mantenimiento/image", null=False, blank=False, default='')  
+    image = models.ImageField(upload_to="maquina/mantenimiento/image", null=False, blank=False, default=None)  
     
     def __str__(self):
         txt = "Maquina: {}, Tipo: {}, Fecha: {}"
@@ -97,3 +97,28 @@ def eliminar_imagen_anterior_al_actualizar(sender, instance, **kwargs):
         if maquina_anterior.image != nueva_imagen:  # Verificar si se ha seleccionado una nueva imagen
             if os.path.isfile(maquina_anterior.image.path):  # Verificar si el archivo de imagen existe en el sistema de archivos
                 os.remove(maquina_anterior.image.path)
+
+
+#-----------------------------------------------------------------------------------------------------------------------------
+@receiver(pre_delete, sender=MantenimientoMaquina)
+def eliminar_imagen_de_mantenimineto(sender, instance, **kwargs):
+    # Verificar si la máquina tiene una imagen asociada y eliminarla
+    if instance.image:
+        if os.path.isfile(instance.image.path):
+            os.remove(instance.image.path)
+
+@receiver(pre_save, sender=MantenimientoMaquina)
+def eliminar_imagen_anterior_al_actualizar_mantenimineto(sender, instance, **kwargs):
+    if not instance.pk:  # La máquina es nueva, no hay imagen anterior que eliminar
+        return False
+
+    try:
+        mantenimineto_anterior = MantenimientoMaquina.objects.get(pk=instance.pk)  # Obtener la máquina anterior de la base de datos
+    except MantenimientoMaquina.DoesNotExist:
+        return False  # La máquina anterior no existe, no hay imagen anterior que eliminar
+
+    if mantenimineto_anterior_anterior.image:  # Verificar si la máquina anterior tiene una imagen
+        nueva_imagen = instance.image
+        if mantenimineto_anterior.image != nueva_imagen:  # Verificar si se ha seleccionado una nueva imagen
+            if os.path.isfile(mantenimineto_anterior.image.path):  # Verificar si el archivo de imagen existe en el sistema de archivos
+                os.remove(mantenimineto_anterior.image.path)                
