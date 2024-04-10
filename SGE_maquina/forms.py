@@ -24,8 +24,8 @@ class MaquinaForm(forms.ModelForm):
             'fecha_de_instalación': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha'}),
             'estado_de_garantía': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: si, no'}),
             'consumo_de_energía': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: 200KW'}),
-            'horas_máquina_trabajada': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Número determinado de Días'}),
-            'intervalo_mantenimiento': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Número determinado de Días'}),
+            'horas_máquina_trabajada': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Número determinado de horas'}),
+            'intervalo_mantenimiento': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Número determinado de horas'}),
         }
 
 class MantenimientoMaquinaForm(forms.ModelForm):
@@ -33,12 +33,16 @@ class MantenimientoMaquinaForm(forms.ModelForm):
         model = MantenimientoMaquina
         fields = '__all__'
         exclude = ['maquina']
+        labels = {
+            'hr_maquina': 'Horas máquina de trabajo',  # Aquí especificamos la etiqueta con tilde
+        }
         widgets = {
             'fecha_inicio': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de inicio'}),
             'hora_inicio': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora de inicio'}),
             'fecha': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de fin'}),
             'hora': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora de fin'}),
             'tipo': forms.Select(attrs={'class': 'form-select m-2', 'placeholder': 'Tipo de mantenimiento'}),
+            'hr_maquina': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Horas de trabajo al momento del Mantenimineto'}),
             'partes_y_piezas': Textarea(attrs={'class': 'form-control', 'placeholder': 'Partes y piezas implicadas'}),
             'descripción': Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción del mantenimiento'}),
         }

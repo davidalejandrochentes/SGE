@@ -48,10 +48,12 @@ class MantenimientoMaquina(models.Model):
     fecha = models.DateField(default=date.today)
     hora = models.TimeField(default=datetime.now().time())
     tipo = models.ForeignKey(TipoMantenimientoMaquina, on_delete=models.CASCADE)
+    hr_maquina = models.IntegerField(blank=True, null=True)
     partes_y_piezas = models.TextField(max_length=500, null=False, blank=False, default="")
     descripción = models.TextField(max_length=500, null=False, blank=False, default="")
     image = models.ImageField(upload_to="maquina/mantenimiento/image", null=False, blank=False, default=None)  
     
+
     def __str__(self):
         txt = "Maquina: {}, Tipo: {}, Fecha: {}"
         return txt.format(self.maquina, self.tipo, self.fecha)
