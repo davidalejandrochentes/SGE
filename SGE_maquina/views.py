@@ -25,7 +25,7 @@ def maquina(request):
     alertas = []
     for maquina in alert:
         horas_restantes = maquina.horas_restantes_mantenimiento()
-        if horas_restantes <= 10:
+        if horas_restantes <= 100:
             
             alertas.append({
                 'maquina': maquina,
@@ -48,7 +48,7 @@ def alertas(request):
     alertas = []
     for maquina in alert:
         horas_restantes = maquina.horas_restantes_mantenimiento()
-        if horas_restantes <= 7:
+        if horas_restantes <= 100:
             
             alertas.append({
                 'maquina': maquina,

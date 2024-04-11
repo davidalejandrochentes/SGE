@@ -28,12 +28,21 @@ class PCForm(forms.ModelForm):
             
         }
 
+
 class MantenimientoPCForm(forms.ModelForm):
     class Meta:
         model = MantenimientoPC
-        fields = ['fecha', 'hora', 'tipo']
-        widgets = {
-            'fecha': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha'}),
-            'hora': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora'}),
-            'tipo': forms.Select(attrs={'class': 'form-select m-2', 'placeholder': 'Tipo de mantenimiento'}),
+        fields = '__all__'
+        exclude = ['pc']
+        labels = {
+            'image': 'Imagen',
         }
+        widgets = {
+            'fecha_inicio': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de inicio'}),
+            'hora_inicio': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora de inicio'}),
+            'fecha': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de fin'}),
+            'hora': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora de fin'}),
+            'tipo': forms.Select(attrs={'class': 'form-select m-2', 'placeholder': 'Tipo de mantenimiento'}),
+            'partes_y_piezas': Textarea(attrs={'class': 'form-control', 'placeholder': 'Partes y piezas implicadas'}),
+            'descripción': Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción del mantenimiento'}),
+        }      

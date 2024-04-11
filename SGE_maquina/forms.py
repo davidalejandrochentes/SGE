@@ -35,6 +35,7 @@ class MantenimientoMaquinaForm(forms.ModelForm):
         exclude = ['maquina']
         labels = {
             'hr_maquina': 'Horas máquina de trabajo',  # Aquí especificamos la etiqueta con tilde
+            'image': 'Imagen',
         }
         widgets = {
             'fecha_inicio': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de inicio'}),

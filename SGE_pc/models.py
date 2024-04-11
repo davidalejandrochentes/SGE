@@ -41,8 +41,13 @@ class TipoMantenimientoPC(models.Model):
 class MantenimientoPC(models.Model):
     pc = models.ForeignKey(PC, on_delete=models.CASCADE)
     tipo = models.ForeignKey(TipoMantenimientoPC, on_delete=models.CASCADE)
+    fecha_inicio = models.DateField(default=date.today)
+    hora_inicio = models.TimeField(default=datetime.now().time()) 
     fecha = models.DateField(default=date.today)
-    hora = models.TimeField(default=datetime.now().time())   
+    hora = models.TimeField(default=datetime.now().time())
+    partes_y_piezas = models.TextField(max_length=500, null=False, blank=False, default="")
+    descripción = models.TextField(max_length=500, null=False, blank=False, default="")
+    image = models.ImageField(upload_to="pc/mantenimiento/image", null=False, blank=False, default=None)   
 
     def __str__(self):
         txt = "Equipo: {}, Tipo: {}, Fecha: {}"
@@ -89,3 +94,27 @@ def eliminar_imagen_anterior_al_actualizar(sender, instance, **kwargs):
         if pc_anterior.image != nueva_imagen:  # Verificar si se ha seleccionado una nueva imagen
             if os.path.isfile(pc_anterior.image.path):  # Verificar si el archivo de imagen existe en el sistema de archivos
                 os.remove(pc_anterior.image.path)
+
+#-----------------------------------------------------------------------------------------------------------------------------
+@receiver(pre_delete, sender=MantenimientoPC)
+def eliminar_imagen_de_mantenimineto(sender, instance, **kwargs):
+    # Verificar si la máquina tiene una imagen asociada y eliminarla
+    if instance.image:
+        if os.path.isfile(instance.image.path):
+            os.remove(instance.image.path)
+
+@receiver(pre_save, sender=MantenimientoPC)
+def eliminar_imagen_anterior_al_actualizar_mantenimineto(sender, instance, **kwargs):
+    if not instance.pk:  # La máquina es nueva, no hay imagen anterior que eliminar
+        return False
+
+    try:
+        mantenimineto_anterior = MantenimientoPC.objects.get(pk=instance.pk)  # Obtener la máquina anterior de la base de datos
+    except MantenimientoPC.DoesNotExist:
+        return False  # La máquina anterior no existe, no hay imagen anterior que eliminar
+
+    if mantenimineto_anterior_anterior.image:  # Verificar si la máquina anterior tiene una imagen
+        nueva_imagen = instance.image
+        if mantenimineto_anterior.image != nueva_imagen:  # Verificar si se ha seleccionado una nueva imagen
+            if os.path.isfile(mantenimineto_anterior.image.path):  # Verificar si el archivo de imagen existe en el sistema de archivos
+                os.remove(mantenimineto_anterior.image.path)     
