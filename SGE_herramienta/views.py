@@ -68,7 +68,7 @@ def tabla_mantenimientos(request):
     }
     return render(request, 'SGE_herramienta/tablas.html', context)    
 
-
+''' 
 @login_required
 def crear_herramienta(request):
     if request.method == 'GET':
@@ -99,7 +99,27 @@ def crear_herramienta(request):
                 'form': form
             }
             messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo") 
-            return render(request, 'SGE_herramienta/nueva.html', context)    
+            return render(request, 'SGE_herramienta/nueva.html', context)  
+'''  
+@login_required
+def crear_herramienta(request):
+    if request.method == 'GET':
+        form = HerramientaForm()
+        context = {
+            'form': form
+        }
+        return render(request, 'SGE_herramienta/nueva.html', context)
+    if request.method == 'POST':
+        form = HerramientaForm(request.POST, request.FILES)  # Asegúrate de pasar request.FILES al formulario
+        if form.is_valid():
+            form.save()
+            return redirect('herramienta')
+        else:
+            context = {
+                'form': form
+            }
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo") 
+            return render(request, 'SGE_herramienta/nueva.html', context)             
 
 @login_required
 def eliminar(request, id):

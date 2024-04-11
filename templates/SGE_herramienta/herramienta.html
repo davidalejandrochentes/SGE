@@ -25,9 +25,10 @@
         </a>
         <h5 class="text-center text-dark fst-italic mt-auto mb-auto mas">Cantidad total de Herramientas "{{ total_herramientas }}"</h5>
         <div class="pt-2 me-3 me-md-0">
-            <a class="ms-1 fs-3 me-1 me-md-4 text-decoration-none text-secondary mas" href="{% url "herramienta_nueva" %}">
+            <a class="ms-1 fs-3 me-1 me-md-5 text-decoration-none text-secondary mas" href="{% url "herramienta_nueva" %}">
                 <i class="bi bi-plus-circle"></i>
-            </a>        
+            </a> 
+            {% comment %}   
             <a class="ms-1 fs-3 me-1 me-md-4 text-decoration-none text-success tabla" href="{% url "herramienta_tabla_mantenimientos" %}">
                 <i class="bi bi-inboxes"></i>
             </a>
@@ -38,6 +39,7 @@
                     <span class="visually-hidden">unread messages</span>
                 </span>
             </a>
+            {% endcomment %}  
         </div>
     </div>
 
@@ -54,7 +56,7 @@
                     <p class="card-text m-0"><b>Número de serie:</b> {{ herramienta.número_de_serie }}</p>
                     <p class="card-text m-0"><b>Encargado:</b> {{ herramienta.encargado }}</p>
                     <p class="card-text m-0"><b>Estado de la herramienta:</b> {{ herramienta.estado_de_la_herramienta }}</p>
-                    <p class="card-text m-0"><b>Ultimo mantenimiento:</b> {{ herramienta.fecha_ultimo_mantenimiento }}</p>
+                    {# <p class="card-text m-0"><b>Ultimo mantenimiento:</b> {{ herramienta.fecha_ultimo_mantenimiento }}</p> #}
                 </div>      
             </a>
         </div>

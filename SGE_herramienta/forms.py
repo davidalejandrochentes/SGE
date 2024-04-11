@@ -6,7 +6,7 @@ class HerramientaForm(forms.ModelForm):
     class Meta:
         model = Herramienta
         fields = '__all__' 
-        exclude = ['fecha_ultimo_mantenimiento']
+        exclude = ['fecha_ultimo_mantenimiento', 'intervalo_mantenimiento']
         labels = {
             'image': 'Imagen',  # Aquí especificamos la etiqueta con tilde
         }
