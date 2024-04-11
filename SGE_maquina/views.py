@@ -200,18 +200,8 @@ def detalles(request, id):
             previous_url = request.META.get('HTTP_REFERER')
             return HttpResponseRedirect(previous_url)
         else:
-            tipos_mantenimiento = TipoMantenimientoMaquina.objects.all()
-            form = MaquinaForm(instance=maquina)
-            mantenimientos = maquina.mantenimientomaquina_set.all().order_by('-fecha', '-hora')
-            context = {
-                'maquina': maquina,
-                'form': form,
-                'id': id,
-                'form_mant': form_mant,
-                'mantenimientos': mantenimientos,
-                'tipos_mantenimiento': tipos_mantenimiento,
-            }
-            return render(request, 'SGE_maquina/detalles.html', context)
+            previous_url = request.META.get('HTTP_REFERER')
+            return HttpResponseRedirect(previous_url)
 
 
 @login_required

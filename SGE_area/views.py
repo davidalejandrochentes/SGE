@@ -11,6 +11,9 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 
+import openpyxl
+from openpyxl.styles import Font, PatternFill
+
 # Create your views here.
 @login_required
 def area(request):
@@ -134,7 +137,7 @@ def detalles(request, id):
     
     if request.method == 'POST':
         area = get_object_or_404(Area, id = id)
-        form_mant = MantenimientoAreaForm(request.POST)
+        form_mant = MantenimientoAreaForm(request.POST, request.FILES)
         form = AreaForm(instance= area)
         form = AreaForm(request.POST, request.FILES, instance= area)
 
@@ -187,15 +190,8 @@ def detalles(request, id):
             }
             return render(request, 'SGE_area/detalles.html', context)  
         else:
-            context = {
-            'area': area,
-            'form': form,
-            'id': id,
-            'form_mant': form_mant,
-            'mantenimientos': mantenimientos,
-            'tipos_mantenimiento': tipos_mantenimiento,
-            }
-            return render(request, 'SGE_area/detalles.html', context) 
+            previous_url = request.META.get('HTTP_REFERER')
+            return HttpResponseRedirect(previous_url)
     
 @login_required
 def generar_documento_mantenimientos_por_mes(request):
@@ -214,43 +210,49 @@ def generar_documento_mantenimientos_por_mes(request):
 
     mantenimientos = mantenimientos.order_by('-fecha', '-hora')
 
-    response = HttpResponse(content_type='application/pdf')
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     if mes:
-        response['Content-Disposition'] = 'attachment; filename="mantenimientos_areas_{}_{}.pdf"'.format(mes, anio)
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_areas_{}_{}.xlsx"'.format(mes, anio)
     else:
-        response['Content-Disposition'] = 'attachment; filename="mantenimientos_areas_{}.pdf"'.format(anio)
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_areas_{}.xlsx"'.format(anio)
 
-    buffer = BytesIO()
+    wb = openpyxl.Workbook()
+    ws = wb.active
 
-    doc = SimpleDocTemplate(buffer, pagesize=letter)
-    elements = []
+    headers = ['Area', 'Tipo', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Descripción']
+    for col, header in enumerate(headers, start=1):
+        ws.cell(row=1, column=col, value=header)
+        ws.cell(row=1, column=col).font = Font(bold=True)
+        ws.cell(row=1, column=col).fill = PatternFill(start_color="BFBFBF", end_color="BFBFBF", fill_type="solid")
 
-    data = []
-    if mes:
-        data.append(['Area', 'Tipo', 'Fecha', 'Hora'])
-        for mantenimiento in mantenimientos:
-            data.append([mantenimiento.area, mantenimiento.tipo, mantenimiento.fecha, mantenimiento.hora])
-    else:
-        data.append(['Area', 'Tipo', 'Mes', 'Año', 'Dia', 'Hora'])
-        for mantenimiento in mantenimientos:
-            data.append([mantenimiento.area, mantenimiento.tipo, mantenimiento.fecha.month, mantenimiento.fecha.year, mantenimiento.fecha.day, mantenimiento.hora])
+    row = 2
+    for mantenimiento in mantenimientos:
+        ws.append([
+            mantenimiento.area.nombre,
+            mantenimiento.tipo.tipo,
+            mantenimiento.fecha_inicio,
+            mantenimiento.hora_inicio,
+            mantenimiento.fecha,
+            mantenimiento.hora,
+            mantenimiento.descripción
+        ])
 
-    table = Table(data)
-    table.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-                                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-                                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-                                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-                                ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-                                ('GRID', (0, 0), (-1, -1), 1, colors.black)]))
-    elements.append(table)
+    for col in ws.columns:
+        max_length = 0
+        column = col[0].column_letter
+        for cell in col:
+            try:
+                if len(str(cell.value)) > max_length:
+                    max_length = len(cell.value)
+            except:
+                pass
+        adjusted_width = (max_length + 2) * 1.2
+        ws.column_dimensions[column].width = adjusted_width
 
-    doc.build(elements)
-    pdf = buffer.getvalue()
-    buffer.close()
-    response.write(pdf)
-
+    wb.save(response)
     return response
+
+
 
 @login_required
 def generar_documento_mantenimientos_area(request, id):
@@ -272,40 +274,46 @@ def generar_documento_mantenimientos_area(request, id):
         mantenimientos = mantenimientos.filter(tipo=tipo_mantenimiento)
 
 
-    response = HttpResponse(content_type='application/pdf')
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     if mes:
-        response['Content-Disposition'] = 'attachment; filename="mantenimientos_areas_{}_{}_{}.pdf"'.format(area.nombre,mes, anio)
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_areas_{}_{}_{}.xlsx"'.format(area.nombre, mes, anio)
     else:
-        response['Content-Disposition'] = 'attachment; filename="mantenimientos_areas_{}_{}.pdf"'.format(area.nombre,anio)   
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_areas_{}_{}.xlsx"'.format(area.nombre, anio)
 
-    buffer = BytesIO()
+    wb = openpyxl.Workbook()
+    ws = wb.active
 
-    doc = SimpleDocTemplate(buffer, pagesize=letter)
-    elements = []
+    # Define los encabezados de la tabla
+    headers = ['Tipo', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Descripción']
+    for col, header in enumerate(headers, start=1):
+        ws.cell(row=1, column=col, value=header)
+        ws.cell(row=1, column=col).font = Font(bold=True)
+        ws.cell(row=1, column=col).fill = PatternFill(start_color="BFBFBF", end_color="BFBFBF", fill_type="solid")
 
-    data = []
-    if mes:
-        data.append(['Tipo', 'Fecha', 'Hora'])
-        for mantenimiento in mantenimientos:
-            data.append([mantenimiento.area, mantenimiento.tipo, mantenimiento.fecha, mantenimiento.hora])
-    else:
-        data.append(['Tipo', 'Mes', 'Año', 'Dia', 'Hora'])
-        for mantenimiento in mantenimientos:
-            data.append([mantenimiento.tipo, mantenimiento.fecha.month, mantenimiento.fecha.year, mantenimiento.fecha.day, mantenimiento.hora])
+    # Agrega los datos de los mantenimientos
+    row = 2
+    for mantenimiento in mantenimientos:
+        ws.append([
+            mantenimiento.tipo.tipo,
+            mantenimiento.fecha_inicio,
+            mantenimiento.hora_inicio,
+            mantenimiento.fecha,
+            mantenimiento.hora,
+            mantenimiento.descripción
+        ])
 
-    table = Table(data)
-    table.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-                                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-                                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-                                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-                                ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-                                ('GRID', (0, 0), (-1, -1), 1, colors.black)]))
-    elements.append(table)
+    # Ajusta el ancho de las columnas automáticamente
+    for col in ws.columns:
+        max_length = 0
+        column = col[0].column_letter
+        for cell in col:
+            try:
+                if len(str(cell.value)) > max_length:
+                    max_length = len(cell.value)
+            except:
+                pass
+        adjusted_width = (max_length + 2) * 1.2
+        ws.column_dimensions[column].width = adjusted_width
 
-    doc.build(elements)
-    pdf = buffer.getvalue()
-    buffer.close()
-    response.write(pdf)
-
-    return response    
+    wb.save(response)
+    return response   

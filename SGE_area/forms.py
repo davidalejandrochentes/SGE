@@ -26,9 +26,17 @@ class AreaForm(forms.ModelForm):
 class MantenimientoAreaForm(forms.ModelForm):
     class Meta:
         model = MantenimientoArea
-        fields = ['fecha', 'hora', 'tipo']
+        fields = '__all__'
+        exclude = ['area']
+        labels = {
+            'image_antes': 'Imagen Antes',
+            'image': 'Imagen Despues',
+        }
         widgets = {
-            'fecha': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha'}),
-            'hora': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora'}),
+            'fecha_inicio': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de inicio'}),
+            'hora_inicio': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora de inicio'}),
+            'fecha': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de fin'}),
+            'hora': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora de fin'}),
             'tipo': forms.Select(attrs={'class': 'form-select m-2', 'placeholder': 'Tipo de mantenimiento'}),
+            'descripción': Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción del mantenimiento'}),
         }

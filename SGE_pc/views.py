@@ -190,15 +190,8 @@ def detalles(request, id):
             }
             return render(request, 'SGE_pc/detalles.html', context)  
         else:
-            context = {
-            'pc': pc,
-            'form': form,
-            'id': id,
-            'form_mant': form_mant,
-            'mantenimientos': mantenimientos,
-            'tipos_mantenimiento': tipos_mantenimiento,
-            }
-            return render(request, 'SGE_pc/detalles.html', context)
+            previous_url = request.META.get('HTTP_REFERER')
+            return HttpResponseRedirect(previous_url)
 
 @login_required
 def generar_documento_mantenimientos_por_mes(request):

@@ -64,7 +64,7 @@
     <table class="table mt-4">
       <tr>
         <th>Areas</th>
-        <th>Datos de Mantenimiento</th>
+        <th>Descripción corta</th>
       </tr>
       {% for area in areas %}
       <tr>
@@ -72,7 +72,7 @@
         <td>
           <ul class="list-group list-group-flush">
             {% for mantenimiento in area.mantenimientos %}
-            <li class="list-group-item">* {{ mantenimiento.fecha }} - {{ mantenimiento.hora }} - {{ mantenimiento.tipo }} *</li>
+            <li class="list-group-item">*<b>Fecha de inicio</b> {{ mantenimiento.fecha_inicio }} - {{ mantenimiento.hora_inicio }}, <b>fecha de fin</b> {{ mantenimiento.fecha }} - {{ mantenimiento.hora }}, <b>tipo de mantenimiento</b> - {{ mantenimiento.tipo }}*</li>
             {% endfor %}
           </ul>
         </td>

@@ -37,8 +37,13 @@ class TipoMantenimientoArea(models.Model):
 class MantenimientoArea(models.Model):
     area = models.ForeignKey(Area, on_delete=models.CASCADE)
     tipo = models.ForeignKey(TipoMantenimientoArea, on_delete=models.CASCADE)
+    fecha_inicio = models.DateField(default=date.today)
+    hora_inicio = models.TimeField(default=datetime.now().time()) 
     fecha = models.DateField(default=date.today)
-    hora = models.TimeField(default=datetime.now().time())   
+    hora = models.TimeField(default=datetime.now().time())
+    descripción = models.TextField(max_length=500, null=False, blank=False, default="")
+    image_antes = models.ImageField(upload_to="area/mantenimiento/antes", null=False, blank=False, default=None) 
+    image = models.ImageField(upload_to="area/mantenimiento/despues", null=False, blank=False, default=None) 
 
     def __str__(self):
         txt = "Area: {}, Tipo: {}, Fecha: {}"
@@ -85,3 +90,55 @@ def eliminar_imagen_anterior_al_actualizar(sender, instance, **kwargs):
         if area_anterior.image != nueva_imagen:  # Verificar si se ha seleccionado una nueva imagen
             if os.path.isfile(area_anterior.image.path):  # Verificar si el archivo de imagen existe en el sistema de archivos
                 os.remove(area_anterior.image.path)
+
+
+#---------------------------------------------------------------------------------------------------------
+
+@receiver(pre_delete, sender=MantenimientoArea)
+def eliminar_imagen_de_mantenimineto(sender, instance, **kwargs):
+    # Verificar si la máquina tiene una imagen asociada y eliminarla
+    if instance.image:
+        if os.path.isfile(instance.image.path):
+            os.remove(instance.image.path)
+
+@receiver(pre_save, sender=MantenimientoArea)
+def eliminar_imagen_anterior_al_actualizar_mantenimineto(sender, instance, **kwargs):
+    if not instance.pk:  # La máquina es nueva, no hay imagen anterior que eliminar
+        return False
+
+    try:
+        mantenimineto_anterior = MantenimientoArea.objects.get(pk=instance.pk)  # Obtener la máquina anterior de la base de datos
+    except MantenimientoArea.DoesNotExist:
+        return False  # La máquina anterior no existe, no hay imagen anterior que eliminar
+
+    if mantenimineto_anterior_anterior.image:  # Verificar si la máquina anterior tiene una imagen
+        nueva_imagen = instance.image
+        if mantenimineto_anterior.image != nueva_imagen:  # Verificar si se ha seleccionado una nueva imagen
+            if os.path.isfile(mantenimineto_anterior.image.path):  # Verificar si el archivo de imagen existe en el sistema de archivos
+                os.remove(mantenimineto_anterior.image.path)  
+
+
+#---------------------------------------------------------------------------------------------------------
+
+@receiver(pre_delete, sender=MantenimientoArea)
+def eliminar_imagen_de_mantenimineto_antes(sender, instance, **kwargs):
+    # Verificar si la máquina tiene una imagen asociada y eliminarla
+    if instance.image_antes:
+        if os.path.isfile(instance.image_antes.path):
+            os.remove(instance.image_antes.path)
+
+@receiver(pre_save, sender=MantenimientoArea)
+def eliminar_imagen_anterior_antes_al_actualizar_mantenimineto(sender, instance, **kwargs):
+    if not instance.pk:  # La máquina es nueva, no hay imagen anterior que eliminar
+        return False
+
+    try:
+        mantenimineto_anterior = MantenimientoArea.objects.get(pk=instance.pk)  # Obtener la máquina anterior de la base de datos
+    except MantenimientoArea.DoesNotExist:
+        return False  # La máquina anterior no existe, no hay imagen anterior que eliminar
+
+    if mantenimineto_anterior_anterior.image_antes:  # Verificar si la máquina anterior tiene una imagen
+        nueva_imagen = instance.image_antes
+        if mantenimineto_anterior.image_antes != nueva_imagen:  # Verificar si se ha seleccionado una nueva imagen
+            if os.path.isfile(mantenimineto_anterior.image_antes.path):  # Verificar si el archivo de imagen existe en el sistema de archivos
+                os.remove(mantenimineto_anterior.image_antes.path)  
