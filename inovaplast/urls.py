@@ -10,6 +10,7 @@ urlpatterns = [
     path('pc/', include('SGE_pc.urls')),
     path('herramienta/', include('SGE_herramienta.urls')),
     path('maquina/', include('SGE_maquina.urls')),
+    path('repuesto/', include('SGE_repuesto.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
