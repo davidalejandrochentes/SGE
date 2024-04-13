@@ -258,7 +258,7 @@
                     <td>{{ mantenimiento.hora }}</td>
                     <td>{{ mantenimiento.tipo }}</td>
                     <td>
-                        <a class="text-danger" href="{% url "eliminar_mantenimiento_herramienta" id=mantenimiento.id %}">eliminar</a>
+                        <a class="btn btn-danger btn-sm" href="{% url "eliminar_mantenimiento_herramienta" id=mantenimiento.id %}">eliminar</a>
                     </td>
                 </tr>
             {% endfor %}
