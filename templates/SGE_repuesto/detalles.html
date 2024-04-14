@@ -77,19 +77,20 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form method="post">
+                            <form method="post" action="">
                                 {% csrf_token %}
-                                <label for="forselect" class="form-label">A que parte de {{ maquina.nombre }}:</label>
-                                <select name="parte" class="form-select mb-2" aria-label="Default select example" id="forselect">
+                                <label for="parte-select-inventario" class="form-label">Selecciona la parte para agregar inventario:</label>
+                                <select name="parte" class="form-select mb-2" id="parte-select-inventario" required>
+                                    <option value="" selected disabled>Selecciona una parte</option>
                                     {% for parte in partes_maquina %}
                                         <option value="{{ parte.id }}">{{ parte.nombre }}</option>
                                     {% endfor %}
                                 </select>
-                                {{ inve_form }}
+                                {{ inve_form }} <!-- Renderizar el formulario de inventario -->
                                 <div class="d-grid gap-2 mt-3">
-                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                    <button type="submit" class="btn btn-primary">Guardar Inventario</button>
                                 </div>
-                            </form> 
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -106,10 +107,12 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form method="post">
+                            <form method="post" action="">
                                 {% csrf_token %}
+                                <input type="hidden" name="action" value="delete"> <!-- Campo oculto para identificar la acción de eliminar parte -->
                                 <label for="parte-select" class="form-label">Selecciona la parte a eliminar:</label>
-                                <select name="parte" class="form-select mb-2" id="parte-select">
+                                <select name="parte" class="form-select mb-2" id="parte-select" required>
+                                    <option value="" selected disabled>Selecciona una parte</option>
                                     {% for parte in partes_maquina %}
                                         <option value="{{ parte.id }}">{{ parte.nombre }}</option>
                                     {% endfor %}
@@ -117,7 +120,7 @@
                                 <div class="d-grid gap-2 mt-3">
                                     <button type="submit" class="btn btn-danger">Eliminar</button>
                                 </div>
-                            </form> 
+                            </form>
                         </div>
                     </div>
                 </div>

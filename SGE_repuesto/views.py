@@ -50,8 +50,6 @@ def eliminar_inventario(request, id):
     return HttpResponseRedirect(previous_url)    
 
 
-
-
 def actualizar_inventario(request, id):
     inventario = get_object_or_404(Inventario, id=id)
     if request.method == 'POST':
@@ -64,8 +62,6 @@ def actualizar_inventario(request, id):
         form = InventarioRepuestoForm(instance=inventario)
     previous_url = request.META.get('HTTP_REFERER')
     return HttpResponseRedirect(previous_url)
-
-
 
 @login_required
 def detalles(request, id):
@@ -88,6 +84,12 @@ def detalles(request, id):
         part_form = ParteRepuestoForm(request.POST)
         inve_form = InventarioRepuestoForm(request.POST)
 
+        action = request.POST.get('action')
+        if action == 'delete':
+            parte_id = request.POST.get('parte')
+            parte_instance = get_object_or_404(Parte, id=parte_id)
+            parte_instance.delete()
+            
         if part_form.is_valid():
             parte = part_form.save(commit=False)
             parte.maquina = maquina
@@ -98,7 +100,7 @@ def detalles(request, id):
             parte_id = request.POST.get('parte')
             parte_instance = get_object_or_404(Parte, id=parte_id)
             inve_instance.parte = parte_instance
-            inve_instance.save()  
+            inve_instance.save()    
 
         maquina = get_object_or_404(Maquina, id=id)
         part_form = ParteRepuestoForm()
@@ -108,6 +110,6 @@ def detalles(request, id):
             'maquina': maquina,
             'part_form': part_form,
             'partes_maquina': partes_maquina,
-            'inve_form': inve_form
+            'inve_form': inve_form,
         }
         return render(request, 'SGE_repuesto/detalles.html', context)  
