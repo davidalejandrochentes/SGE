@@ -26,22 +26,10 @@
         
         <div class="pt-2 me-3 me-md-0">
 
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal-descargar">
+            <button type="button" class="btn btn-success" onclick="window.location.href='{% url "descargar_excel" id=maquina.id %}'">
                 Descargar <i class="bi bi-box-arrow-down "></i>
             </button>
-            <div class="modal fade" id="modal-descargar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Descargar</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
 
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-parte">
                 Crear parte de máquina <i class="bi bi-plus-circle-fill"></i>

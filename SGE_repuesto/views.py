@@ -8,6 +8,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 import openpyxl
 from openpyxl.styles import Font, PatternFill
+from openpyxl import Workbook
+from openpyxl.styles import PatternFill
+from openpyxl.utils import get_column_letter
 
 # Create your views here.
 @login_required
@@ -113,3 +116,63 @@ def detalles(request, id):
             'inve_form': inve_form,
         }
         return render(request, 'SGE_repuesto/detalles.html', context)  
+
+
+
+
+
+def descargar_excel(request, id):
+    maquina = get_object_or_404(Maquina, id=id)
+    partes_maquina = Parte.objects.filter(maquina=maquina)
+
+    # Crear el libro de Excel y la hoja de trabajo
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Detalles"
+
+    # Definir colores
+    header_fill = PatternFill(start_color="FFA07A", end_color="FFA07A", fill_type="solid")
+
+    # Escribir encabezados
+    headers = ["Parte", "Tipo", "Rosca", "Largo", "Und", "Cantidad necesaria", "Existencia en stock", "Salida", "Existencia física"]
+    ws.append(headers)
+
+    # Aplicar estilo a la cabecera
+    for cell in ws[1]:
+        cell.fill = header_fill
+
+    # Escribir datos de cada parte
+    for parte in partes_maquina:
+        inventarios = parte.inventario_set.all()
+        if inventarios:
+            start_row = ws.max_row + 1
+            end_row = start_row + len(inventarios) - 1
+            ws.cell(row=start_row, column=1, value=parte.nombre)
+            ws.merge_cells(start_row=start_row, end_row=end_row, start_column=1, end_column=1)
+            for i, inventario in enumerate(inventarios, start=start_row):
+                row_data = [inventario.tipo, inventario.rosca, inventario.largo, inventario.und, inventario.cantidad_necesaria, inventario.existencia_stock, inventario.salida, inventario.existencia_fisica()]
+                for j, value in enumerate(row_data, start=2):  # Start from column 2 to leave the first column for "Parte"
+                    ws.cell(row=i, column=j, value=value)
+
+    # Ajustar el ancho de las columnas automáticamente
+    for col in ws.columns:
+        max_length = 0
+        column = col[0].column_letter
+        for cell in col:
+            try:
+                if len(str(cell.value)) > max_length:
+                    max_length = len(cell.value)
+            except:
+                pass
+        adjusted_width = (max_length + 2) * 1.2
+        ws.column_dimensions[column].width = adjusted_width
+
+    # Guardar el libro de Excel en un HttpResponse
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename="detalles_maquina_{maquina.id}.xlsx"'
+    wb.save(response)
+
+    return response
+
+
+
