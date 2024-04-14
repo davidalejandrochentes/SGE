@@ -172,7 +172,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form method="post" action="">
+                                        <form method="post" action="{% url 'actualizar_inventario' id=inventario.id %}">
                                             {% csrf_token %}
                                             {{ inve_form.as_p }}
                                             <div class="d-grid gap-2 mt-3">
@@ -209,7 +209,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form method="post" action="">
+                                        <form method="post" action="{% url 'actualizar_inventario' id=inventario.id %}">
                                             {% csrf_token %}
                                             {{ inve_form.as_p }}
                                             <div class="d-grid gap-2 mt-3">

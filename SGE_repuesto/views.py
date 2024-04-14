@@ -47,7 +47,24 @@ def eliminar_inventario(request, id):
     inventario = get_object_or_404(Inventario, id=id)
     inventario.delete()
     previous_url = request.META.get('HTTP_REFERER')
-    return HttpResponseRedirect(previous_url)     
+    return HttpResponseRedirect(previous_url)    
+
+
+
+
+def actualizar_inventario(request, id):
+    inventario = get_object_or_404(Inventario, id=id)
+    if request.method == 'POST':
+        form = InventarioRepuestoForm(request.POST, instance=inventario)
+        if form.is_valid():
+            form.save()
+            previous_url = request.META.get('HTTP_REFERER')
+            return HttpResponseRedirect(previous_url)
+    else:
+        form = InventarioRepuestoForm(instance=inventario)
+    previous_url = request.META.get('HTTP_REFERER')
+    return HttpResponseRedirect(previous_url)
+
 
 
 @login_required
