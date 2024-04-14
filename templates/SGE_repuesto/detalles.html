@@ -64,37 +64,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-eliminar-parte">
-                Eliminar parte de máquina <i class="bi bi-archive"></i>
-            </button>
-            <div class="modal fade" id="modal-eliminar-parte" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Eliminar Parte de {{ maquina.nombre }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form method="post">
-                                {% csrf_token %}
-                                <label for="parte-select" class="form-label">Selecciona la parte a eliminar:</label>
-                                <select name="parte" class="form-select mb-2" id="parte-select">
-                                    {% for parte in partes_maquina %}
-                                        <option value="{{ parte.id }}">{{ parte.nombre }}</option>
-                                    {% endfor %}
-                                </select>
-                                <div class="d-grid gap-2 mt-3">
-                                    <button type="submit" class="btn btn-danger">Eliminar</button>
-                                </div>
-                            </form> 
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            
+            </div>    
             
             <button type="button" class="btn btn-warning mt-md-0 mt-2" data-bs-toggle="modal" data-bs-target="#modal-inventario">
                 Inventario de parte de máquina <i class="bi bi-plus-circle-dotted"></i>
@@ -124,6 +94,34 @@
                     </div>
                 </div>
             </div> 
+
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-eliminar-parte">
+                Eliminar parte de máquina <i class="bi bi-archive"></i>
+            </button>
+            <div class="modal fade" id="modal-eliminar-parte" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Eliminar Parte de {{ maquina.nombre }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="post">
+                                {% csrf_token %}
+                                <label for="parte-select" class="form-label">Selecciona la parte a eliminar:</label>
+                                <select name="parte" class="form-select mb-2" id="parte-select">
+                                    {% for parte in partes_maquina %}
+                                        <option value="{{ parte.id }}">{{ parte.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="d-grid gap-2 mt-3">
+                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                </div>
+                            </form> 
+                        </div>
+                    </div>
+                </div>
+            </div>
         
         </div>
     </div>
@@ -162,7 +160,31 @@
                     <td>{{ inventario.existencia_stock }}</td>
                     <td>{{ inventario.salida }}</td>
                     <td>{{ inventario.existencia_fisica }}</td>
-                    <td><a class="btn btn-secondary btn-sm" href="">Modificar</a></td>
+                    <td>
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#Modal{{ inventario.id }}">
+                            Modificar
+                        </button>
+                        <div class="modal fade" id="Modal{{ inventario.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Introduzca los nuevos datos</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post" action="">
+                                            {% csrf_token %}
+                                            {{ inve_form.as_p }}
+                                            <div class="d-grid gap-2 mt-3">
+                                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    
                     <td><a class="btn btn-danger btn-sm" href="{% url "eliminar_inventario" id=inventario.id %}">Eliminar</a></td>
                     {% else %}
                 </tr>
@@ -175,7 +197,30 @@
                     <td>{{ inventario.existencia_stock }}</td>
                     <td>{{ inventario.salida }}</td>
                     <td>{{ inventario.existencia_fisica }}</td>
-                    <td><a class="btn btn-secondary btn-sm" href="">Modificar</a></td>
+                    <td>
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#Modal{{ inventario.id }}">
+                            Modificar
+                        </button>
+                        <div class="modal fade" id="Modal{{ inventario.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Introduzca los nuevos datos</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post" action="">
+                                            {% csrf_token %}
+                                            {{ inve_form.as_p }}
+                                            <div class="d-grid gap-2 mt-3">
+                                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
                     <td><a class="btn btn-danger btn-sm" href="{% url "eliminar_inventario" id=inventario.id %}">Eliminar</a></td>
                 </tr>
                     {% endif %}

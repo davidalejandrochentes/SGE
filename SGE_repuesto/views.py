@@ -42,6 +42,13 @@ def eliminar_repuesto_maquina(request, id):
     maquina.delete()
     return redirect('repuesto_maquina')
 
+@login_required
+def eliminar_inventario(request, id):
+    inventario = get_object_or_404(Inventario, id=id)
+    inventario.delete()
+    previous_url = request.META.get('HTTP_REFERER')
+    return HttpResponseRedirect(previous_url)     
+
 
 @login_required
 def detalles(request, id):
@@ -74,12 +81,7 @@ def detalles(request, id):
             parte_id = request.POST.get('parte')
             parte_instance = get_object_or_404(Parte, id=parte_id)
             inve_instance.parte = parte_instance
-            inve_instance.save()
-
-        if 'parte' in request.POST:
-            parte_id = request.POST.get('parte')
-            parte = get_object_or_404(Parte, id=parte_id)
-            parte.delete()    
+            inve_instance.save()  
 
         maquina = get_object_or_404(Maquina, id=id)
         part_form = ParteRepuestoForm()
