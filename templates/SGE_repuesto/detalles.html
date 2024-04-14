@@ -1,0 +1,194 @@
+{% extends "layout/base.html" %}
+
+{% block 'title'%} Detalles Repuesto {% endblock %}
+
+{% block 'search' %}
+<form class="d-flex form-inline mr-auto ml-md-3 my-2 my-md-0 ms-3 me-3 mw-100 navbar-search" role="search" action="" method='GET'>
+    <div class="input-group">
+        <input class="form-control bg-light border-0 small" id="search-input" name="search" type="search" placeholder="Search" aria-label="Search">
+        <div class="input-group-append">
+            <button class="btn barra text-light" type="submit">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+    </div>
+</form>
+{% endblock 'search' %}
+
+{% block 'content' %}
+
+<div class="container">
+
+    <div class="d-flex p-3 justify-content-between">
+        <a class="text-decoration-none text-dark flecha-atras" href="{% url "repuesto_maquina" %}">
+            <i class="bi bi-arrow-left fs-1"></i>
+        </a>
+        
+        <div class="pt-2 me-3 me-md-0">
+
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal-descargar">
+                Descargar <i class="bi bi-box-arrow-down "></i>
+            </button>
+            <div class="modal fade" id="modal-descargar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Descargar</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-parte">
+                Crear parte de máquina <i class="bi bi-plus-circle-fill"></i>
+            </button>
+            <div class="modal fade" id="modal-parte" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Crear Parte para {{ maquina.nombre }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ part_form }}
+                                <div class="d-grid gap-2 mt-3">
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                </div>
+                            </form> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-eliminar-parte">
+                Eliminar parte de máquina <i class="bi bi-archive"></i>
+            </button>
+            <div class="modal fade" id="modal-eliminar-parte" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Eliminar Parte de {{ maquina.nombre }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="post">
+                                {% csrf_token %}
+                                <label for="parte-select" class="form-label">Selecciona la parte a eliminar:</label>
+                                <select name="parte" class="form-select mb-2" id="parte-select">
+                                    {% for parte in partes_maquina %}
+                                        <option value="{{ parte.id }}">{{ parte.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="d-grid gap-2 mt-3">
+                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                </div>
+                            </form> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            <button type="button" class="btn btn-warning mt-md-0 mt-2" data-bs-toggle="modal" data-bs-target="#modal-inventario">
+                Inventario de parte de máquina <i class="bi bi-plus-circle-dotted"></i>
+            </button>
+            <div class="modal fade" id="modal-inventario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Nuevo inventario</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="post">
+                                {% csrf_token %}
+                                <label for="forselect" class="form-label">A que parte de {{ maquina.nombre }}:</label>
+                                <select name="parte" class="form-select mb-2" aria-label="Default select example" id="forselect">
+                                    {% for parte in partes_maquina %}
+                                        <option value="{{ parte.id }}">{{ parte.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                                {{ inve_form }}
+                                <div class="d-grid gap-2 mt-3">
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                </div>
+                            </form> 
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        
+        </div>
+    </div>
+
+    <div class="mt-3 ps-5 pe-5">
+
+        <h3 class="text-center text-dark fst-italic">{{ maquina.nombre }}</h3>
+        
+        <table class="table table-striped mt-4">
+            <thead>
+                <tr>
+                    <th>Partes de la máquina</th>
+                    <th>Tipo</th>
+                    <th>Rosca</th>
+                    <th>Largo</th>
+                    <th>Und</th>
+                    <th>Cantidad necesaria</th>
+                    <th>Existencia en stock</th>
+                    <th>Salida</th>
+                    <th>Existencia física</th>
+                    <th>Modificar</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for parte in partes_maquina %}
+                <tr>
+                    <td rowspan="{{ parte.inventario_set.count }}">{{ parte.nombre }}</td>
+                    {% for inventario in parte.inventario_set.all %}
+                    {% if forloop.first %}
+                    <td>{{ inventario.tipo }}</td>
+                    <td>{{ inventario.rosca }}</td>
+                    <td>{{ inventario.largo }}</td>
+                    <td>{{ inventario.und }}</td>
+                    <td>{{ inventario.cantidad_necesaria }}</td>
+                    <td>{{ inventario.existencia_stock }}</td>
+                    <td>{{ inventario.salida }}</td>
+                    <td>{{ inventario.existencia_fisica }}</td>
+                    <td><a class="btn btn-secondary btn-sm" href="">Modificar</a></td>
+                    <td><a class="btn btn-danger btn-sm" href="{% url "eliminar_inventario" id=inventario.id %}">Eliminar</a></td>
+                    {% else %}
+                </tr>
+                <tr>
+                    <td>{{ inventario.tipo }}</td>
+                    <td>{{ inventario.rosca }}</td>
+                    <td>{{ inventario.largo }}</td>
+                    <td>{{ inventario.und }}</td>
+                    <td>{{ inventario.cantidad_necesaria }}</td>
+                    <td>{{ inventario.existencia_stock }}</td>
+                    <td>{{ inventario.salida }}</td>
+                    <td>{{ inventario.existencia_fisica }}</td>
+                    <td><a class="btn btn-secondary btn-sm" href="">Modificar</a></td>
+                    <td><a class="btn btn-danger btn-sm" href="{% url "eliminar_inventario" id=inventario.id %}">Eliminar</a></td>
+                </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+                
+
+    </div>
+
+</div>
+
+{% endblock %}

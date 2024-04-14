@@ -74,7 +74,7 @@
             <tr>
                 <td>{{ maquina.nombre }}</td>
                 <td>
-                    <a class="btn btn-primary btn-sm" href="">inventario de partes y piezas</a>
+                    <a class="btn btn-primary btn-sm" href="{% url "detalles_repuesto_maquina" id=maquina.id %}">inventario de partes y piezas</a>
                 </td>
                 <td>
                     <a class="btn btn-danger btn-sm" href="{% url "eliminar_repuesto_maquina" id=maquina.id %}">Eliminar</a>

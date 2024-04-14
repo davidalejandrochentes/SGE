@@ -8,7 +8,7 @@ class Maquina(models.Model):
         return self.nombre
 
 
-class Partes(models.Model):
+class Parte(models.Model):
     maquina = models.ForeignKey(Maquina, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=50, null=False, blank=False)
     
@@ -17,7 +17,7 @@ class Partes(models.Model):
 
 
 class Inventario(models.Model):
-    partes = models.ForeignKey(Partes, on_delete=models.CASCADE)
+    parte = models.ForeignKey(Parte, on_delete=models.CASCADE)
     tipo = models.CharField(max_length=50, null=False, blank=False)
     rosca = models.CharField(max_length=50, null=True, blank=True)
     largo = models.CharField(max_length=50, null=True, blank=True)
@@ -32,5 +32,4 @@ class Inventario(models.Model):
     
     def __str__(self):
         txt = "Parte: {}"
-        return txt.format(self.partes)
-
+        return txt.format(self.parte)
