@@ -119,29 +119,22 @@ def detalles(request, id):
 
 
 
-
-
 def descargar_excel(request, id):
     maquina = get_object_or_404(Maquina, id=id)
     partes_maquina = Parte.objects.filter(maquina=maquina)
 
-    # Crear el libro de Excel y la hoja de trabajo
     wb = Workbook()
     ws = wb.active
     ws.title = "Detalles"
 
-    # Definir colores
     header_fill = PatternFill(start_color="FFA07A", end_color="FFA07A", fill_type="solid")
 
-    # Escribir encabezados
     headers = ["Parte", "Tipo", "Rosca", "Largo", "Und", "Cantidad necesaria", "Existencia en stock", "Salida", "Existencia física"]
     ws.append(headers)
 
-    # Aplicar estilo a la cabecera
     for cell in ws[1]:
         cell.fill = header_fill
 
-    # Escribir datos de cada parte
     for parte in partes_maquina:
         inventarios = parte.inventario_set.all()
         if inventarios:
@@ -154,7 +147,6 @@ def descargar_excel(request, id):
                 for j, value in enumerate(row_data, start=2):  # Start from column 2 to leave the first column for "Parte"
                     ws.cell(row=i, column=j, value=value)
 
-    # Ajustar el ancho de las columnas automáticamente
     for col in ws.columns:
         max_length = 0
         column = col[0].column_letter
@@ -167,12 +159,84 @@ def descargar_excel(request, id):
         adjusted_width = (max_length + 2) * 1.2
         ws.column_dimensions[column].width = adjusted_width
 
-    # Guardar el libro de Excel en un HttpResponse
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = f'attachment; filename="detalles_maquina_{maquina.id}.xlsx"'
+    response['Content-Disposition'] = f'attachment; filename="detalles_maquina_{maquina.nombre}.xlsx"'
     wb.save(response)
 
     return response
 
 
 
+def tabla_general(request):
+    inventarios = Inventario.objects.all()
+    context = {
+        'inventarios': inventarios,
+    }
+    return render(request, 'SGE_repuesto/tabla.html', context)
+
+
+def descargar_excel_general(request):
+    inventarios = Inventario.objects.all()
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Detalles"
+
+    header_fill = PatternFill(start_color="FFA07A", end_color="FFA07A", fill_type="solid")
+
+    headers = ["Maquina", "Parte de la máquina", "Tipo", "Rosca", "Largo", "Und", "Cantidad necesaria", "Existencia en stock", "Salida", "Existencia física"]
+    ws.append(headers)
+
+    for cell in ws[1]:
+        cell.fill = header_fill
+
+    current_maquina = None
+    current_parte = None
+    start_row_maquina = 2  # Start from the second row (after headers) for maquina
+    start_row_parte = 2  # Start from the second row (after headers) for parte
+    for inventario in inventarios:
+        row_data = [inventario.parte.maquina.nombre, inventario.parte.nombre, inventario.tipo, inventario.rosca, inventario.largo, inventario.und, inventario.cantidad_necesaria, inventario.existencia_stock, inventario.salida, inventario.existencia_fisica()]
+        
+        # Handling Maquina column
+        if inventario.parte.maquina != current_maquina:
+            if current_maquina is not None:
+                end_row_maquina = ws.max_row
+                ws.merge_cells(start_row=start_row_maquina, end_row=end_row_maquina, start_column=1, end_column=1)  # Merge cells for the current maquina
+            current_maquina = inventario.parte.maquina
+            start_row_maquina = ws.max_row + 1
+          
+        # Handling Parte de la máquina column
+        if inventario.parte != current_parte:
+            if current_parte is not None:
+                end_row_parte = ws.max_row
+                ws.merge_cells(start_row=start_row_parte, end_row=end_row_parte, start_column=2, end_column=2)  # Merge cells for the current parte
+            current_parte = inventario.parte
+            start_row_parte = ws.max_row + 1
+            
+        ws.append(row_data)
+
+    # Merge cells for the last maquina and parte
+    if current_maquina is not None:
+        end_row_maquina = ws.max_row
+        ws.merge_cells(start_row=start_row_maquina, end_row=end_row_maquina, start_column=1, end_column=1)
+    if current_parte is not None:
+        end_row_parte = ws.max_row
+        ws.merge_cells(start_row=start_row_parte, end_row=end_row_parte, start_column=2, end_column=2)
+
+    for col in ws.columns:
+        max_length = 0
+        column = col[0].column_letter
+        for cell in col:
+            try:
+                if len(str(cell.value)) > max_length:
+                    max_length = len(cell.value)
+            except:
+                pass
+        adjusted_width = (max_length + 2) * 1.2
+        ws.column_dimensions[column].width = adjusted_width
+
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="detalles_inventario.xlsx"'
+    wb.save(response)
+
+    return response

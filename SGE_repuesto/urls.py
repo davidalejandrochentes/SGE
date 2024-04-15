@@ -8,4 +8,6 @@ urlpatterns = [
     path('actualizar_inventario/<int:id>/', views.actualizar_inventario, name='actualizar_inventario'),
     path('eliminar_inventario/<int:id>', views.eliminar_inventario, name="eliminar_inventario"),
     path('descargar-excel/<int:id>/', views.descargar_excel, name='descargar_excel'),
+    path('tabla_repuesto_general/', views.tabla_general, name='tabla_general'),
+    path('descargar_excel_general/', views.descargar_excel_general, name='descargar_excel_general'),
 ]
