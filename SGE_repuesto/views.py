@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse, HttpResponseRedirect
+from django.db.models import F
 
 import openpyxl
 from openpyxl.styles import Font, PatternFill
@@ -17,10 +18,22 @@ from openpyxl.utils import get_column_letter
 def repuesto_maquina(request):
     if request.method == 'GET':
         maquinas = Maquina.objects.filter(nombre__icontains=request.GET.get('search', ''))
+        alert = Inventario.objects.all()
+        alertas = []
+        for invetario in alert:
+            existencia_fisica = invetario.existencia_fisica()
+            if existencia_fisica <= 2:
+                
+                alertas.append({
+                    'invetario': invetario,
+                    'existencia_fisica': existencia_fisica
+                })
+        total_alertas = len(alertas)
         form = MaquinaRepuestoForm()
         context = {
             'maquinas': maquinas,
-            'form': form
+            'form': form,
+            'total_alertas': total_alertas,
         }
         return render(request, 'SGE_repuesto/repuesto.html', context)
     if request.method == 'POST':
@@ -103,7 +116,7 @@ def detalles(request, id):
             parte_id = request.POST.get('parte')
             parte_instance = get_object_or_404(Parte, id=parte_id)
             inve_instance.parte = parte_instance
-            inve_instance.save()    
+            inve_instance.save()
 
         maquina = get_object_or_404(Maquina, id=id)
         part_form = ParteRepuestoForm()
@@ -240,3 +253,12 @@ def descargar_excel_general(request):
     wb.save(response)
 
     return response
+
+
+def alerta_repuesto(request):
+    inventarios = Inventario.objects.annotate(existencia_fisica=F('existencia_stock') - F('salida')).filter(existencia_fisica__lte=2)
+    context = {
+        'inventarios': inventarios
+    }
+    return render(request, 'SGE_repuesto/alerta.html', context)
+

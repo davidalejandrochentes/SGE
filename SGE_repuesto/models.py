@@ -11,6 +11,7 @@ class Maquina(models.Model):
 class Parte(models.Model):
     maquina = models.ForeignKey(Maquina, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=50, null=False, blank=False)
+    #image = models.ImageField(upload_to="repuesto/image", null=False, blank=False, default=None) 
     
     def __str__(self):
         return self.nombre
@@ -19,9 +20,9 @@ class Parte(models.Model):
 class Inventario(models.Model):
     parte = models.ForeignKey(Parte, on_delete=models.CASCADE)
     tipo = models.CharField(max_length=50, null=False, blank=False)
-    rosca = models.CharField(max_length=50, null=True, blank=True)
-    largo = models.CharField(max_length=50, null=True, blank=True)
-    und = models.CharField(max_length=50, null=True, blank=True)
+    rosca = models.CharField(max_length=50, null=False, blank=False)
+    largo = models.CharField(max_length=50, null=False, blank=False)
+    und = models.CharField(max_length=50, null=False, blank=False)
     cantidad_necesaria = models.IntegerField(null=False, blank=False)
     existencia_stock = models.IntegerField(null=False, blank=False)
     salida = models.IntegerField(null=False, blank=False)

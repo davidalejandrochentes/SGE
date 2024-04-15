@@ -10,4 +10,5 @@ urlpatterns = [
     path('descargar-excel/<int:id>/', views.descargar_excel, name='descargar_excel'),
     path('tabla_repuesto_general/', views.tabla_general, name='tabla_general'),
     path('descargar_excel_general/', views.descargar_excel_general, name='descargar_excel_general'),
+    path('alertas_repuesto/', views.alerta_repuesto, name='alerta_repuesto'),
 ]
