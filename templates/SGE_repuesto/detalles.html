@@ -42,7 +42,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form method="post">
+                            <form method="post" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 {{ part_form }}
                                 <div class="d-grid gap-2 mt-3">
@@ -125,6 +125,7 @@
             <thead>
                 <tr>
                     <th>Partes de la máquina</th>
+                    <th>Imagen</th>
                     <th>Tipo</th>
                     <th>Rosca</th>
                     <th>Largo</th>
@@ -141,6 +142,24 @@
                 {% for parte in partes_maquina %}
                 <tr>
                     <td rowspan="{{ parte.inventario_set.count }}">{{ parte.nombre }}</td>
+                    <td rowspan="{{ parte.inventario_set.count }}">
+                        <button type="button" class="btn btn-secondary btn-sm imagen" data-bs-toggle="modal" data-bs-target="#exampleModal{{ parte.id }}">
+                            Ver Imagen
+                        </button>
+                        <div class="modal fade" id="exampleModal{{ parte.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Imagen</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <img src="{{ parte.image.url }}" class="img-fluid" alt="Imagen">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
                     {% for inventario in parte.inventario_set.all %}
                     {% if forloop.first %}
                     <td>{{ inventario.tipo }}</td>

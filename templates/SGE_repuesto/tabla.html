@@ -37,6 +37,7 @@
                 <tr>
                     <th>Maquina</th>
                     <th>Parte de la máquina</th>
+                    <th>Imagen</th>
                     <th>Tipo</th>
                     <th>Rosca</th>
                     <th>Largo</th>
@@ -54,6 +55,26 @@
                         <td rowspan="{{ maquina.list|length }}">{{ maquina.grouper }}</td>
                         {% for inventario in maquina.list %}  
                             <td>{{ inventario.parte.nombre }}</td>
+
+                            <td>
+                                <button type="button" class="btn btn-secondary btn-sm imagen" data-bs-toggle="modal" data-bs-target="#exampleModal{{ inventario.parte.id }}">
+                                    Ver Imagen
+                                </button>
+                                <div class="modal fade" id="exampleModal{{ inventario.parte.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Imagen</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <img src="{{ inventario.parte.image.url }}" class="img-fluid" alt="Imagen">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
                             <td>{{ inventario.tipo }}</td>
                             <td>{{ inventario.rosca }}</td>
                             <td>{{ inventario.largo }}</td>

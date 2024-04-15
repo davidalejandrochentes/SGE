@@ -97,7 +97,7 @@ def detalles(request, id):
     if request.method == 'POST':
         maquina = get_object_or_404(Maquina, id=id)
         partes_maquina = Parte.objects.filter(maquina=maquina)
-        part_form = ParteRepuestoForm(request.POST)
+        part_form = ParteRepuestoForm(request.POST, request.FILES)
         inve_form = InventarioRepuestoForm(request.POST)
 
         action = request.POST.get('action')
@@ -109,6 +109,8 @@ def detalles(request, id):
         if part_form.is_valid():
             parte = part_form.save(commit=False)
             parte.maquina = maquina
+            if 'image' in request.FILES:
+                parte.image = request.FILES['image']
             parte.save()
 
         if inve_form.is_valid():
