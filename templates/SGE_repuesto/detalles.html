@@ -124,7 +124,7 @@
         <table class="table table-striped mt-4">
             <thead>
                 <tr>
-                    <th>Partes de la máquina</th>
+                    <th>Partes de la {{ maquina.nombre }}</th>
                     <th>Imagen</th>
                     <th>Tipo</th>
                     <th>Rosca</th>
@@ -169,7 +169,11 @@
                     <td>{{ inventario.cantidad_necesaria }}</td>
                     <td>{{ inventario.existencia_stock }}</td>
                     <td>{{ inventario.salida }}</td>
-                    <td>{{ inventario.existencia_fisica }}</td>
+                    {% if inventario.existencia_fisica <= 2 %}
+                        <td class="bg-danger">{{ inventario.existencia_fisica }}</td>
+                    {% else %}    
+                        <td class="">{{ inventario.existencia_fisica }}</td>
+                    {% endif %}
                     <td>
                         <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#Modal{{ inventario.id }}">
                             Modificar

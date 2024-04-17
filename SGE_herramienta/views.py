@@ -11,6 +11,9 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 
+import openpyxl
+from openpyxl.styles import Font, PatternFill
+
 # Create your views here.
 @login_required
 def herramienta(request):
@@ -321,4 +324,58 @@ def generar_documento_mantenimientos_herramienta(request, id):
     buffer.close()
     response.write(pdf)
 
-    return response              
+    return response        
+
+
+#---------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+def descargar_herramientas(request):
+    herramientas = Herramienta.objects.all()
+
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="herramientas.xlsx"'
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+
+    headers = ['Nombre', 'Número de serie', 'Encargado', 'Teléfono encargado', 'Descripción', 'Fecha de adquisición', 'Costo', 'Proveedor', 'Ubicación', 'Estado de la herramienta', 'Fecha último mantenimiento', 'Intervalo mantenimiento']
+    
+    # Configuración de estilos para la cabecera
+    for col, header in enumerate(headers, start=1):
+        ws.cell(row=1, column=col, value=header)
+        ws.cell(row=1, column=col).font = Font(bold=True)
+        ws.cell(row=1, column=col).fill = PatternFill(start_color="BFBFBF", end_color="BFBFBF", fill_type="solid")
+    
+    # Inserción de datos
+    for row, herramienta in enumerate(herramientas, start=2):
+        ws.cell(row=row, column=1, value=herramienta.nombre)
+        ws.cell(row=row, column=2, value=herramienta.número_de_serie)
+        ws.cell(row=row, column=3, value=herramienta.encargado)
+        ws.cell(row=row, column=4, value=herramienta.teléfono_encargado)
+        ws.cell(row=row, column=5, value=herramienta.descripción)
+        ws.cell(row=row, column=6, value=herramienta.fecha_de_adquisición)
+        ws.cell(row=row, column=7, value=herramienta.costo)
+        ws.cell(row=row, column=8, value=herramienta.proveedor)
+        ws.cell(row=row, column=9, value=herramienta.ubicación)
+        ws.cell(row=row, column=10, value=herramienta.estado_de_la_herramienta)
+        ws.cell(row=row, column=11, value=herramienta.fecha_ultimo_mantenimiento)
+        ws.cell(row=row, column=12, value=herramienta.intervalo_mantenimiento)
+
+    # Ajuste del ancho de las columnas
+    for col in ws.columns:
+        max_length = 0
+        for cell in col:
+            try:
+                if len(str(cell.value)) > max_length:
+                    max_length = len(cell.value)
+            except:
+                pass
+        adjusted_width = (max_length + 2) * 1.2
+        ws.column_dimensions[col[0].column_letter].width = adjusted_width
+
+    wb.save(response)
+    return response

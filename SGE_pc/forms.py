@@ -36,6 +36,8 @@ class MantenimientoPCForm(forms.ModelForm):
         exclude = ['pc']
         labels = {
             'image': 'Imagen',
+            'fecha': 'fecha de fin',
+            'hora': 'hora de fin',
         }
         widgets = {
             'fecha_inicio': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de inicio'}),

@@ -36,6 +36,8 @@ class MantenimientoMaquinaForm(forms.ModelForm):
         labels = {
             'hr_maquina': 'Horas máquina de trabajo',  # Aquí especificamos la etiqueta con tilde
             'image': 'Imagen',
+            'fecha': 'fecha de fin',
+            'hora': 'hora de fin',
         }
         widgets = {
             'fecha_inicio': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de inicio'}),

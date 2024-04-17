@@ -31,6 +31,8 @@ class MantenimientoAreaForm(forms.ModelForm):
         labels = {
             'image_antes': 'Imagen Antes',
             'image': 'Imagen Despues',
+            'fecha': 'fecha de fin',
+            'hora': 'hora de fin',
         }
         widgets = {
             'fecha_inicio': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de inicio'}),
@@ -40,3 +42,4 @@ class MantenimientoAreaForm(forms.ModelForm):
             'tipo': forms.Select(attrs={'class': 'form-select m-2', 'placeholder': 'Tipo de mantenimiento'}),
             'descripción': Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción del mantenimiento'}),
         }
+
