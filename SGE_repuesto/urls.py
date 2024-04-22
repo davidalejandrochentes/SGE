@@ -5,6 +5,7 @@ urlpatterns = [
     path('repuesto_maquina/', views.repuesto_maquina, name="repuesto_maquina"),
     path('eliminar_repuesto_maquina/<int:id>', views.eliminar_repuesto_maquina, name="eliminar_repuesto_maquina"),
     path('detalles_repuesto_maquina/<int:id>', views.detalles, name="detalles_repuesto_maquina"),
+    path('mod_inventario/<int:id>', views.mod_inventario, name="mod_inventario"),
     path('actualizar_inventario/<int:id>/', views.actualizar_inventario, name='actualizar_inventario'),
     path('eliminar_inventario/<int:id>', views.eliminar_inventario, name="eliminar_inventario"),
     path('descargar-excel/<int:id>/', views.descargar_excel, name='descargar_excel'),

@@ -133,6 +133,38 @@ def detalles(request, id):
         return render(request, 'SGE_repuesto/detalles.html', context)  
 
 
+def mod_inventario(request, id):
+    if request.method == 'GET':
+        inventario = get_object_or_404(Inventario, id=id)
+        parte = inventario.parte
+        inve_form = InventarioRepuestoForm(instance=inventario)
+        context = {
+            'parte': parte,
+            'inve_form': inve_form
+        }
+        return render(request, 'SGE_repuesto/mod_inventario.html', context)
+
+    if request.method == 'POST':
+        inventario = get_object_or_404(Inventario, id=id)
+        parte = inventario.parte
+        inve_form = InventarioRepuestoForm(request.POST, instance=inventario)
+
+        if inve_form.is_valid():
+            inventario = inve_form.save(commit=False)
+            inventario.parte = parte
+            inventario.save()
+            return redirect('detalles_repuesto_maquina', id=parte.maquina.id)
+        else:
+            context = {
+                'parte': parte,
+                'inve_form': inve_form
+            }
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo") 
+            return render(request, 'SGE_repuesto/mod_inventario.html', context)    
+
+    return HttpResponse("Method Not Allowed", status=405)        
+
+
 
 def descargar_excel(request, id):
     maquina = get_object_or_404(Maquina, id=id)

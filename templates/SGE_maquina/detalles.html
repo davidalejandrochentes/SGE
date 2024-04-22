@@ -241,11 +241,13 @@
                 <th>Hora inicio</th>
                 <th>Fecha final</th>
                 <th>Hora final</th>
+                <th>Operador</th>
                 <th>Tipo</th>
                 <th>Hr máquina</th>
                 <th>Partes y piezas</th>
                 <th>Descripción</th>
                 <th>Imagen</th>
+                <th>Modificar</th>
                 <th>Eliminar<th>
             </tr>
         </thead>
@@ -256,13 +258,14 @@
                     <td>{{ mantenimiento.hora_inicio }}</td>
                     <td>{{ mantenimiento.fecha }}</td>
                     <td>{{ mantenimiento.hora }}</td>
+                    <td>{{ mantenimiento.operador }}</td>
                     <td>{{ mantenimiento.tipo }}</td>
                     <td>{{ mantenimiento.hr_maquina }}</td>
                     <td>{{ mantenimiento.partes_y_piezas }}</td>
                     <td>{{ mantenimiento.descripción }}</td>
                     <td>
                         <button type="button" class="btn btn-secondary btn-sm imagen" data-bs-toggle="modal" data-bs-target="#exampleModal{{ mantenimiento.id }}">
-                            Ver Imagen <i class="bi bi-image"></i>
+                            Imagen
                         </button>
                         <div class="modal fade" id="exampleModal{{ mantenimiento.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -277,6 +280,9 @@
                                 </div>
                             </div>
                         </div>
+                    </td>
+                    <td>
+                        <a class="btn btn-info btn-sm" href="{% url "mod_mantenimineto_maquina" id=mantenimiento.id %}">Modificar</a>
                     </td>
                     <td>
                         <a class="btn btn-danger btn-sm" href="{% url "eliminar_mantenimiento_maquina" id=mantenimiento.id %}">eliminar</a>

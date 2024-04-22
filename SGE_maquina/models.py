@@ -47,6 +47,7 @@ class MantenimientoMaquina(models.Model):
     hora_inicio = models.TimeField(default=datetime.now().time()) 
     fecha = models.DateField(default=date.today)
     hora = models.TimeField(default=datetime.now().time())
+    operador = models.CharField(max_length=100, blank=False, null=False, default="")
     tipo = models.ForeignKey(TipoMantenimientoMaquina, on_delete=models.CASCADE)
     hr_maquina = models.IntegerField(blank=False, null=False, default=0)
     partes_y_piezas = models.TextField(max_length=500, null=False, blank=False, default="")
@@ -119,7 +120,7 @@ def eliminar_imagen_anterior_al_actualizar_mantenimineto(sender, instance, **kwa
     except MantenimientoMaquina.DoesNotExist:
         return False  # La máquina anterior no existe, no hay imagen anterior que eliminar
 
-    if mantenimineto_anterior_anterior.image:  # Verificar si la máquina anterior tiene una imagen
+    if mantenimineto_anterior.image:  # Verificar si la máquina anterior tiene una imagen
         nueva_imagen = instance.image
         if mantenimineto_anterior.image != nueva_imagen:  # Verificar si se ha seleccionado una nueva imagen
             if os.path.isfile(mantenimineto_anterior.image.path):  # Verificar si el archivo de imagen existe en el sistema de archivos
