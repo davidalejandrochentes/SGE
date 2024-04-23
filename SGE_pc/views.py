@@ -188,6 +188,38 @@ def detalles(request, id):
             previous_url = request.META.get('HTTP_REFERER')
             return HttpResponseRedirect(previous_url)
 
+
+def mod_mantenimiento_pc(request, id):
+    if request.method == 'GET':
+        mantenimiento = get_object_or_404(MantenimientoPC, id=id)
+        pc = mantenimiento.pc
+        form_mant = MantenimientoPCForm(instance=mantenimiento)
+        context = {
+            'form_mant': form_mant,
+            'pc': pc,
+        }
+        return render(request, 'SGE_pc/mod_mantenimiento.html', context) 
+
+    if request.method == 'POST':
+        mantenimiento = get_object_or_404(MantenimientoPC, id=id)
+        pc = mantenimiento.pc 
+        form_mant = MantenimientoPCForm(request.POST, request.FILES, instance=mantenimiento)
+
+        if form_mant.is_valid():
+            mantenimiento = form_mant.save(commit=False)
+            mantenimiento.pc = pc
+            if 'image' in request.FILES:
+                mantenimiento.image = request.FILES['image']
+            mantenimiento.save()
+            return redirect('detalles_pc', id=pc.id)
+        else:
+            context = {
+            'form_mant': form_mant,
+            'pc': pc,
+            }
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo") 
+            return render(request, 'SGE_pc/mod_mantenimiento.html', context)                  
+
 @login_required
 def generar_documento_mantenimientos_por_mes(request):
     mes = request.GET.get('mes')
@@ -214,7 +246,7 @@ def generar_documento_mantenimientos_por_mes(request):
     wb = openpyxl.Workbook()
     ws = wb.active
 
-    headers = ['E Cómputo', 'Tipo', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Partes y Piezas', 'Descripción']
+    headers = ['E Cómputo', 'Tipo', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Operador', 'Partes y Piezas', 'Descripción']
     for col, header in enumerate(headers, start=1):
         ws.cell(row=1, column=col, value=header)
         ws.cell(row=1, column=col).font = Font(bold=True)
@@ -229,6 +261,7 @@ def generar_documento_mantenimientos_por_mes(request):
             mantenimiento.hora_inicio,
             mantenimiento.fecha,
             mantenimiento.hora,
+            mantenimiento.operador,
             mantenimiento.partes_y_piezas,
             mantenimiento.descripción
         ])
@@ -277,7 +310,7 @@ def generar_documento_mantenimientos_pc(request, id):
     ws = wb.active
 
     # Define los encabezados de la tabla
-    headers = ['Tipo', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Partes y Piezas', 'Descripción']
+    headers = ['Tipo', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Operador', 'Partes y Piezas', 'Descripción']
     for col, header in enumerate(headers, start=1):
         ws.cell(row=1, column=col, value=header)
         ws.cell(row=1, column=col).font = Font(bold=True)
@@ -292,6 +325,7 @@ def generar_documento_mantenimientos_pc(request, id):
             mantenimiento.hora_inicio,
             mantenimiento.fecha,
             mantenimiento.hora,
+            mantenimiento.operador,
             mantenimiento.partes_y_piezas,
             mantenimiento.descripción
         ])

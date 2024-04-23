@@ -124,6 +124,7 @@ def eliminar_mantenimiento(request, id):
 
 from django.http import HttpResponse
 
+@login_required
 def mod_mantenimineto_maquina(request, id):
     if request.method == 'GET':
         mantenimiento = get_object_or_404(MantenimientoMaquina, id=id)
