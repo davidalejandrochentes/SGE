@@ -122,7 +122,6 @@ def eliminar_mantenimiento(request, id):
     previous_url = request.META.get('HTTP_REFERER')
     return HttpResponseRedirect(previous_url)
 
-from django.http import HttpResponse
 
 @login_required
 def mod_mantenimineto_maquina(request, id):
