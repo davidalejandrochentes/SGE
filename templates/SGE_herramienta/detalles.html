@@ -23,7 +23,7 @@
         </a>
         <span class="p-3">
 
-            <button type="button" class="btn btn-secondary imagen" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" class="btn btn-secondary imagen shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Ver Imagen <i class="bi bi-image"></i>
             </button>
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -128,7 +128,7 @@
             {% endcomment %}
 
             
-            <button type="button" class="btn btn-primary editar" data-bs-toggle="modal" data-bs-target="#modal-editar">
+            <button type="button" class="btn btn-primary editar shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-editar">
                 Editar <i class="bi bi-pencil-square"></i>
             </button>
             <div class="modal fade modal-lg" id="modal-editar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -156,7 +156,7 @@
                 </div>
             </div>
             
-            <button type="button" class="btn btn-danger eliminar mt-md-0 mt-2" data-bs-toggle="modal" data-bs-target="#modal-eliminar">
+            <button type="button" class="btn btn-danger eliminar mt-md-0 mt-2 shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-eliminar">
                 Eliminar <i class="bi bi-trash"></i>
             </button>
             <div class="modal fade" id="modal-eliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -183,8 +183,8 @@
         </span>
     </div>
 
-    <h3 class="mt-4">Datos de ({{ herramienta.nombre }})</h3>
-    <table class="table table-striped">
+    <h3 class="mt-4 text-uppercase">Datos de ({{ herramienta.nombre }})</h3>
+    <table class="table table-striped shadow">
         <thead>
             <tr>
                 <th scope="col">Nombre</th>
@@ -241,7 +241,7 @@
     {% endcomment %}
     
     {% comment %}
-    <h3>Mantenimientos realizados</h3>
+    <h3 class="text-uppercase">Mantenimientos realizados</h3>
     <table class="table table-striped">
         <thead>
             <tr>
