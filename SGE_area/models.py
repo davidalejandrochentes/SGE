@@ -41,6 +41,7 @@ class MantenimientoArea(models.Model):
     hora_inicio = models.TimeField(default=datetime.now().time()) 
     fecha = models.DateField(default=date.today)
     hora = models.TimeField(default=datetime.now().time())
+    operador = models.CharField(max_length=100, blank=False, null=False, default="")
     descripción = models.TextField(max_length=500, null=False, blank=False, default="")
     image_antes = models.ImageField(upload_to="area/mantenimiento/antes", null=False, blank=False, default=None) 
     image = models.ImageField(upload_to="area/mantenimiento/despues", null=False, blank=False, default=None) 
@@ -111,7 +112,7 @@ def eliminar_imagen_anterior_al_actualizar_mantenimineto(sender, instance, **kwa
     except MantenimientoArea.DoesNotExist:
         return False  # La máquina anterior no existe, no hay imagen anterior que eliminar
 
-    if mantenimineto_anterior_anterior.image:  # Verificar si la máquina anterior tiene una imagen
+    if mantenimineto_anterior.image:  # Verificar si la máquina anterior tiene una imagen
         nueva_imagen = instance.image
         if mantenimineto_anterior.image != nueva_imagen:  # Verificar si se ha seleccionado una nueva imagen
             if os.path.isfile(mantenimineto_anterior.image.path):  # Verificar si el archivo de imagen existe en el sistema de archivos
@@ -137,7 +138,7 @@ def eliminar_imagen_anterior_antes_al_actualizar_mantenimineto(sender, instance,
     except MantenimientoArea.DoesNotExist:
         return False  # La máquina anterior no existe, no hay imagen anterior que eliminar
 
-    if mantenimineto_anterior_anterior.image_antes:  # Verificar si la máquina anterior tiene una imagen
+    if mantenimineto_anterior.image_antes:  # Verificar si la máquina anterior tiene una imagen
         nueva_imagen = instance.image_antes
         if mantenimineto_anterior.image_antes != nueva_imagen:  # Verificar si se ha seleccionado una nueva imagen
             if os.path.isfile(mantenimineto_anterior.image_antes.path):  # Verificar si el archivo de imagen existe en el sistema de archivos

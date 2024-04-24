@@ -232,9 +232,11 @@
                 <th>Fecha final</th>
                 <th>Hora final</th>
                 <th>Tipo</th>
+                <th>Operador</th>
                 <th>Descripción</th>
                 <th>Imagen antes</th>
                 <th>Imagen despues</th>
+                <th>Modificar</th>
                 <th>Eliminar<th>
             </tr>
         </thead>
@@ -246,9 +248,10 @@
                     <td>{{ mantenimiento.fecha }}</td>
                     <td>{{ mantenimiento.hora }}</td>
                     <td>{{ mantenimiento.tipo }}</td>
+                    <td>{{ mantenimiento.operador }}</td>
                     <td>{{ mantenimiento.descripción }}</td>
                     <td>
-                        <button type="button" class="btn btn-secondary btn-sm imagen" data-bs-toggle="modal" data-bs-target="#exampleModal{{ mantenimiento.id }}1">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal{{ mantenimiento.id }}1">
                             Ver Imagen <i class="bi bi-image"></i>
                         </button>
                         <div class="modal fade" id="exampleModal{{ mantenimiento.id }}1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -282,6 +285,9 @@
                                 </div>
                             </div>
                         </div>
+                    </td>
+                    <td>
+                        <a class="btn btn-info btn-sm" href="{% url "mod_mantenimineto_area" id=mantenimiento.id %}">Modificar</a>
                     </td>
                     <td>
                         <a class="btn btn-danger btn-sm" href="{% url "eliminar_mantenimiento_area" id=mantenimiento.id %}">eliminar</a>

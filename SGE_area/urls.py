@@ -7,6 +7,7 @@ urlpatterns = [
     path('tabla/', views.tabla_mantenimientos, name="area_tabla_mantenimientos"),
     path('nueva/', views.crear_area, name="area_nueva"),
     path('detalles/<int:id>', views.detalles, name="detalles_area"),
+    path('mod_mantenimineto_area/<int:id>', views.mod_mantenimineto_area, name="mod_mantenimineto_area"),
     path('delete/<int:id>', views.eliminar, name="eliminar_area"),
     path('delete_mantenimiento/<int:id>', views.eliminar_mantenimiento, name="eliminar_mantenimiento_area"),
     path('generar_documento_mantenimientos_por_mes/', views.generar_documento_mantenimientos_por_mes, name='generar_documento_mantenimientos_general_area'),

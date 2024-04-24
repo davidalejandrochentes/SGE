@@ -117,6 +117,39 @@ def eliminar_mantenimiento(request, id):
     previous_url = request.META.get('HTTP_REFERER')
     return HttpResponseRedirect(previous_url)
 
+@login_required
+def mod_mantenimineto_area(request, id):
+    if request.method == 'GET':
+        mantenimiento = get_object_or_404(MantenimientoArea, id=id)
+        area =mantenimiento.area
+        form_mant = MantenimientoAreaForm(instance=mantenimiento)
+        context = {
+            'form_mant': form_mant,
+            'area': area,
+        }
+        return render(request, 'SGE_area/mod_mantenimineto.html', context)
+
+    if request.method == 'POST':
+            mantenimiento = get_object_or_404(MantenimientoArea, id=id)
+            area =mantenimiento.area
+            form_mant = MantenimientoAreaForm(request.POST, request.FILES, instance=mantenimiento)
+
+            if form_mant.is_valid():
+                mantenimiento = form_mant.save(commit=False)
+                mantenimiento.area = area
+                if 'image' in request.FILES:
+                    mantenimiento.image = request.FILES['image'] 
+                mantenimiento.save()
+                return redirect('detalles_area', id=area.id)
+            else:
+                context = {
+                    'form_mant': form_mant,
+                    'area': area,
+                }
+                messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo") 
+                return render(request, 'SGE_maquina/mod_mantenimineto.html', context)    
+    return HttpResponse("Method Not Allowed", status=405)            
+
 @login_required    
 def detalles(request, id):
     if request.method == 'GET':
@@ -219,7 +252,7 @@ def generar_documento_mantenimientos_por_mes(request):
     wb = openpyxl.Workbook()
     ws = wb.active
 
-    headers = ['Area', 'Tipo', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Descripción']
+    headers = ['Area', 'Tipo', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Operador', 'Descripción']
     for col, header in enumerate(headers, start=1):
         ws.cell(row=1, column=col, value=header)
         ws.cell(row=1, column=col).font = Font(bold=True)
@@ -234,6 +267,7 @@ def generar_documento_mantenimientos_por_mes(request):
             mantenimiento.hora_inicio,
             mantenimiento.fecha,
             mantenimiento.hora,
+            mantenimiento.operador,
             mantenimiento.descripción
         ])
 
@@ -284,7 +318,7 @@ def generar_documento_mantenimientos_area(request, id):
     ws = wb.active
 
     # Define los encabezados de la tabla
-    headers = ['Tipo', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Descripción']
+    headers = ['Tipo', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Operador', 'Descripción']
     for col, header in enumerate(headers, start=1):
         ws.cell(row=1, column=col, value=header)
         ws.cell(row=1, column=col).font = Font(bold=True)
@@ -299,6 +333,7 @@ def generar_documento_mantenimientos_area(request, id):
             mantenimiento.hora_inicio,
             mantenimiento.fecha,
             mantenimiento.hora,
+            mantenimiento.operador,
             mantenimiento.descripción
         ])
 
