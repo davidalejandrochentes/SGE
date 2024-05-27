@@ -11,6 +11,7 @@ urlpatterns = [
     path('herramienta/', include('SGE_herramienta.urls')),
     path('maquina/', include('SGE_maquina.urls')),
     path('repuesto/', include('SGE_repuesto.urls')),
+    path('vehiculo/', include('SGE_vehiculo.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
