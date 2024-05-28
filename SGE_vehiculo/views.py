@@ -74,12 +74,12 @@ def crear_vehiculo(request):
 def alertas(request):
     alert = Vehiculo.objects.filter(marca__icontains=request.GET.get('search', ''))
     alertas = []
-    for maquina in alert:
-        horas_restantes = maquina.horas_restantes_mantenimiento()
+    for vehiculo in alert:
+        horas_restantes = vehiculo.km_restantes_mantenimiento()
         if horas_restantes <= 100:
             
             alertas.append({
-                'maquina': maquina,
+                'vehiculo': vehiculo,
                 'horas_restantes': horas_restantes
             })
     alertas_ordenadas = sorted(alertas, key=lambda x: x['horas_restantes'])
@@ -88,4 +88,4 @@ def alertas(request):
         'alertas': alertas_ordenadas,
         'total_alertas': total_alertas,
     }
-    return render(request, 'SGE_maquina/alertas.html', context)            
+    return render(request, 'SGE_vehiculo/alertas.html', context)            
