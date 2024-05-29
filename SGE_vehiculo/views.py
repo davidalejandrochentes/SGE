@@ -88,4 +88,93 @@ def alertas(request):
         'alertas': alertas_ordenadas,
         'total_alertas': total_alertas,
     }
-    return render(request, 'SGE_vehiculo/alertas.html', context)            
+    return render(request, 'SGE_vehiculo/alertas.html', context)      
+
+
+
+@login_required    
+def detalles(request, id):
+    if request.method == 'GET':
+        vehiculo = get_object_or_404(Vehiculo, id=id)
+        mantenimientos = vehiculo.mantenimientovehiculo_set.all().order_by('-fecha_fin', '-hora_fin')
+        form = VehiculoForm(instance=vehiculo)
+        form_mant = MantenimientoVehiculoForm()
+        tipos_mantenimiento = TipoMantenimientoVehiculo.objects.all()
+        context = {
+            'vehiculo': vehiculo,
+            'form': form,
+            'id': id,
+            'form_mant': form_mant,
+            'mantenimientos': mantenimientos,
+            'tipos_mantenimiento': tipos_mantenimiento,
+        }
+        return render(request, 'SGE_vehiculo/detalles.html', context)
+    
+    if request.method == 'POST':
+        vehiculo = get_object_or_404(Vehiculo, id=id)
+        form_mant = MantenimientoVehiculoForm(request.POST, request.FILES)
+        form = VehiculoForm(instance=vehiculo)
+        form = VehiculoForm(request.POST, request.FILES, instance=vehiculo)
+
+        if form.is_valid():
+            intervalo_mantenimiento = form.cleaned_data.get('intervalo_mantenimiento')
+            if intervalo_mantenimiento < 0:
+                form_mant = MantenimientoVehiculoForm()
+                tipos_mantenimiento = TipoMantenimientoVehiculo.objects.all()
+                mantenimientos = vehiculo.mantenimientovehiculo_set.all().order_by('-fecha_fin', '-hora_fin')
+                form.add_error('intervalo_mantenimiento', 'El intervalo de mantenimiento no puede ser un número negativo')
+                context = {
+                    'vehiculo': vehiculo,
+                    'form': form,
+                    'id': id,
+                    'form_mant': form_mant,
+                    'mantenimientos': mantenimientos,
+                    'tipos_mantenimiento': tipos_mantenimiento,
+                }
+                previous_url = request.META.get('HTTP_REFERER')
+                return HttpResponseRedirect(previous_url)
+            else:
+                form.save()
+                form_mant = MantenimientoVehiculoForm()
+                tipos_mantenimiento = TipoMantenimientoVehiculo.objects.all()
+                mantenimientos = vehiculo.mantenimientovehiculo_set.all().order_by('-fecha_fin', '-hora_fin')
+                context = {
+                    'vehiculo': vehiculo,
+                    'form': form,
+                    'id': id,
+                    'form_mant': form_mant,
+                    'mantenimientos': mantenimientos,
+                    'tipos_mantenimiento': tipos_mantenimiento,
+                }
+                return render(request, 'SGE_vehiculo/detalles.html', context) 
+        
+
+        if form_mant.is_valid():
+            mantenimiento = form_mant.save(commit=False)
+            mantenimiento.maquina = maquina
+            if 'image' in request.FILES:
+                mantenimiento.image = request.FILES['image'] 
+            mantenimiento.save()
+            form = MaquinaForm(instance=maquina)
+            tipos_mantenimiento = TipoMantenimientoMaquina.objects.all()
+            mantenimientos = maquina.mantenimientomaquina_set.all().order_by('-fecha', '-hora')
+            context = {
+                'maquina': maquina,
+                'form': form,
+                'id': id,
+                'form_mant': form_mant,
+                'mantenimientos': mantenimientos,
+                'tipos_mantenimiento': tipos_mantenimiento,
+            }
+            previous_url = request.META.get('HTTP_REFERER')
+            return HttpResponseRedirect(previous_url)
+        else:
+            previous_url = request.META.get('HTTP_REFERER')
+            return HttpResponseRedirect(previous_url) 
+
+
+@login_required
+def eliminar(request, id):
+    vehiculo = get_object_or_404(Vehiculo, id=id)
+    vehiculo.delete()
+    return redirect ('vehiculo')    

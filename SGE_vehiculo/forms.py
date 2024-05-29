@@ -9,6 +9,7 @@ class VehiculoForm(forms.ModelForm):
         exclude = ['fecha_ultimo_mantenimiento']
         labels = {
             'image': 'Imagen',
+            'matricula': 'matrícula',
             'dni_chofer': 'DNI?',
         }
         widgets = {
