@@ -151,15 +151,15 @@ def detalles(request, id):
 
         if form_mant.is_valid():
             mantenimiento = form_mant.save(commit=False)
-            mantenimiento.maquina = maquina
+            mantenimiento.vehiculo = vehiculo
             if 'image' in request.FILES:
                 mantenimiento.image = request.FILES['image'] 
             mantenimiento.save()
-            form = MaquinaForm(instance=maquina)
-            tipos_mantenimiento = TipoMantenimientoMaquina.objects.all()
-            mantenimientos = maquina.mantenimientomaquina_set.all().order_by('-fecha', '-hora')
+            form = VehiculoForm(instance=vehiculo)
+            tipos_mantenimiento = TipoMantenimientoVehiculo.objects.all()
+            mantenimientos = vehiculo.mantenimientovehiculo_set.all().order_by('-fecha_fin', '-hora_fin')
             context = {
-                'maquina': maquina,
+                'vehiculo': vehiculo,
                 'form': form,
                 'id': id,
                 'form_mant': form_mant,
@@ -178,3 +178,11 @@ def eliminar(request, id):
     vehiculo = get_object_or_404(Vehiculo, id=id)
     vehiculo.delete()
     return redirect ('vehiculo')    
+
+
+@login_required
+def eliminar_mantenimiento(request, id):
+    mantenimiento = get_object_or_404(MantenimientoVehiculo, id=id)
+    mantenimiento.delete()
+    previous_url = request.META.get('HTTP_REFERER')
+    return HttpResponseRedirect(previous_url)

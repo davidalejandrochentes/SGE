@@ -69,8 +69,8 @@ class MantenimientoVehiculo(models.Model):
     image = models.ImageField(upload_to="vehiculo/mantenimiento", null=False, blank=False) 
 
     def __str__(self):
-        txt = "Area: {}, Tipo: {}, Fecha: {}"
-        return txt.format(self.area, self.tipo, self.fecha)  
+        txt = "Vehiculo: {}, Tipo: {}, Fecha: {}"
+        return txt.format(self.vehiculo, self.tipo, self.fecha_fin)  
 
 
 @receiver(post_save, sender=MantenimientoVehiculo)
@@ -83,7 +83,7 @@ def actualizar_fecha_ultimo_mantenimiento(sender, instance, **kwargs):
 @receiver(pre_delete, sender=MantenimientoVehiculo)
 def revertir_fecha_ultimo_mantenimiento(sender, instance, **kwargs):
     vehiculo = instance.vehiculo
-    mantenimientos_restantes = MantenimientoVehiculo.objects.filter(vehiculo=vehiculo).exclude(id=instance.id).order_by('-fecha')
+    mantenimientos_restantes = MantenimientoVehiculo.objects.filter(vehiculo=vehiculo).exclude(id=instance.id).order_by('-fecha_fin')
     if mantenimientos_restantes.exists():
         ultimo_mantenimiento = mantenimientos_restantes.first()
         vehiculo.fecha_ultimo_mantenimiento = ultimo_mantenimiento.fecha_fin
