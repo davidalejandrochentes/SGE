@@ -27,8 +27,15 @@ class Maquina(models.Model):
     image = models.ImageField(upload_to="maquina/image", null=False, blank=False)
 
     def horas_restantes_mantenimiento(self):
-        horas_restantes = self.intervalo_mantenimiento - (self.horas_máquina_trabajada % self.intervalo_mantenimiento)
-        return horas_restantes
+        ultimo_mantenimiento = MantenimientoMaquina.objects.filter(maquina=self).order_by('-fecha').first()
+        if ultimo_mantenimiento:
+            horas_uso_ultimo_mantenimiento = ultimo_mantenimiento.hr_maquina
+        else:
+            horas_uso_ultimo_mantenimiento = 0
+
+        proximo_mantenimineto = horas_uso_ultimo_mantenimiento + self.intervalo_mantenimiento
+        horas_restantes = proximo_mantenimineto - self.horas_máquina_trabajada
+        return horas_restantes   
     
     
     def __str__(self):
