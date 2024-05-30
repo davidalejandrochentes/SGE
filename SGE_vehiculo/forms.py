@@ -56,10 +56,10 @@ class MantenimientoVehiculoForm(forms.ModelForm):
         fecha_inicio = cleaned_data.get('fecha_inicio')
         fecha_fin = cleaned_data.get('fecha_fin')
         
-        if fecha_inicio and fecha_inicio > date.today():
+        if fecha_inicio > date.today():
             self.add_error('fecha_inicio', 'La fecha de inicio no puede ser en el futuro.')
         
-        if fecha_fin and fecha_fin > date.today():
+        if fecha_fin > date.today():
             self.add_error('fecha_fin', 'La fecha de fin no puede ser en el futuro.')
         
         return cleaned_data

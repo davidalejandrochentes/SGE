@@ -1,6 +1,7 @@
 from django import forms
 from .models import PC, MantenimientoPC
 from django.forms import Textarea
+from datetime import date
 
 class PCForm(forms.ModelForm):    
     class Meta:
@@ -48,4 +49,17 @@ class MantenimientoPCForm(forms.ModelForm):
             'operador': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre de quien lo realizó'}),
             'partes_y_piezas': Textarea(attrs={'class': 'form-control', 'placeholder': 'Partes y piezas implicadas'}),
             'descripción': Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción del mantenimiento'}),
-        }      
+        } 
+
+    def clean(self):
+        cleaned_data = super().clean()
+        fecha_inicio = cleaned_data.get('fecha_inicio')
+        fecha_fin = cleaned_data.get('fecha')
+        
+        if fecha_inicio > date.today():
+            self.add_error('fecha_inicio', 'La fecha de inicio no puede ser en el futuro.')
+        
+        if fecha_fin > date.today():
+            self.add_error('fecha', 'La fecha de fin no puede ser en el futuro.')
+        
+        return cleaned_data          
