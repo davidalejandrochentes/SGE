@@ -4,12 +4,7 @@ from .forms import HerramientaForm, MantenimientoHerramientaForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
-
 from django.http import HttpResponse, HttpResponseRedirect
-from io import BytesIO
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 
 import openpyxl
 from openpyxl.styles import Font, PatternFill
@@ -212,124 +207,6 @@ def detalles(request, id):
         else:
             previous_url = request.META.get('HTTP_REFERER')
             return HttpResponseRedirect(previous_url)            
-
-@login_required
-def generar_documento_mantenimientos_por_mes(request):
-    mes = request.GET.get('mes')
-    anio = request.GET.get('anio')
-    tipo_mantenimiento_id = request.GET.get('tipo_mantenimiento')
-
-    mantenimientos = MantenimientoHerramienta.objects.filter(fecha__year=anio)
-
-    if mes:
-        mantenimientos = mantenimientos.filter(fecha__month=mes)
-
-    if tipo_mantenimiento_id:  # Si se seleccionó un tipo de mantenimiento
-        tipo_mantenimiento = get_object_or_404(TipoMantenimientoHerramienta, pk=tipo_mantenimiento_id)
-        mantenimientos = mantenimientos.filter(tipo=tipo_mantenimiento)
-
-    mantenimientos = mantenimientos.order_by('-fecha', '-hora')
-
-    response = HttpResponse(content_type='application/pdf')
-    if mes:
-        response['Content-Disposition'] = 'attachment; filename="mantenimientos_herramientas_{}_{}.pdf"'.format(mes, anio)
-    else:
-        response['Content-Disposition'] = 'attachment; filename="mantenimientos_herramientas_{}.pdf"'.format(anio)
-
-    buffer = BytesIO()
-
-    doc = SimpleDocTemplate(buffer, pagesize=letter)
-    elements = []
-
-    data = []
-    if mes:
-        data.append(['Herramienta', 'Tipo', 'Fecha', 'Hora'])
-        for mantenimiento in mantenimientos:
-            data.append([mantenimiento.herramienta, mantenimiento.tipo, mantenimiento.fecha, mantenimiento.hora])
-    else:
-        data.append(['Herramienta', 'Tipo', 'Mes', 'Año', 'Dia', 'Hora'])
-        for mantenimiento in mantenimientos:
-            data.append([mantenimiento.herramienta, mantenimiento.tipo, mantenimiento.fecha.month, mantenimiento.fecha.year, mantenimiento.fecha.day, mantenimiento.hora])
-
-    table = Table(data)
-    table.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-                                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-                                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-                                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-                                ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-                                ('GRID', (0, 0), (-1, -1), 1, colors.black)]))
-    elements.append(table)
-
-    doc.build(elements)
-    pdf = buffer.getvalue()
-    buffer.close()
-    response.write(pdf)
-
-    return response
-
-@login_required
-def generar_documento_mantenimientos_herramienta(request, id):
-    mes = request.GET.get('mes')
-    anio = request.GET.get('anio')
-    tipo_mantenimiento_id = request.GET.get('tipo_mantenimiento')
-
-    herramienta = get_object_or_404(Herramienta, pk=id)
-    
-    mantenimientos = MantenimientoHerramienta.objects.filter(herramienta=herramienta).order_by('-fecha', '-hora')
-
-
-    if mes:
-        mantenimientos = mantenimientos.filter(fecha__month=mes)
-    if anio:
-        mantenimientos = mantenimientos.filter(fecha__year=anio)
-    if tipo_mantenimiento_id:  # Si se seleccionó un tipo de mantenimiento
-        tipo_mantenimiento = get_object_or_404(TipoMantenimientoHerramienta, pk=tipo_mantenimiento_id)
-        mantenimientos = mantenimientos.filter(tipo=tipo_mantenimiento)
-
-
-    response = HttpResponse(content_type='application/pdf')
-    if mes:
-        response['Content-Disposition'] = 'attachment; filename="mantenimientos_herramientas_{}_{}_{}.pdf"'.format(herramienta.nombre,mes, anio)
-    else:
-        response['Content-Disposition'] = 'attachment; filename="mantenimientos_herramientas_{}_{}.pdf"'.format(herramienta.nombre,anio)   
-
-    buffer = BytesIO()
-
-    doc = SimpleDocTemplate(buffer, pagesize=letter)
-    elements = []
-
-    data = []
-    if mes:
-        data.append(['Tipo', 'Fecha', 'Hora'])
-        for mantenimiento in mantenimientos:
-            data.append([mantenimiento.herramienta, mantenimiento.tipo, mantenimiento.fecha, mantenimiento.hora])
-    else:
-        data.append(['Tipo', 'Mes', 'Año', 'Dia', 'Hora'])
-        for mantenimiento in mantenimientos:
-            data.append([mantenimiento.tipo, mantenimiento.fecha.month, mantenimiento.fecha.year, mantenimiento.fecha.day, mantenimiento.hora])
-
-    table = Table(data)
-    table.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-                                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-                                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-                                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-                                ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-                                ('GRID', (0, 0), (-1, -1), 1, colors.black)]))
-    elements.append(table)
-
-    doc.build(elements)
-    pdf = buffer.getvalue()
-    buffer.close()
-    response.write(pdf)
-
-    return response        
-
-
-#---------------------------------------------------------------------------------------------------------------
-
-
 
 
 

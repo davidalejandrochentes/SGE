@@ -4,12 +4,7 @@ from .forms import MaquinaForm, MantenimientoMaquinaForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
-
 from django.http import HttpResponse, HttpResponseRedirect
-from io import BytesIO
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 
 import openpyxl
 from openpyxl.styles import Font, PatternFill
