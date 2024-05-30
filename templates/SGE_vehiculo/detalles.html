@@ -23,6 +23,10 @@
         </a>
         <span class="p-3">
             
+            <button type="button" class="btn btn-light imagen shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                tabla de viajes <i class="bi bi-car-front"></i>
+            </button>
+
             <button type="button" class="btn btn-secondary imagen shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Ver Imagen <i class="bi bi-image"></i>
             </button>
@@ -278,7 +282,7 @@
                         </div>
                     </td>
                     <td>
-                        <a class="btn btn-info btn-sm" href="{% url "mod_mantenimineto_maquina" id=mantenimiento.id %}">Modificar</a>
+                        <a class="btn btn-info btn-sm" href="{% url "mod_mantenimineto_vehiculo" id=mantenimiento.id %}">Modificar</a>
                     </td>
                     <td>
                         <a class="btn btn-danger btn-sm" href="{% url "eliminar_mantenimiento_vehiculo" id=mantenimiento.id %}">eliminar</a>

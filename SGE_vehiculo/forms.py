@@ -1,6 +1,7 @@
 from django import forms
 from .models import Vehiculo, MantenimientoVehiculo
 from django.forms import Textarea
+from datetime import date
 
 class VehiculoForm(forms.ModelForm):    
     class Meta:
@@ -28,13 +29,14 @@ class VehiculoForm(forms.ModelForm):
             'dni_chofer': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'DNI?'}),
         }
 
+
 class MantenimientoVehiculoForm(forms.ModelForm):
     class Meta:
         model = MantenimientoVehiculo
         fields = '__all__'
         exclude = ['vehiculo']
         labels = {
-            'km_recorridos': 'km recorridos',  # Aquí especificamos la etiqueta con tilde
+            'km_recorridos': 'km recorridos',
             'image': 'Imagen',
         }
         widgets = {
@@ -45,6 +47,19 @@ class MantenimientoVehiculoForm(forms.ModelForm):
             'operador': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre de quien lo realizó'}),
             'tipo': forms.Select(attrs={'class': 'form-select m-2', 'placeholder': 'Tipo de mantenimiento'}),
             'km_recorridos': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Km?'}),
-            'partes_y_piezas': Textarea(attrs={'class': 'form-control', 'placeholder': 'Partes y piezas implicadas'}),
-            'descripción': Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción del mantenimiento'}),
+            'partes_y_piezas': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Partes y piezas implicadas'}),
+            'descripción': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción del mantenimiento'}),
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        fecha_inicio = cleaned_data.get('fecha_inicio')
+        fecha_fin = cleaned_data.get('fecha_fin')
+        
+        if fecha_inicio and fecha_inicio > date.today():
+            self.add_error('fecha_inicio', 'La fecha de inicio no puede ser en el futuro.')
+        
+        if fecha_fin and fecha_fin > date.today():
+            self.add_error('fecha_fin', 'La fecha de fin no puede ser en el futuro.')
+        
+        return cleaned_data
