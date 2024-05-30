@@ -24,7 +24,14 @@ class Vehiculo(models.Model):
     dni_chofer = models.IntegerField(max_length=10, blank=False, null=False)
     
     def km_restantes_mantenimiento(self):
-        km_restantes = self.intervalo_mantenimiento - (self.km_recorridos % self.intervalo_mantenimiento)
+        ultimo_mantenimiento = MantenimientoVehiculo.objects.filter(vehiculo=self).order_by('-fecha_fin').first()
+        if ultimo_mantenimiento:
+            km_recorridos_ultimo_mantenimiento = ultimo_mantenimiento.km_recorridos
+        else:
+            km_recorridos_ultimo_mantenimiento = 0
+
+        proximo_mantenimineto = km_recorridos_ultimo_mantenimiento + self.intervalo_mantenimiento
+        km_restantes = proximo_mantenimineto - self.km_recorridos
         return km_restantes
     
     def __str__(self):

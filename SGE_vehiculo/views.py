@@ -17,7 +17,7 @@ def vehiculo(request):
     alertas = []
     for vehiculo in alert:
         horas_restantes = vehiculo.km_restantes_mantenimiento()
-        if horas_restantes <= 100:
+        if horas_restantes <= 1000000:
             
             alertas.append({
                 'vehiculo': vehiculo,
@@ -71,7 +71,7 @@ def alertas(request):
     alertas = []
     for vehiculo in alert:
         horas_restantes = vehiculo.km_restantes_mantenimiento()
-        if horas_restantes <= 100:
+        if horas_restantes <= 10000000:
             
             alertas.append({
                 'vehiculo': vehiculo,
