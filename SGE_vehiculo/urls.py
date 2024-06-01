@@ -12,4 +12,5 @@ urlpatterns = [
     path('tabla/', views.tabla_mantenimientos, name="vehiculo_tabla_mantenimientos"),
     path('generar_documento_mantenimientos_por_mes/', views.generar_documento_mantenimientos_por_mes, name='generar_documento_mantenimientos_general_vehiculo'),
     #path('generar_documento_mantenimientos_vehiculo/<int:id>/', views.generar_documento_mantenimientos_vehiculo, name='generar_documento_mantenimientos_vehiculo'),
+    path('registro_de_viajes/<int:id>', views.registro_de_viajes, name="registro_de_viajes")
 ]

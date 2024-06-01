@@ -1,0 +1,78 @@
+{% extends "layout/base.html" %}
+
+{% block 'title'%} Detalles de viajes {% endblock %}
+
+{% block 'content' %}
+<div class="container mb-5">
+    <div class="d-flex p-2 justify-content-between">
+        <a class="text-decoration-none text-dark flecha-atras" href="{% url "detalles_vehiculo" id=vehiculo.id %}">
+            <i class="bi bi-arrow-left fs-1"></i>
+        </a>
+        <span class="p-3">
+
+            <button type="button" class="btn btn-success descargar shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-descargar">
+                Descargar <i class="bi bi-box-arrow-down "></i>
+            </button>
+            <div class="modal fade" id="modal-descargar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Descargar </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="" action="" method="get">
+                            <label class="" for="mes">Mes:</label>
+                            <select class="form-select form-select-sm" name="mes" id="mes">
+                                <option value="">Todos los meses</option>
+                                <option value="1">Enero</option>
+                                <option value="2">Febrero</option>
+                                <option value="3">Marzo</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Mayo</option>
+                                <option value="6">Junio</option>
+                                <option value="7">Julio</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Septiembre</option>
+                                <option value="10">Octubre</option>
+                                <option value="11">Noviembre</option>
+                                <option value="12">Diciembre</option>
+                            </select>
+                            <label class="" for="anio">Año:</label>
+                            <select class="form-select form-select-sm" name="anio" id="anio">
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                                <option value="2027">2027</option>
+                                <option value="2028">2028</option>
+                                <option value="2029">2029</option>
+                                <option value="2030">2030</option>
+                            </select>
+                            <label class="" for="tipo_mantenimiento">Tipo de Mantenimiento:</label>
+                            <select class="form-select form-select-sm" name="tipo_mantenimiento" id="tipo_mantenimiento">
+                                <option value="">Todos los tipos de mantenimiento</option>
+                                {% for tipo_mantenimiento in tipos_mantenimiento %}
+                                    <option value="{{ tipo_mantenimiento.id }}">{{ tipo_mantenimiento.tipo }}</option>
+                                {% endfor %}
+                            </select>
+                            
+                            <div class="d-grid gap-2 mt-3">
+                                <button type="submit" value="Submit" class="btn btn-success">Descargar <i class="bi bi-box-arrow-down"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+        </span>
+    </div>
+
+    
+
+</div>
+
+{% endblock %}

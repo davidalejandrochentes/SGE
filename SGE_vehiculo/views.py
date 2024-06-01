@@ -228,7 +228,17 @@ def tabla_mantenimientos(request):
         'vehiculos': vehiculos,
         'tipos_mantenimiento': tipos_mantenimiento,
     }
-    return render(request, 'SGE_vehiculo/tablas.html', context)    
+    return render(request, 'SGE_vehiculo/tablas.html', context)  
+
+
+@login_required
+def registro_de_viajes(request, id):
+    if request.method == 'GET':
+        vehiculo = get_object_or_404(Vehiculo, id=id)
+        context = {
+            'vehiculo': vehiculo,
+        }
+        return render(request, 'SGE_vehiculo/viajes.html', context)      
 
 
 

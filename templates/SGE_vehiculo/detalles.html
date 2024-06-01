@@ -2,18 +2,6 @@
 
 {% block 'title'%} Detalles Vehiculo {% endblock %}
 
-{% block 'search' %}
-<form class="d-flex form-inline mr-auto ml-md-3 my-2 my-md-0 ms-3 me-3 mw-100 navbar-search" role="search" action="" method='GET'>
-    <div class="input-group">
-        <input class="form-control bg-light border-0 small" id="search-input" name="search" type="search" placeholder="Search" aria-label="Search">
-        <div class="input-group-append">
-            <button class="btn barra text-light" type="submit">
-                <i class="bi bi-search"></i>
-            </button>
-        </div>
-    </div>
-</form>
-{% endblock 'search' %}
 
 {% block 'content' %}
 <div class="container mb-5">
@@ -22,10 +10,10 @@
             <i class="bi bi-arrow-left fs-1"></i>
         </a>
         <span class="p-3">
-            
-            <button type="button" class="btn btn-light imagen shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#exampleModal">
+
+            <a class="btn btn-light imagen shadow rounded-pill" href="{% url "registro_de_viajes" id=vehiculo.id %}">
                 tabla de viajes <i class="bi bi-car-front"></i>
-            </button>
+            </a>
 
             <button type="button" class="btn btn-secondary imagen shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Ver Imagen <i class="bi bi-image"></i>

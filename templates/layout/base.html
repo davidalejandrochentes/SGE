@@ -75,7 +75,16 @@
             <div class="col-12 col-md-10 m-0 p-0">
                 <nav class="row navbar bg-body-secondary p-2 m-0 shadow sticky-top navbar-expand-lg"> 
                         <div class="col-12 col-md-6 order-lg-first order-last">
-                            {% block 'search' %}{% endblock 'search' %}
+                            <form class="d-flex form-inline mr-auto ml-md-3 my-2 my-md-0 ms-3 me-3 mw-100 navbar-search" role="search" action="" method='GET'>
+                                <div class="input-group">
+                                    <input class="form-control bg-light border-0 small" id="search-input" name="search" type="search" placeholder="Buscar" aria-label="Search">
+                                    <div class="input-group-append">
+                                        <button class="btn barra text-light rounded-0 rounded-end border-2" type="submit">
+                                            <i class="bi bi-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="me-5 d-flex justify-content-center justify-content-md-end align-items-center">
