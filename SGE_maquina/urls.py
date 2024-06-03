@@ -12,5 +12,5 @@ urlpatterns = [
     path('delete_mantenimiento/<int:id>', views.eliminar_mantenimiento, name="eliminar_mantenimiento_maquina"),
     path('generar_documento_mantenimientos_por_mes/', views.generar_documento_mantenimientos_por_mes, name='generar_documento_mantenimientos_general_maquina'),
     path('generar_documento_mantenimientos_maquina/<int:id>/', views.generar_documento_mantenimientos_maquina, name='generar_documento_mantenimientos_maquina'),
-
+    path('nuevo_mantenimineto_maquina/<int:id>', views.nuevo_mantenimineto_maquina, name="nuevo_mantenimineto_maquina"),
 ]

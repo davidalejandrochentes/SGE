@@ -160,56 +160,61 @@ def detalles(request, id):
         maquina = get_object_or_404(Maquina, id=id)
         mantenimientos = maquina.mantenimientomaquina_set.all().order_by('-fecha', '-hora')
         form = MaquinaForm(instance=maquina)
-        form_mant = MantenimientoMaquinaForm()
-        tipos_mantenimiento = TipoMantenimientoMaquina.objects.all()
         context = {
             'maquina': maquina,
             'form': form,
             'id': id,
-            'form_mant': form_mant,
             'mantenimientos': mantenimientos,
-            'tipos_mantenimiento': tipos_mantenimiento,
         }
         return render(request, 'SGE_maquina/detalles.html', context)
     
     if request.method == 'POST':
         maquina = get_object_or_404(Maquina, id=id)
-        form_mant = MantenimientoMaquinaForm(request.POST, request.FILES)
         form = MaquinaForm(instance=maquina)
         form = MaquinaForm(request.POST, request.FILES, instance=maquina)
 
         if form.is_valid():
             intervalo_mantenimiento = form.cleaned_data.get('intervalo_mantenimiento')
             if intervalo_mantenimiento < 0:
-                form_mant = MantenimientoMaquinaForm()
-                tipos_mantenimiento = TipoMantenimientoMaquina.objects.all()
                 mantenimientos = maquina.mantenimientomaquina_set.all().order_by('-fecha', '-hora')
                 form.add_error('intervalo_mantenimiento', 'El intervalo de mantenimiento no puede ser un número negativo')
                 context = {
                     'maquina': maquina,
                     'form': form,
                     'id': id,
-                    'form_mant': form_mant,
                     'mantenimientos': mantenimientos,
-                    'tipos_mantenimiento': tipos_mantenimiento,
                 }
                 previous_url = request.META.get('HTTP_REFERER')
                 return HttpResponseRedirect(previous_url)
             else:
                 form.save()
-                form_mant = MantenimientoMaquinaForm()
-                tipos_mantenimiento = TipoMantenimientoMaquina.objects.all()
                 mantenimientos = maquina.mantenimientomaquina_set.all().order_by('-fecha', '-hora')
                 context = {
                     'maquina': maquina,
                     'form': form,
                     'id': id,
-                    'form_mant': form_mant,
                     'mantenimientos': mantenimientos,
-                    'tipos_mantenimiento': tipos_mantenimiento,
                 }
                 return render(request, 'SGE_maquina/detalles.html', context) 
         
+        else:
+            previous_url = request.META.get('HTTP_REFERER')
+            return HttpResponseRedirect(previous_url)
+
+@login_required
+def nuevo_mantenimineto_maquina(request, id):
+    if request.method == 'GET':
+        maquina = get_object_or_404(Maquina, id=id)
+        form_mant = MantenimientoMaquinaForm()
+        context = {
+            'form_mant': form_mant,
+            'maquina': maquina,
+        }
+        return render(request, 'SGE_maquina/nuevo_mantenimineto.html', context)
+    
+    if request.method == 'POST':
+        maquina = get_object_or_404(Maquina, id=id)
+        form_mant = MantenimientoMaquinaForm(request.POST, request.FILES)
 
         if form_mant.is_valid():
             mantenimiento = form_mant.save(commit=False)
@@ -217,22 +222,16 @@ def detalles(request, id):
             if 'image' in request.FILES:
                 mantenimiento.image = request.FILES['image'] 
             mantenimiento.save()
-            form = MaquinaForm(instance=maquina)
-            tipos_mantenimiento = TipoMantenimientoMaquina.objects.all()
-            mantenimientos = maquina.mantenimientomaquina_set.all().order_by('-fecha', '-hora')
-            context = {
-                'maquina': maquina,
-                'form': form,
-                'id': id,
-                'form_mant': form_mant,
-                'mantenimientos': mantenimientos,
-                'tipos_mantenimiento': tipos_mantenimiento,
-            }
-            previous_url = request.META.get('HTTP_REFERER')
-            return HttpResponseRedirect(previous_url)
+            return redirect('detalles_maquina', id=maquina.id)
         else:
-            previous_url = request.META.get('HTTP_REFERER')
-            return HttpResponseRedirect(previous_url)
+            context = {
+                'form_mant': form_mant,
+                'maquina': maquina,
+            }
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo") 
+            return render(request, 'SGE_maquina/nuevo_mantenimineto.html', context)
+
+    return HttpResponse("Method Not Allowed", status=405)            
 
 
 @login_required
