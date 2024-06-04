@@ -20,7 +20,7 @@ sr.reveal('.tabla', {
 });
 
 sr.reveal('.alert', {
-    duration: 5000,
+    duration: 1000,
 });
 
 sr.reveal('.card', {
@@ -36,7 +36,7 @@ sr.reveal('.cabecera', {
 });
 
 sr.reveal('.imagen', {
-    duration: 500,
+    duration: 3500,
 });
 
 sr.reveal('.descargar', {

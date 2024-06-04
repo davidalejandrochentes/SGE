@@ -11,7 +11,8 @@ from openpyxl.styles import Font, PatternFill
 
 
 
-# Create your views here.
+# vistas generales ----------------------------------------------------------------------------
+
 @login_required
 def maquina(request):
     alert = Maquina.objects.all()
@@ -37,6 +38,8 @@ def maquina(request):
     return render(request, 'SGE_maquina/maquina.html', context)
 
 
+
+
 @login_required
 def alertas(request):
     alert = Maquina.objects.filter(nombre__icontains=request.GET.get('search', ''))
@@ -58,6 +61,8 @@ def alertas(request):
     return render(request, 'SGE_maquina/alertas.html', context)
 
 
+
+
 @login_required
 def tabla_mantenimientos(request):
     maquinas = Maquina.objects.all()
@@ -69,6 +74,8 @@ def tabla_mantenimientos(request):
         'tipos_mantenimiento': tipos_mantenimiento,
     }
     return render(request, 'SGE_maquina/tablas.html', context)
+
+
 
 
 @login_required
@@ -103,54 +110,6 @@ def crear_maquina(request):
             messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo") 
             return render(request, 'SGE_maquina/nueva.html', context)
 
-
-@login_required
-def eliminar(request, id):
-    maquina = get_object_or_404(Maquina, id=id)
-    maquina.delete()
-    return redirect ('maquina') 
-
-@login_required
-def eliminar_mantenimiento(request, id):
-    mantenimiento = get_object_or_404(MantenimientoMaquina, id=id)
-    mantenimiento.delete()
-    previous_url = request.META.get('HTTP_REFERER')
-    return HttpResponseRedirect(previous_url)
-
-
-@login_required
-def mod_mantenimineto_maquina(request, id):
-    if request.method == 'GET':
-        mantenimiento = get_object_or_404(MantenimientoMaquina, id=id)
-        maquina = mantenimiento.maquina
-        form_mant = MantenimientoMaquinaForm(instance=mantenimiento)
-        context = {
-            'form_mant': form_mant,
-            'maquina': maquina,
-        }
-        return render(request, 'SGE_maquina/mod_mantenimineto.html', context)
-    
-    if request.method == 'POST':
-        mantenimiento = get_object_or_404(MantenimientoMaquina, id=id)
-        maquina = mantenimiento.maquina
-        form_mant = MantenimientoMaquinaForm(request.POST, request.FILES, instance=mantenimiento)
-
-        if form_mant.is_valid():
-            mantenimiento = form_mant.save(commit=False)
-            mantenimiento.maquina = maquina
-            if 'image' in request.FILES:
-                mantenimiento.image = request.FILES['image'] 
-            mantenimiento.save()
-            return redirect('detalles_maquina', id=maquina.id)
-        else:
-            context = {
-                'form_mant': form_mant,
-                'maquina': maquina,
-            }
-            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo") 
-            return render(request, 'SGE_maquina/mod_mantenimineto.html', context)
-
-    return HttpResponse("Method Not Allowed", status=405)
 
 
 
@@ -201,37 +160,124 @@ def detalles(request, id):
             previous_url = request.META.get('HTTP_REFERER')
             return HttpResponseRedirect(previous_url)
 
+
+
+
 @login_required
-def nuevo_mantenimineto_maquina(request, id):
+def eliminar(request, id):
+    maquina = get_object_or_404(Maquina, id=id)
+    maquina.delete()
+    return redirect ('maquina') 
+
+# fin de vistas generales----------------------------------------------------------------------------------
+
+@login_required
+def mantenimientos_maquina_preventivo(request, id):
     if request.method == 'GET':
         maquina = get_object_or_404(Maquina, id=id)
-        form_mant = MantenimientoMaquinaForm()
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoMaquina, id=2) 
+        mantenimientos = maquina.mantenimientomaquina_set.filter(tipo=tipo_mantenimiento).order_by('-fecha', '-hora')
+        context = {
+            'maquina': maquina,
+            'tipo_mantenimiento': tipo_mantenimiento,
+            'mantenimientos': mantenimientos,
+        }
+        return render(request, 'SGE_maquina/manteniminetos_preventivo.html', context)   
+
+
+
+
+@login_required
+def eliminar_mantenimiento(request, id):
+    mantenimiento = get_object_or_404(MantenimientoMaquina, id=id)
+    mantenimiento.delete()
+    previous_url = request.META.get('HTTP_REFERER')
+    return HttpResponseRedirect(previous_url)
+
+
+@login_required
+def mod_mantenimineto_maquina_preventivo(request, id):
+    if request.method == 'GET':
+        mantenimiento = get_object_or_404(MantenimientoMaquina, id=id)
+        maquina = mantenimiento.maquina
+        form_mant = MantenimientoMaquinaForm(instance=mantenimiento)
         context = {
             'form_mant': form_mant,
             'maquina': maquina,
         }
-        return render(request, 'SGE_maquina/nuevo_mantenimineto.html', context)
+        return render(request, 'SGE_maquina/mod_mantenimineto_preventivo.html', context)
     
     if request.method == 'POST':
-        maquina = get_object_or_404(Maquina, id=id)
-        form_mant = MantenimientoMaquinaForm(request.POST, request.FILES)
+        mantenimiento = get_object_or_404(MantenimientoMaquina, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoMaquina, id=2) 
+        maquina = mantenimiento.maquina
+        form_mant = MantenimientoMaquinaForm(request.POST, request.FILES, instance=mantenimiento)
 
         if form_mant.is_valid():
             mantenimiento = form_mant.save(commit=False)
             mantenimiento.maquina = maquina
+            mantenimiento.tipo = tipo_mantenimiento
             if 'image' in request.FILES:
                 mantenimiento.image = request.FILES['image'] 
             mantenimiento.save()
-            return redirect('detalles_maquina', id=maquina.id)
+            return redirect('mantenimientos_maquina_preventivo', id=maquina.id)
         else:
             context = {
                 'form_mant': form_mant,
                 'maquina': maquina,
             }
             messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo") 
+            return render(request, 'SGE_maquina/mod_mantenimineto_preventivo.html', context)
+
+    return HttpResponse("Method Not Allowed", status=405)
+
+
+
+
+@login_required
+def nuevo_mantenimineto_maquina_preventivo(request, id):
+    if request.method == 'GET':
+        maquina = get_object_or_404(Maquina, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoMaquina, id=2) 
+        form_mant = MantenimientoMaquinaForm()
+        context = {
+            'form_mant': form_mant,
+            'maquina': maquina,
+            'tipo_mantenimiento': tipo_mantenimiento,
+        }
+        return render(request, 'SGE_maquina/nuevo_mantenimineto.html', context)
+    
+    if request.method == 'POST':
+        maquina = get_object_or_404(Maquina, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoMaquina, id=2) 
+        form_mant = MantenimientoMaquinaForm(request.POST, request.FILES)
+
+        if form_mant.is_valid():
+            mantenimiento = form_mant.save(commit=False)
+            mantenimiento.maquina = maquina
+            mantenimiento.tipo = tipo_mantenimiento
+            if 'image' in request.FILES:
+                mantenimiento.image = request.FILES['image'] 
+            mantenimiento.save()
+            return redirect('mantenimientos_maquina_preventivo', id=maquina.id)
+        else:
+            context = {
+                'form_mant': form_mant,
+                'maquina': maquina,
+                'tipo_mantenimiento': tipo_mantenimiento,
+            }
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo") 
             return render(request, 'SGE_maquina/nuevo_mantenimineto.html', context)
 
-    return HttpResponse("Method Not Allowed", status=405)            
+    return HttpResponse("Method Not Allowed", status=405)
+    
+
+
+
+
+
+
+
 
 
 @login_required

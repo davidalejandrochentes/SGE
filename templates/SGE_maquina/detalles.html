@@ -1,19 +1,9 @@
 {% extends "layout/base.html" %}
 
+{% load static %}
+
 {% block 'title'%} Detalles Maquina {% endblock %}
 
-{% block 'search' %}
-<form class="d-flex form-inline mr-auto ml-md-3 my-2 my-md-0 ms-3 me-3 mw-100 navbar-search" role="search" action="" method='GET'>
-    <div class="input-group">
-        <input class="form-control bg-light border-0 small" id="search-input" name="search" type="search" placeholder="Search" aria-label="Search">
-        <div class="input-group-append">
-            <button class="btn barra text-light" type="submit">
-                <i class="bi bi-search"></i>
-            </button>
-        </div>
-    </div>
-</form>
-{% endblock 'search' %}
 
 {% block 'content' %}
 <div class="container mb-5">
@@ -40,67 +30,6 @@
                 </div>
             </div>
 
-            <button type="button" class="btn btn-success descargar shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-descargar">
-                Descargar <i class="bi bi-box-arrow-down "></i>
-            </button>
-            <div class="modal fade" id="modal-descargar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Descargar </h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form class="" action="{% url 'generar_documento_mantenimientos_maquina' id=maquina.id %}" method="get">
-                            <label class="" for="mes">Mes:</label>
-                            <select class="form-select form-select-sm" name="mes" id="mes">
-                                <option value="">Todos los meses</option>
-                                <option value="1">Enero</option>
-                                <option value="2">Febrero</option>
-                                <option value="3">Marzo</option>
-                                <option value="4">Abril</option>
-                                <option value="5">Mayo</option>
-                                <option value="6">Junio</option>
-                                <option value="7">Julio</option>
-                                <option value="8">Agosto</option>
-                                <option value="9">Septiembre</option>
-                                <option value="10">Octubre</option>
-                                <option value="11">Noviembre</option>
-                                <option value="12">Diciembre</option>
-                            </select>
-                            <label class="" for="anio">Año:</label>
-                            <select class="form-select form-select-sm" name="anio" id="anio">
-                                <option value="2024">2024</option>
-                                <option value="2025">2025</option>
-                                <option value="2026">2026</option>
-                                <option value="2027">2027</option>
-                                <option value="2028">2028</option>
-                                <option value="2029">2029</option>
-                                <option value="2030">2030</option>
-                            </select>
-                            <label class="" for="tipo_mantenimiento">Tipo de Mantenimiento:</label>
-                            <select class="form-select form-select-sm" name="tipo_mantenimiento" id="tipo_mantenimiento">
-                                <option value="">Todos los tipos de mantenimiento</option>
-                                {% for tipo_mantenimiento in tipos_mantenimiento %}
-                                    <option value="{{ tipo_mantenimiento.id }}">{{ tipo_mantenimiento.tipo }}</option>
-                                {% endfor %}
-                            </select>
-                            
-                            <div class="d-grid gap-2 mt-3">
-                                <button type="submit" value="Submit" class="btn btn-success">Descargar <i class="bi bi-box-arrow-down"></i></button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    </div>
-                    </div>
-                </div>
-            </div>
-
-            <a class="btn btn-warning mantenimineto shadow rounded-pill" href="{% url "nuevo_mantenimineto_maquina" id=maquina.id %}">Mantenimiento <i class="bi bi-tools"></i></a>
-
-            
             <button type="button" class="btn btn-primary editar shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-editar">
                 Editar <i class="bi bi-pencil-square"></i>
             </button>
@@ -156,7 +85,7 @@
         </span>
     </div>
 
-    <h3 class="mt-4 text-uppercase">Datos de ({{ maquina.nombre }})</h3>
+    <h3 class="mt-1 text-uppercase">Datos de {{ maquina.nombre }}</h3>
     <table class="table table-striped shadow">
         <thead>
             <tr>
@@ -209,64 +138,27 @@
         </tbody>
     </table>
 
-    <h3 class="text-uppercase">Mantenimientos realizados</h3>
-    <table class="table table-striped shadow">
-        <thead>
-            <tr>
-                <th>Fecha inicio</th>
-                <th>Hora inicio</th>
-                <th>Fecha final</th>
-                <th>Hora final</th>
-                <th>Operador</th>
-                <th>Tipo</th>
-                <th>Hr máquina</th>
-                <th>Partes y piezas</th>
-                <th>Descripción</th>
-                <th>Imagen</th>
-                <th>Modificar</th>
-                <th>Eliminar<th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for mantenimiento in mantenimientos %}
-                <tr>
-                    <td>{{ mantenimiento.fecha_inicio }}</td>
-                    <td>{{ mantenimiento.hora_inicio }}</td>
-                    <td>{{ mantenimiento.fecha }}</td>
-                    <td>{{ mantenimiento.hora }}</td>
-                    <td>{{ mantenimiento.operador }}</td>
-                    <td>{{ mantenimiento.tipo }}</td>
-                    <td>{{ mantenimiento.hr_maquina }}</td>
-                    <td>{{ mantenimiento.partes_y_piezas }}</td>
-                    <td>{{ mantenimiento.descripción }}</td>
-                    <td>
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal{{ mantenimiento.id }}">
-                            Imagen
-                        </button>
-                        <div class="modal fade" id="exampleModal{{ mantenimiento.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Imagen</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <img src="{{ mantenimiento.image.url }}" class="img-fluid" alt="Imagen">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <a class="btn btn-info btn-sm" href="{% url "mod_mantenimineto_maquina" id=mantenimiento.id %}">Modificar</a>
-                    </td>
-                    <td>
-                        <a class="btn btn-danger btn-sm" href="{% url "eliminar_mantenimiento_maquina" id=mantenimiento.id %}">eliminar</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    
+    <div class="row mt-3 d-flex justify-content-center align-item-center ps-5 pe-5">
+        <div class="col-12 col-md-4 p-0 card carta-home m-3">
+            <a class="text-decoration-none text-dark" href="{% url "mantenimientos_maquina_preventivo" id=maquina.id %}">
+                <img src="{% static "images/login.jpg" %}" class="card-img-top" alt="..." style="max-height: 200px;">
+                <div class="card-body">
+                    <h5 class="card-title text-uppercase">Mantenimientos Preventivo</h5>
+                    <p class="card-text m-0">Acciones y tareas programadas y realizadas regularmente para de prevenir fallos y problemas</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-12 col-md-4 p-0 card carta-home m-3">
+            <a class="text-decoration-none text-dark" href="">
+                <img src="{% static "images/login.jpg" %}" class="card-img-top" alt="..." style="max-height: 200px;">
+                <div class="card-body">
+                    <h5 class="card-title text-uppercase">Mantenimientos Correctivo</h5>
+                    <p class="card-text m-0">Su objetivo es reparar o restaurar el equipo o sistema a su estado operativo normal</p>
+                </div>
+            </a>
+        </div>
+    </div>
 
 </div>
 
