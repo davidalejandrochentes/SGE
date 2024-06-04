@@ -13,6 +13,10 @@ urlpatterns = [
     path('mod_mantenimineto_maquina_preventivo/<int:id>', views.mod_mantenimineto_maquina_preventivo, name="mod_mantenimineto_maquina_preventivo"),
     path('nuevo_mantenimineto_maquina_preventivo/<int:id>', views.nuevo_mantenimineto_maquina_preventivo, name="nuevo_mantenimineto_maquina_preventivo"),
 
+    path('mantenimientos_maquina_correctivo/<int:id>', views.mantenimientos_maquina_correctivo, name="mantenimientos_maquina_correctivo"),
+    path('mod_mantenimineto_maquina_correctivo/<int:id>', views.mod_mantenimineto_maquina_correctivo, name="mod_mantenimineto_maquina_correctivo"),
+    path('nuevo_mantenimineto_maquina_correctivo/<int:id>', views.nuevo_mantenimineto_maquina_correctivo, name="nuevo_mantenimineto_maquina_correctivo"),
+
     path('delete_mantenimiento/<int:id>', views.eliminar_mantenimiento, name="eliminar_mantenimiento_maquina"),
     
     path('generar_documento_mantenimientos_por_mes/', views.generar_documento_mantenimientos_por_mes, name='generar_documento_mantenimientos_general_maquina'),
