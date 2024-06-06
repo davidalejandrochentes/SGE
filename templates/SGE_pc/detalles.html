@@ -2,18 +2,6 @@
 
 {% block 'title'%} Detalles equipo de cómputo {% endblock %}
 
-{% block 'search' %}
-<form class="d-flex form-inline mr-auto ml-md-3 my-2 my-md-0 ms-3 me-3 mw-100 navbar-search" role="search" action="" method='GET'>
-    <div class="input-group">
-        <input class="form-control bg-light border-0 small" id="search-input" name="search" type="search" placeholder="Search" aria-label="Search">
-        <div class="input-group-append">
-            <button class="btn barra text-light" type="submit">
-                <i class="bi bi-search"></i>
-            </button>
-        </div>
-    </div>
-</form>
-{% endblock 'search' %}
 
 {% block 'content' %}
 <div class="container mb-5">
@@ -23,68 +11,68 @@
         </a>
         <span class="p-3">
 
-            <button type="button" class="btn btn-secondary imagen shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Ver Imagen <i class="bi bi-image"></i>
-            </button>
+        <button type="button" class="btn btn-secondary imagen shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Ver Imagen <i class="bi bi-image"></i>
+        </button>
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Imagen</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <img src="{{ pc.image.url }}" class="img-fluid" alt="Imagen">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <button type="button" class="btn btn-success descargar shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-descargar">
-                Descargar <i class="bi bi-box-arrow-down "></i>
-            </button>
-            <div class="modal fade" id="modal-descargar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
+            <div class="modal-dialog">
+                <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Descargar </h1>
+                        <h5 class="modal-title" id="exampleModalLabel">Imagen</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="" action="{% url 'generar_documento_mantenimientos_pc' id=pc.id %}" method="get">
-                            <label class="" for="mes">Mes:</label>
-                            <select class="form-select form-select-sm" name="mes" id="mes">
-                                <option value="">Todos los meses</option>
-                                <option value="1">Enero</option>
-                                <option value="2">Febrero</option>
-                                <option value="3">Marzo</option>
-                                <option value="4">Abril</option>
-                                <option value="5">Mayo</option>
-                                <option value="6">Junio</option>
-                                <option value="7">Julio</option>
-                                <option value="8">Agosto</option>
-                                <option value="9">Septiembre</option>
-                                <option value="10">Octubre</option>
-                                <option value="11">Noviembre</option>
-                                <option value="12">Diciembre</option>
-                            </select>
-                            <label class="" for="anio">Año:</label>
-                            <select class="form-select form-select-sm" name="anio" id="anio">
-                                <option value="2024">2024</option>
-                                <option value="2025">2025</option>
-                                <option value="2026">2026</option>
-                                <option value="2027">2027</option>
-                                <option value="2028">2028</option>
-                                <option value="2029">2029</option>
-                                <option value="2030">2030</option>
-                            </select>
-                            <label class="" for="tipo_mantenimiento">Tipo de Mantenimiento:</label>
-                            <select class="form-select form-select-sm" name="tipo_mantenimiento" id="tipo_mantenimiento">
-                                <option value="">Todos los tipos de mantenimiento</option>
-                                {% for tipo_mantenimiento in tipos_mantenimiento %}
-                                    <option value="{{ tipo_mantenimiento.id }}">{{ tipo_mantenimiento.tipo }}</option>
-                                {% endfor %}
-                            </select>
+                        <img src="{{ pc.image.url }}" class="img-fluid" alt="Imagen">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-success descargar shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-descargar">
+            Descargar <i class="bi bi-box-arrow-down "></i>
+        </button>
+        <div class="modal fade" id="modal-descargar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Descargar </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="" action="{% url 'generar_documento_mantenimientos_pc' id=pc.id %}" method="get">
+                        <label class="" for="mes">Mes:</label>
+                        <select class="form-select form-select-sm" name="mes" id="mes">
+                            <option value="">Todos los meses</option>
+                            <option value="1">Enero</option>
+                            <option value="2">Febrero</option>
+                            <option value="3">Marzo</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Mayo</option>
+                            <option value="6">Junio</option>
+                            <option value="7">Julio</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Septiembre</option>
+                            <option value="10">Octubre</option>
+                            <option value="11">Noviembre</option>
+                            <option value="12">Diciembre</option>
+                        </select>
+                        <label class="" for="anio">Año:</label>
+                        <select class="form-select form-select-sm" name="anio" id="anio">
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                            <option value="2029">2029</option>
+                            <option value="2030">2030</option>
+                        </select>
+                        <label class="" for="tipo_mantenimiento">Tipo de Mantenimiento:</label>
+                        <select class="form-select form-select-sm" name="tipo_mantenimiento" id="tipo_mantenimiento">
+                            <option value="">Todos los tipos de mantenimiento</option>
+                            {% for tipo_mantenimiento in tipos_mantenimiento %}
+                                <option value="{{ tipo_mantenimiento.id }}">{{ tipo_mantenimiento.tipo }}</option>
+                            {% endfor %}
+                        </select>
                             
                             <div class="d-grid gap-2 mt-3">
                                 <button type="submit" value="Submit" class="btn btn-success">Descargar <i class="bi bi-box-arrow-down"></i></button>
@@ -94,35 +82,35 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     </div>
-                    </div>
                 </div>
             </div>
+        </div>
 
-            <button type="button" class="btn btn-warning mantenimineto shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-mantenimiento">
-                Mantenimiento <i class="bi bi-tools"></i>
-            </button>
-            <div class="modal fade" id="modal-mantenimiento" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Mantenimiento</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            {{ form_mant }}
-                            <div class="d-grid gap-2 mt-3">
-                                <button type="submit" class="btn btn-primary">Guardar</button>
-                            </div>
-                        </form> 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    </div>
-                    </div>
+        <button type="button" class="btn btn-warning mantenimineto shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-mantenimiento">
+            Mantenimiento <i class="bi bi-tools"></i>
+        </button>
+        <div class="modal fade" id="modal-mantenimiento" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Mantenimiento</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form_mant }}
+                        <div class="d-grid gap-2 mt-3">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form> 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
                 </div>
             </div>
+        </div>
 
             
             <button type="button" class="btn btn-primary editar shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-editar">
@@ -149,146 +137,144 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                         </div>
-                        </div>
-                        </div>
-                        </div>
+                    </div>
+                </div>
+            </div>
                         
-                        <button type="button" class="btn btn-danger eliminar mt-md-0 mt-2 shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-eliminar">
-                            Eliminar <i class="bi bi-trash"></i>
+            <button type="button" class="btn btn-danger eliminar mt-md-0 mt-2 shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-eliminar">
+                Eliminar <i class="bi bi-trash"></i>
+            </button>
+            <div class="modal fade" id="modal-eliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Atención</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Esta seguro de <b>eliminar</b> el equipo <b>"{{ pc.nombre }}"</b>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <form method="post" action="{% url "eliminar_pc" id=pc.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="pc_id" value="{{ pc.id }}">
+                                <button class="btn btn-danger" type="submit">Estoy seguro</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </span>
+    </div>
+                        
+    <h3 class="mt-4 text-uppercase">Datos de ({{ pc.nombre }})</h3>
+    <table class="table table-striped shadow">
+        <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Modelo</th>
+                <th scope="col">Número de inventario</th>
+                <th scope="col">Encargado</th>
+                <th scope="col">Teléfono encargado</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Ubicación</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ pc.nombre }}</td>
+                <td>{{ pc.modelo }}</td>
+                <td>{{ pc.número_de_inventario }}</td>
+                <td>{{ pc.encargado }}</td>
+                <td>{{ pc.teléfono_encargado }}</td>
+                <td>{{ pc.descripción }}</td>
+                <td>{{ pc.ubicación }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-striped shadow">
+        <thead>
+            <tr>
+                <th scope="col">Costo de adquisición</th>
+                <th scope="col">Fecha de adquisición</th>
+                <th scope="col">Fecha de retirada</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Garantía</th>
+                <th scope="col">Software instalado</th>
+                <th scope="col">Intervalo mantenimiento</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ pc.costo_de_adquisición }}</td>
+                <td>{{ pc.fecha_de_adquisición }}</td>
+                <td>{{ pc.fecha_de_retirada }}</td>
+                <td>{{ pc.estado }}</td>
+                <td>{{ pc.garantía }}</td>
+                <td>{{ pc.software_instalado }}</td>
+                <td>{{ pc.intervalo_mantenimiento }}</td>
+            </tr>
+        </tbody>
+    </table>
+                        
+    <h3 class="text-uppercase">Mantenimientos realizados</h3>
+    <table class="table table-striped shadow">
+        <thead>
+            <tr>
+                <th>Fecha inicio</th>
+                <th>Hora inicio</th>
+                <th>Fecha final</th>
+                <th>Hora final</th>
+                <th>Tipo</th>
+                <th>Operador</th>
+                <th>Partes y piezas</th>
+                <th>Descripción</th>
+                <th>Imagen</th>
+                <th>Modificar</th>
+                <th>Eliminar<th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mantenimiento in mantenimientos %}
+                <tr>
+                    <td>{{ mantenimiento.fecha_inicio }}</td>
+                    <td>{{ mantenimiento.hora_inicio }}</td>
+                    <td>{{ mantenimiento.fecha }}</td>
+                    <td>{{ mantenimiento.hora }}</td>
+                    <td>{{ mantenimiento.tipo }}</td>
+                    <td>{{ mantenimiento.operador }}</td>
+                    <td>{{ mantenimiento.partes_y_piezas }}</td>
+                    <td>{{ mantenimiento.descripción }}</td>
+                    <td>
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal{{ mantenimiento.id }}">
+                            Ver Imagen <i class="bi bi-image"></i>
                         </button>
-                        <div class="modal fade" id="modal-eliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="exampleModal{{ mantenimiento.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Atención</h1>
+                                        <h5 class="modal-title" id="exampleModalLabel">Imagen</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        Esta seguro de <b>eliminar</b> el equipo <b>"{{ pc.nombre }}"</b>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                        <form method="post" action="{% url "eliminar_pc" id=pc.id %}">
-                                            {% csrf_token %}
-                                            <input type="hidden" name="pc_id" value="{{ pc.id }}">
-                                            <button class="btn btn-danger" type="submit">Estoy seguro</button>
-                                        </form>
+                                        <img src="{{ mantenimiento.image.url }}" class="img-fluid" alt="Imagen">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        </span>
-                        </div>
+                    </td>
+                    <td>
+                        <a class="btn btn-info btn-sm" href="{% url "mod_mantenimiento_pc" id=mantenimiento.id %}">Modificar</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-danger btn-sm" href="{% url "eliminar_mantenimiento_pc" id=mantenimiento.id %}">eliminar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
                         
-                        <h3 class="mt-4 text-uppercase">Datos de ({{ pc.nombre }})</h3>
-                        <table class="table table-striped shadow">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Modelo</th>
-                                    <th scope="col">Número de inventario</th>
-                                    <th scope="col">Encargado</th>
-                                    <th scope="col">Teléfono encargado</th>
-                                    <th scope="col">Descripción</th>
-                                    <th scope="col">Ubicación</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{{ pc.nombre }}</td>
-                                    <td>{{ pc.modelo }}</td>
-                                    <td>{{ pc.número_de_inventario }}</td>
-                                    <td>{{ pc.encargado }}</td>
-                                    <td>{{ pc.teléfono_encargado }}</td>
-                                    <td>{{ pc.descripción }}</td>
-                                    <td>{{ pc.ubicación }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <table class="table table-striped shadow">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Costo de adquisición</th>
-                                    <th scope="col">Fecha de adquisición</th>
-                                    <th scope="col">Fecha de retirada</th>
-                                    <th scope="col">Estado</th>
-                                    <th scope="col">Garantía</th>
-                                    <th scope="col">Software instalado</th>
-                                    <th scope="col">Intervalo mantenimiento</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{{ pc.costo_de_adquisición }}</td>
-                                    <td>{{ pc.fecha_de_adquisición }}</td>
-                                    <td>{{ pc.fecha_de_retirada }}</td>
-                                    <td>{{ pc.estado }}</td>
-                                    <td>{{ pc.garantía }}</td>
-                                    <td>{{ pc.software_instalado }}</td>
-                                    <td>{{ pc.intervalo_mantenimiento }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        
-                        <h3 class="text-uppercase">Mantenimientos realizados</h3>
-                        <table class="table table-striped shadow">
-                            <thead>
-                                <tr>
-                                    <th>Fecha inicio</th>
-                                    <th>Hora inicio</th>
-                                    <th>Fecha final</th>
-                                    <th>Hora final</th>
-                                    <th>Tipo</th>
-                                    <th>Operador</th>
-                                    <th>Partes y piezas</th>
-                                    <th>Descripción</th>
-                                    <th>Imagen</th>
-                                    <th>Modificar</th>
-                                    <th>Eliminar<th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for mantenimiento in mantenimientos %}
-                                    <tr>
-                                        <td>{{ mantenimiento.fecha_inicio }}</td>
-                                        <td>{{ mantenimiento.hora_inicio }}</td>
-                                        <td>{{ mantenimiento.fecha }}</td>
-                                        <td>{{ mantenimiento.hora }}</td>
-                                        <td>{{ mantenimiento.tipo }}</td>
-                                        <td>{{ mantenimiento.operador }}</td>
-                                        <td>{{ mantenimiento.partes_y_piezas }}</td>
-                                        <td>{{ mantenimiento.descripción }}</td>
-                                        <td>
-                                            <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal{{ mantenimiento.id }}">
-                                                Ver Imagen <i class="bi bi-image"></i>
-                                            </button>
-                                            <div class="modal fade" id="exampleModal{{ mantenimiento.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Imagen</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <img src="{{ mantenimiento.image.url }}" class="img-fluid" alt="Imagen">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-info btn-sm" href="{% url "mod_mantenimiento_pc" id=mantenimiento.id %}">Modificar</a>
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-danger btn-sm" href="{% url "eliminar_mantenimiento_pc" id=mantenimiento.id %}">eliminar</a>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        
-                        </div>
-                        
-                        {% endblock %}
-                        
+    </div>
+{% endblock %}

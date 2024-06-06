@@ -60,8 +60,8 @@ class MantenimientoMaquina(models.Model):
     partes_y_piezas = models.TextField(max_length=500, null=False, blank=False, default="")
     descripción = models.TextField(max_length=500, null=False, blank=False, default="")
     image = models.ImageField(upload_to="maquina/mantenimiento/image", null=False, blank=False, default=None)  
-    image2 = models.ImageField(upload_to="maquina/mantenimiento/image", null=True, blank=True, default=None)
-    image3 = models.ImageField(upload_to="maquina/mantenimiento/image", null=True, blank=True, default=None)
+    image2 = models.ImageField(upload_to="maquina/mantenimiento/image", null=False, blank=False, default=None)
+    image3 = models.ImageField(upload_to="maquina/mantenimiento/image", null=False, blank=False, default=None)
 
     
 

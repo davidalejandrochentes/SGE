@@ -2,19 +2,6 @@
 
 {% block 'title'%} Herramienta {% endblock %}
 
-{% block 'search' %}
-<form class="d-flex form-inline mr-auto ml-md-3 my-2 my-md-0 ms-3 me-3 mw-100 navbar-search" role="search" action="" method='GET'>
-    <div class="input-group">
-        <input class="form-control bg-light border-0 small" id="search-input" name="search" type="search" placeholder="Search" aria-label="Search">
-        <div class="input-group-append">
-            <button class="btn barra text-light" type="submit">
-                <i class="bi bi-search"></i>
-            </button>
-        </div>
-    </div>
-</form>
-{% endblock 'search' %}
-
 {% block 'content' %}
 
 <div class="container">
@@ -23,7 +10,6 @@
         <a class="text-decoration-none text-dark flecha-atras" href="{% url "index" %}">
             <i class="bi bi-arrow-left fs-1"></i>
         </a>
-        <h5 class="text-center text-dark text-uppercase mt-auto mb-auto mas">Cantidad total de Herramientas "{{ total_herramientas }}"</h5>
         <div class="pt-2 me-3 me-md-0">
             <a class="ms-1 fs-3 me-1 me-md-4 text-decoration-none text-success tabla" href="{% url 'descargar_herramientas' %}">
                 <i class="bi bi-database-down"></i>
@@ -46,7 +32,9 @@
         </div>
     </div>
 
-    <div class="container cabecera shadow bg-primary bg-opacity-50">
+    <div class="container cabecera shadow bg-primary bg-opacity-50 p-4 bw-5">
+        <h1 class="text-center text-light text-uppercase display-1"><strong>Herramientas</strong></h1>
+        <h5 class="text-center text-light text-uppercase">Cantidad total: {{ total_herramientas }}</h5>
     </div>
 
     <div class="row mt-5 d-flex justify-content-center align-item-center ps-5 pe-5">

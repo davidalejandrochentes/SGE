@@ -1,6 +1,6 @@
 from django import forms
 from .models import Maquina, MantenimientoMaquina
-from django.forms import Textarea
+from django.forms import Textarea, FileInput
 from datetime import date
 
 class MaquinaForm(forms.ModelForm):    
@@ -27,6 +27,7 @@ class MaquinaForm(forms.ModelForm):
             'consumo_de_energía': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: 200KW'}),
             'horas_máquina_trabajada': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Número determinado de horas'}),
             'intervalo_mantenimiento': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Número determinado de horas'}),
+            'image': FileInput(attrs={'class': 'form-control-file m-2'}),
         }
 
 class MantenimientoMaquinaCorrectivoForm(forms.ModelForm):
@@ -51,6 +52,9 @@ class MantenimientoMaquinaCorrectivoForm(forms.ModelForm):
             'hr_maquina': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Horas de trabajo al momento del Mantenimineto'}),
             'partes_y_piezas': Textarea(attrs={'class': 'form-control', 'placeholder': 'Partes y piezas implicadas'}),
             'descripción': Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción del mantenimiento'}),
+            'image': FileInput(attrs={'class': 'form-control-file m-2'}),
+            'image2': FileInput(attrs={'class': 'form-control-file m-2'}),
+            'image3': FileInput(attrs={'class': 'form-control-file m-2'}),
         }
 
     def clean(self):
@@ -89,6 +93,9 @@ class MantenimientoMaquinaPreventivoForm(forms.ModelForm):
             'operador': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre de quien lo realizó'}),
             'hr_maquina': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Horas de trabajo al momento del Mantenimineto'}),
             'descripción': Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción del mantenimiento'}),
+            'image': FileInput(attrs={'class': 'form-control-file m-2'}),
+            'image2': FileInput(attrs={'class': 'form-control-file m-2'}),
+            'image3': FileInput(attrs={'class': 'form-control-file m-2'}),
         }
 
     def clean(self):
