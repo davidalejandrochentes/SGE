@@ -36,7 +36,9 @@ class MantenimientoMaquinaCorrectivoForm(forms.ModelForm):
         exclude = ['maquina', 'tipo']
         labels = {
             'hr_maquina': 'Horas máquina de trabajo',  # Aquí especificamos la etiqueta con tilde
-            'image': 'Imagen',
+            'image': 'Imagen#1',
+            'image2': 'Imagen#2',
+            'image3': 'Imagen#3',
             'fecha': 'fecha de fin',
             'hora': 'hora de fin',
         }
@@ -74,6 +76,8 @@ class MantenimientoMaquinaPreventivoForm(forms.ModelForm):
         labels = {
             'hr_maquina': 'Horas máquina de trabajo',  # Aquí especificamos la etiqueta con tilde
             'image': 'Imagen',
+            'image2': 'Imagen#2',
+            'image3': 'Imagen#3',
             'fecha': 'fecha de fin',
             'hora': 'hora de fin',
         }

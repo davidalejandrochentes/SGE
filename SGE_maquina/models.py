@@ -60,6 +60,9 @@ class MantenimientoMaquina(models.Model):
     partes_y_piezas = models.TextField(max_length=500, null=False, blank=False, default="")
     descripción = models.TextField(max_length=500, null=False, blank=False, default="")
     image = models.ImageField(upload_to="maquina/mantenimiento/image", null=False, blank=False, default=None)  
+    image2 = models.ImageField(upload_to="maquina/mantenimiento/image", null=True, blank=True, default=None)
+    image3 = models.ImageField(upload_to="maquina/mantenimiento/image", null=True, blank=True, default=None)
+
     
 
     def __str__(self):
@@ -116,19 +119,38 @@ def eliminar_imagen_de_mantenimineto(sender, instance, **kwargs):
     if instance.image:
         if os.path.isfile(instance.image.path):
             os.remove(instance.image.path)
+    if instance.image2:
+        if os.path.isfile(instance.image2.path):
+            os.remove(instance.image2.path)  
+    if instance.image3:
+        if os.path.isfile(instance.image3.path):
+            os.remove(instance.image3.path)
+
+
+
+
 
 @receiver(pre_save, sender=MantenimientoMaquina)
 def eliminar_imagen_anterior_al_actualizar_mantenimineto(sender, instance, **kwargs):
-    if not instance.pk:  # La máquina es nueva, no hay imagen anterior que eliminar
+    if not instance.pk:
         return False
 
     try:
-        mantenimineto_anterior = MantenimientoMaquina.objects.get(pk=instance.pk)  # Obtener la máquina anterior de la base de datos
+        mantenimiento_anterior = MantenimientoMaquina.objects.get(pk=instance.pk)
     except MantenimientoMaquina.DoesNotExist:
-        return False  # La máquina anterior no existe, no hay imagen anterior que eliminar
+        return False
 
-    if mantenimineto_anterior.image:  # Verificar si la máquina anterior tiene una imagen
-        nueva_imagen = instance.image
-        if mantenimineto_anterior.image != nueva_imagen:  # Verificar si se ha seleccionado una nueva imagen
-            if os.path.isfile(mantenimineto_anterior.image.path):  # Verificar si el archivo de imagen existe en el sistema de archivos
-                os.remove(mantenimineto_anterior.image.path)                
+    # Comparar y eliminar image
+    if mantenimiento_anterior.image and instance.image != mantenimiento_anterior.image:
+        if os.path.isfile(mantenimiento_anterior.image.path):
+            os.remove(mantenimiento_anterior.image.path)
+    
+    # Comparar y eliminar image2
+    if mantenimiento_anterior.image2 and instance.image2 != mantenimiento_anterior.image2:
+        if os.path.isfile(mantenimiento_anterior.image2.path):
+            os.remove(mantenimiento_anterior.image2.path)
+    
+    # Comparar y eliminar image3
+    if mantenimiento_anterior.image3 and instance.image3 != mantenimiento_anterior.image3:
+        if os.path.isfile(mantenimiento_anterior.image3.path):
+            os.remove(mantenimiento_anterior.image3.path)
