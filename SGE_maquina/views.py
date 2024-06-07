@@ -378,7 +378,7 @@ def nuevo_mantenimineto_maquina_correctivo(request, id):
 # descargas -----------------------------------------------------------------------------------
 
 @login_required
-def generar_documento_mantenimientos_por_mes(request):
+def documento_general_mantenimientos_maquina(request):
     mes = request.GET.get('mes')
     anio = request.GET.get('anio')
     tipo_mantenimiento_id = request.GET.get('tipo_mantenimiento')
@@ -442,10 +442,10 @@ def generar_documento_mantenimientos_por_mes(request):
 
 
 @login_required
-def generar_documento_mantenimientos_maquina(request, id):
+def documento_mantenimientos_preventivos_maquina(request, id):
     mes = request.GET.get('mes')
     anio = request.GET.get('anio')
-    tipo_mantenimiento_id = request.GET.get('tipo_mantenimiento')
+    tipo_mantenimiento_id = 2
 
     maquina = get_object_or_404(Maquina, pk=id)
     mantenimientos = MantenimientoMaquina.objects.filter(maquina=maquina).order_by('-fecha', '-hora')
@@ -460,15 +460,15 @@ def generar_documento_mantenimientos_maquina(request, id):
 
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     if mes:
-        response['Content-Disposition'] = 'attachment; filename="mantenimientos_maquinas_{}_{}_{}.xlsx"'.format(maquina.nombre, mes, anio)
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_preventivos_de_{}_{}_{}.xlsx"'.format(maquina.nombre, mes, anio)
     else:
-        response['Content-Disposition'] = 'attachment; filename="mantenimientos_maquinas_{}_{}.xlsx"'.format(maquina.nombre, anio)
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_preventivos_de_{}_{}.xlsx"'.format(maquina.nombre, anio)
 
     wb = openpyxl.Workbook()
     ws = wb.active
 
     # Define los encabezados de la tabla
-    headers = ['Tipo', 'Operador', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Hr Máquina', 'Partes y Piezas', 'Descripción']
+    headers = ['Operador', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Hr Máquina', 'Descripción']
     for col, header in enumerate(headers, start=1):
         ws.cell(row=1, column=col, value=header)
         ws.cell(row=1, column=col).font = Font(bold=True)
@@ -478,7 +478,71 @@ def generar_documento_mantenimientos_maquina(request, id):
     row = 2
     for mantenimiento in mantenimientos:
         ws.append([
-            mantenimiento.tipo.tipo,
+            mantenimiento.operador,
+            mantenimiento.fecha_inicio,
+            mantenimiento.hora_inicio,
+            mantenimiento.fecha,
+            mantenimiento.hora,
+            mantenimiento.hr_maquina,
+            mantenimiento.descripción
+        ])
+
+    # Ajusta el ancho de las columnas automáticamente
+    for col in ws.columns:
+        max_length = 0
+        column = col[0].column_letter
+        for cell in col:
+            try:
+                if len(str(cell.value)) > max_length:
+                    max_length = len(cell.value)
+            except:
+                pass
+        adjusted_width = (max_length + 2) * 1.2
+        ws.column_dimensions[column].width = adjusted_width
+
+    wb.save(response)
+    return response
+
+
+
+
+@login_required
+def documento_mantenimientos_correctivos_maquina(request, id):
+    mes = request.GET.get('mes')
+    anio = request.GET.get('anio')
+    tipo_mantenimiento_id = 1
+
+    maquina = get_object_or_404(Maquina, pk=id)
+    mantenimientos = MantenimientoMaquina.objects.filter(maquina=maquina).order_by('-fecha', '-hora')
+
+    if mes:
+        mantenimientos = mantenimientos.filter(fecha__month=mes)
+    if anio:
+        mantenimientos = mantenimientos.filter(fecha__year=anio)
+    if tipo_mantenimiento_id: # Si se seleccionó un tipo de mantenimiento
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoMaquina, pk=tipo_mantenimiento_id)
+        mantenimientos = mantenimientos.filter(tipo=tipo_mantenimiento)
+
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    if mes:
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_correctivos_de_{}_{}_{}.xlsx"'.format(maquina.nombre, mes, anio)
+    else:
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_correctivos_de_{}_{}.xlsx"'.format(maquina.nombre, anio)
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+
+    # Define los encabezados de la tabla
+    headers = ['Operador', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Hr Máquina', 'Partes y Piezas', 'Descripción']
+    for col, header in enumerate(headers, start=1):
+        ws.cell(row=1, column=col, value=header)
+        ws.cell(row=1, column=col).font = Font(bold=True)
+        ws.cell(row=1, column=col).fill = PatternFill(start_color="BFBFBF", end_color="BFBFBF", fill_type="solid")
+
+    # Agrega los datos de los mantenimientos
+    row = 2
+    for mantenimiento in mantenimientos:
+        ws.append([
             mantenimiento.operador,
             mantenimiento.fecha_inicio,
             mantenimiento.hora_inicio,

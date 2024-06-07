@@ -27,7 +27,7 @@ class Maquina(models.Model):
     image = models.ImageField(upload_to="maquina/image", null=False, blank=False)
 
     def horas_restantes_mantenimiento(self):
-        ultimo_mantenimiento = MantenimientoMaquina.objects.filter(maquina=self).order_by('-fecha').first()
+        ultimo_mantenimiento = MantenimientoMaquina.objects.filter(maquina=self, tipo__id=1).order_by('-fecha').first()
         if ultimo_mantenimiento:
             horas_uso_ultimo_mantenimiento = ultimo_mantenimiento.hr_maquina
         else:

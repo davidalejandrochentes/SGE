@@ -22,7 +22,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="" action="{% url 'generar_documento_mantenimientos_maquina' id=maquina.id %}" method="get">
+                        <form class="" action="{% url 'documento_mantenimientos_correctivos_maquina' id=maquina.id %}" method="get">
                             <label class="" for="mes">Mes:</label>
                             <select class="form-select form-select-sm" name="mes" id="mes">
                                 <option value="">Todos los meses</option>
@@ -48,13 +48,6 @@
                                 <option value="2028">2028</option>
                                 <option value="2029">2029</option>
                                 <option value="2030">2030</option>
-                            </select>
-                            <label class="" for="tipo_mantenimiento">Tipo de Mantenimiento:</label>
-                            <select class="form-select form-select-sm" name="tipo_mantenimiento" id="tipo_mantenimiento">
-                                <option value="">Todos los tipos de mantenimiento</option>
-                                {% for tipo_mantenimiento in tipos_mantenimiento %}
-                                    <option value="{{ tipo_mantenimiento.id }}">{{ tipo_mantenimiento.tipo }}</option>
-                                {% endfor %}
                             </select>
                             
                             <div class="d-grid gap-2 mt-3">
@@ -150,7 +143,26 @@
                         <a class="btn btn-info btn-sm" href="{% url "mod_mantenimineto_maquina_correctivo" id=mantenimiento.id %}">Modificar</a>
                     </td>
                     <td>
-                        <a class="btn btn-danger btn-sm" href="{% url "eliminar_mantenimiento_maquina" id=mantenimiento.id %}">eliminar</a>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-eliminar">
+                            Eliminar
+                        </button>
+                        <div class="modal fade" id="modal-eliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Atención</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Esta seguro de <b>eliminar</b> este mantenimiento</b>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    <a class="btn btn-danger" href="{% url "eliminar_mantenimiento_maquina" id=mantenimiento.id %}">Estoy seguro</a>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             {% endfor %}
