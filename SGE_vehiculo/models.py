@@ -24,7 +24,7 @@ class Vehiculo(models.Model):
     dni_chofer = models.IntegerField(max_length=10, blank=False, null=False)
     
     def km_restantes_mantenimiento(self):
-        ultimo_mantenimiento = MantenimientoVehiculo.objects.filter(vehiculo=self).order_by('-fecha_fin').first()
+        ultimo_mantenimiento = MantenimientoVehiculo.objects.filter(vehiculo=self, tipo__id=1).order_by('-fecha_fin').first()
         if ultimo_mantenimiento:
             km_recorridos_ultimo_mantenimiento = ultimo_mantenimiento.km_recorridos
         else:
@@ -73,7 +73,9 @@ class MantenimientoVehiculo(models.Model):
     operador = models.CharField(max_length=100, blank=False, null=False)
     descripción = models.TextField(max_length=400, null=False, blank=False)
     partes_y_piezas = models.TextField(max_length=400, null=False, blank=False)
-    image = models.ImageField(upload_to="vehiculo/mantenimiento", null=False, blank=False) 
+    image = models.ImageField(upload_to="vehiculo/mantenimiento/image", null=False, blank=False, default=None)  
+    image2 = models.ImageField(upload_to="vehiculo/mantenimiento/image", null=False, blank=False, default=None)
+    image3 = models.ImageField(upload_to="vehiculo/mantenimiento/image", null=False, blank=False, default=None)
 
     def __str__(self):
         txt = "Vehiculo: {}, Tipo: {}, Fecha: {}"
@@ -130,19 +132,34 @@ def eliminar_imagen_de_mantenimineto(sender, instance, **kwargs):
     if instance.image:
         if os.path.isfile(instance.image.path):
             os.remove(instance.image.path)
+    if instance.image2:
+        if os.path.isfile(instance.image2.path):
+            os.remove(instance.image2.path)  
+    if instance.image3:
+        if os.path.isfile(instance.image3.path):
+            os.remove(instance.image3.path)   
 
 @receiver(pre_save, sender=MantenimientoVehiculo)
 def eliminar_imagen_anterior_al_actualizar_mantenimineto(sender, instance, **kwargs):
-    if not instance.pk:  # Vehiculo es nuevo, no hay imagen anterior que eliminar
+    if not instance.pk:
         return False
 
     try:
-        mantenimineto_anterior = MantenimientoVehiculo.objects.get(pk=instance.pk)
+        mantenimiento_anterior = MantenimientoVehiculo.objects.get(pk=instance.pk)
     except MantenimientoVehiculo.DoesNotExist:
         return False
 
-    if mantenimineto_anterior.image:
-        nueva_imagen = instance.image
-        if mantenimineto_anterior.image != nueva_imagen:  # Verificar si se ha seleccionado una nueva imagen
-            if os.path.isfile(mantenimineto_anterior.image.path):  # Verificar si el archivo de imagen existe en el sistema de archivos
-                os.remove(mantenimineto_anterior.image.path)                    
+    # Comparar y eliminar image
+    if mantenimiento_anterior.image and instance.image != mantenimiento_anterior.image:
+        if os.path.isfile(mantenimiento_anterior.image.path):
+            os.remove(mantenimiento_anterior.image.path)
+    
+    # Comparar y eliminar image2
+    if mantenimiento_anterior.image2 and instance.image2 != mantenimiento_anterior.image2:
+        if os.path.isfile(mantenimiento_anterior.image2.path):
+            os.remove(mantenimiento_anterior.image2.path)
+    
+    # Comparar y eliminar image3
+    if mantenimiento_anterior.image3 and instance.image3 != mantenimiento_anterior.image3:
+        if os.path.isfile(mantenimiento_anterior.image3.path):
+            os.remove(mantenimiento_anterior.image3.path)

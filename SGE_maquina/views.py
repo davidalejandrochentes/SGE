@@ -100,7 +100,6 @@ def crear_maquina(request):
                 # Manejo del archivo de imagen
                 if 'image' in request.FILES:
                     form.instance.image = request.FILES['image']
-
                 form.save()
                 return redirect('maquina')
         else:
@@ -170,6 +169,10 @@ def eliminar(request, id):
     return redirect ('maquina') 
 
 # fin de vistas generales----------------------------------------------------------------------------------
+
+
+
+
 @login_required
 def eliminar_mantenimiento(request, id):
     mantenimiento = get_object_or_404(MantenimientoMaquina, id=id)
