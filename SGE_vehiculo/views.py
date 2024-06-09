@@ -387,7 +387,7 @@ def documento_general_mantenimientos_vehiculo(request):
     anio = request.GET.get('anio')
     tipo_mantenimiento_id = request.GET.get('tipo_mantenimiento')
 
-    mantenimientos = MantenimientoVehiculo.objects.filter(fecha__year=anio)
+    mantenimientos = MantenimientoVehiculo.objects.filter(fecha_fin__year=anio)
 
     if mes:
         mantenimientos = mantenimientos.filter(fecha__month=mes)
@@ -396,7 +396,7 @@ def documento_general_mantenimientos_vehiculo(request):
         tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, pk=tipo_mantenimiento_id)
         mantenimientos = mantenimientos.filter(tipo=tipo_mantenimiento)
 
-    mantenimientos = mantenimientos.order_by('-fecha', '-hora')
+    mantenimientos = mantenimientos.order_by('-fecha_fin', '-hora_fin')
 
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     if mes:
@@ -407,7 +407,7 @@ def documento_general_mantenimientos_vehiculo(request):
     wb = openpyxl.Workbook()
     ws = wb.active
 
-    headers = ['Vehiculo', 'Tipo', 'Operador', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Km Recorridos', 'Partes y Piezas', 'Descripción']
+    headers = ['Marca', 'Modelo', 'Tipo', 'Operador', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Km Recorridos', 'Partes y Piezas', 'Descripción']
     for col, header in enumerate(headers, start=1):
         ws.cell(row=1, column=col, value=header)
         ws.cell(row=1, column=col).font = Font(bold=True)
@@ -416,13 +416,14 @@ def documento_general_mantenimientos_vehiculo(request):
     row = 2
     for mantenimiento in mantenimientos:
         ws.append([
-            mantenimiento.vehiculo.nombre,
+            mantenimiento.vehiculo.marca,
+            mantenimiento.vehiculo.modelo,
             mantenimiento.tipo.tipo,
             mantenimiento.operador,
             mantenimiento.fecha_inicio,
             mantenimiento.hora_inicio,
-            mantenimiento.fecha,
-            mantenimiento.hora,
+            mantenimiento.fecha_fin,
+            mantenimiento.hora_fin,
             mantenimiento.km_recorridos,
             mantenimiento.partes_y_piezas,
             mantenimiento.descripción
@@ -453,21 +454,21 @@ def documento_mantenimientos_preventivos_vehiculo(request, id):
     tipo_mantenimiento_id = 2
 
     vehiculo = get_object_or_404(Vehiculo, pk=id)
-    mantenimientos = MantenimientoVehiculo.objects.filter(vehiculo=vehiculo).order_by('-fecha', '-hora')
+    mantenimientos = MantenimientoVehiculo.objects.filter(vehiculo=vehiculo).order_by('-fecha_fin', '-hora_fin')
 
     if mes:
-        mantenimientos = mantenimientos.filter(fecha__month=mes)
+        mantenimientos = mantenimientos.filter(fecha_fin__month=mes)
     if anio:
-        mantenimientos = mantenimientos.filter(fecha__year=anio)
+        mantenimientos = mantenimientos.filter(fecha_fin__year=anio)
     if tipo_mantenimiento_id: # Si se seleccionó un tipo de mantenimiento
         tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, pk=tipo_mantenimiento_id)
         mantenimientos = mantenimientos.filter(tipo=tipo_mantenimiento)
 
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     if mes:
-        response['Content-Disposition'] = 'attachment; filename="mantenimientos_preventivos_de_{}_{}_{}.xlsx"'.format(vehiculo.nombre, mes, anio)
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_preventivos_de_{}_{}_{}_{}.xlsx"'.format(vehiculo.marca, vehiculo.modelo, mes, anio)
     else:
-        response['Content-Disposition'] = 'attachment; filename="mantenimientos_preventivos_de_{}_{}.xlsx"'.format(vehiculo.nombre, anio)
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_preventivos_de_{}_{}_{}.xlsx"'.format(vehiculo.marca, vehiculo.modelo, anio)
 
     wb = openpyxl.Workbook()
     ws = wb.active
@@ -486,8 +487,8 @@ def documento_mantenimientos_preventivos_vehiculo(request, id):
             mantenimiento.operador,
             mantenimiento.fecha_inicio,
             mantenimiento.hora_inicio,
-            mantenimiento.fecha,
-            mantenimiento.hora,
+            mantenimiento.fecha_fin,
+            mantenimiento.hora_fin,
             mantenimiento.km_recorridos,
             mantenimiento.descripción
         ])
@@ -518,21 +519,21 @@ def documento_mantenimientos_correctivos_vehiculo(request, id):
     tipo_mantenimiento_id = 1
 
     vehiculo = get_object_or_404(Vehiculo, pk=id)
-    mantenimientos = MantenimientoVehiculo.objects.filter(vehiculo=vehiculo).order_by('-fecha', '-hora')
+    mantenimientos = MantenimientoVehiculo.objects.filter(vehiculo=vehiculo).order_by('-fecha_fin', '-hora_fin')
 
     if mes:
-        mantenimientos = mantenimientos.filter(fecha__month=mes)
+        mantenimientos = mantenimientos.filter(fecha_fin__month=mes)
     if anio:
-        mantenimientos = mantenimientos.filter(fecha__year=anio)
+        mantenimientos = mantenimientos.filter(fecha_fin__year=anio)
     if tipo_mantenimiento_id: # Si se seleccionó un tipo de mantenimiento
         tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, pk=tipo_mantenimiento_id)
         mantenimientos = mantenimientos.filter(tipo=tipo_mantenimiento)
 
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     if mes:
-        response['Content-Disposition'] = 'attachment; filename="mantenimientos_correctivos_de_{}_{}_{}.xlsx"'.format(vehiculo.nombre, mes, anio)
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_correctivos_de_{}_{}_{}_{}.xlsx"'.format(vehiculo.marca, vehiculo.modelo, mes, anio)
     else:
-        response['Content-Disposition'] = 'attachment; filename="mantenimientos_correctivos_de_{}_{}.xlsx"'.format(vehiculo.nombre, anio)
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_correctivos_de_{}_{}_{}.xlsx"'.format(vehiculo.marca, vehiculo.modelo, anio)
 
     wb = openpyxl.Workbook()
     ws = wb.active
@@ -551,8 +552,8 @@ def documento_mantenimientos_correctivos_vehiculo(request, id):
             mantenimiento.operador,
             mantenimiento.fecha_inicio,
             mantenimiento.hora_inicio,
-            mantenimiento.fecha,
-            mantenimiento.hora,
+            mantenimiento.fecha_fin,
+            mantenimiento.hora_fin,
             mantenimiento.km_recorridos,
             mantenimiento.partes_y_piezas,
             mantenimiento.descripción
