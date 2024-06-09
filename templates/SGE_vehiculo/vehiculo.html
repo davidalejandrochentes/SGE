@@ -1,7 +1,6 @@
 {% extends "layout/base.html" %}
 
-{% block 'title'%} Vehiculos {% endblock %}
-
+{% block 'title'%} Vehículo {% endblock %}
 
 {% block 'content' %}
 
@@ -12,7 +11,7 @@
             <i class="bi bi-arrow-left fs-1"></i>
         </a>
         <div class="pt-2 me-3 me-md-0">
-            <a class="ms-1 fs-3 me-1 me-md-4 text-decoration-none text-secondary mas" href="{% url "nuevo_vehiculo" %}">
+            <a class="ms-1 fs-3 me-1 me-md-4 text-decoration-none text-secondary mas" href="{% url "vehiculo_nueva" %}">
                 <i class="bi bi-plus-circle"></i>
             </a>        
             <a class="ms-1 fs-3 me-1 me-md-4 text-decoration-none text-success tabla" href="{% url "vehiculo_tabla_mantenimientos" %}">
@@ -29,7 +28,7 @@
     </div>
 
     <div class="container cabecera shadow bg-primary bg-opacity-50 p-4 bw-5">
-        <h1 class="text-center text-light display-1"><strong>VEHICULOS</strong></h1>
+        <h1 class="text-center text-light text-uppercase display-1"><strong>vehículos</strong></h1>
         <h5 class="text-center text-light text-uppercase">Cantidad total: {{ total_vehiculos }}</h5>
     </div>
 
@@ -39,11 +38,10 @@
             <a class="text-decoration-none text-dark" href="{% url "detalles_vehiculo" id=vehiculo.id %}">
                 <img src="{{ vehiculo.image.url }}" class="card-img-top" alt="..." style="max-height: 200px;">
                 <div class="card-body">
-                    <h5 class="card-title">{{ maquina.nombre }}</h5>
-                    <p class="card-text m-0"><b>Marca:</b> {{ vehiculo.marca }}</p>
-                    <p class="card-text m-0"><b>Modelo:</b> {{ vehiculo.modelo }}</p>
-                    <p class="card-text m-0"><b>Chofer:</b> {{ vehiculo.nombre_chofer }}</p>
-                    <p class="card-text m-0"><b>Km Recorridos:</b> {{ vehiculo.km_recorridos }}</p>
+                    <h5 class="card-title">{{ vehiculo.nombre }}</h5>
+                    <p class="card-text m-0"><b>Encargado:</b> {{ vehiculo.encargado }}</p>
+                    <p class="card-text m-0"><b>Tipo de vehículo:</b> {{ vehiculo.tipo_de_vehículo }}</p>
+                    <p class="card-text m-0"><b>Número de serie:</b> {{ vehiculo.número_de_serie_o_modelo }}</p>
                     <p class="card-text m-0"><b>Ultimo mantenimiento:</b> {{ vehiculo.fecha_ultimo_mantenimiento }}</p>
                 </div>      
             </a>

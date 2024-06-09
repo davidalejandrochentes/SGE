@@ -279,6 +279,7 @@ def nuevo_mantenimineto_maquina_preventivo(request, id):
 
 
 
+
 @login_required
 def mantenimientos_maquina_correctivo(request, id):
     if request.method == 'GET':
@@ -441,6 +442,7 @@ def documento_general_mantenimientos_maquina(request):
 
     wb.save(response)
     return response
+
 
 
 

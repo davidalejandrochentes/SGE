@@ -2,7 +2,6 @@
 
 {% block 'title'%} Tablas de mantenimiento {% endblock %}
 
-
 {% block 'content' %}
 
 <div class="container">
@@ -11,7 +10,7 @@
             <i class="bi bi-arrow-left fs-1"></i>
         </a>
         
-        <form class="d-flex mt-auto mb-auto" action="{% url 'generar_documento_mantenimientos_general_vehiculo' %}" method="get" style="max-height: 50px; min-width: 600px;">
+        <form class="d-flex mt-auto mb-auto" action="{% url 'documento_general_mantenimientos_vehiculo' %}" method="get" style="max-height: 50px; min-width: 600px;">
           <label class="mt-auto mb-auto m-1" for="tipo_mantenimiento">Tipo:</label>
             <select class="form-select form-select-sm m-1 shadow" name="tipo_mantenimiento" id="tipo_mantenimiento">
                 <option value="">Todos los tipos de mantenimiento</option>
@@ -51,26 +50,22 @@
 
     <table class="table table-striped mt-4 shadow">
       <tr>
-        <th>vehiculo</th>
+        <th>Vehículos</th>
         <th>Descripción corta</th>
       </tr>
       {% for vehiculo in vehiculos %}
       <tr>
-        <td>{{ vehiculo.marca }} {{ vehiculo.modelo }}</td>
+        <td>{{ vehiculo.marca }},{{ vehiculo.modelo }}</td>
         <td>
           <ul class="list-group list-group-flush">
             {% for mantenimiento in vehiculo.mantenimientos %}
-            <li class="list-group-item">*<b>Fecha de inicio</b> {{ mantenimiento.fecha_inicio }} - {{ mantenimiento.hora_inicio }}, <b>fecha de fin</b> {{ mantenimiento.fecha_fin }} - {{ mantenimiento.hora_fin }}, <b>tipo de mantenimiento</b> - {{ mantenimiento.tipo }}, <b>Km recorridos</b> {{ mantenimiento.km_recorridos }}*</li>
+            <li class="list-group-item">*<b>Fecha de inicio</b> {{ mantenimiento.fecha_inicio }} - {{ mantenimiento.hora_inicio }}, <b>fecha de fin</b> {{ mantenimiento.fecha_fin }} - {{ mantenimiento.hora_fin }}, <b>tipo de mantenimiento</b> - {{ mantenimiento.tipo }}, <b>Hr vehiculo</b> {{ mantenimiento.km_recorridos }}*</li>
             {% endfor %}
           </ul>
         </td>
       </tr>
       {% endfor %}
     </table>
-    
-      
-
-
 </div>
 
 {% endblock %}

@@ -184,75 +184,225 @@ def eliminar_mantenimiento(request, id):
 
 
 @login_required
-def mod_mantenimineto_vehiculo(request, id):
+def mantenimientos_vehiculo_preventivo(request, id):
+    if request.method == 'GET':
+        vehiculo = get_object_or_404(Vehiculo, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, id=2)
+        mantenimientos = vehiculo.mantenimientovehiculo_set.filter(tipo=tipo_mantenimiento).order_by('-fecha_fin', '-hora_fin')
+        context = {
+            'vehiculo': vehiculo,
+            'tipo_mantenimiento': tipo_mantenimiento,
+            'mantenimientos': mantenimientos,
+        }
+        return render(request, 'SGE_vehiculo/manteniminetos_preventivo.html', context)
+
+
+
+
+@login_required
+def mod_mantenimineto_vehiculo_preventivo(request, id):
     if request.method == 'GET':
         mantenimiento = get_object_or_404(MantenimientoVehiculo, id=id)
         vehiculo = mantenimiento.vehiculo
-        form_mant = MantenimientoVehiculoForm(instance=mantenimiento)
+        form_mant = MantenimientoVehiculoPreventivoForm(instance=mantenimiento)
         context = {
             'form_mant': form_mant,
             'vehiculo': vehiculo,
         }
-        return render(request, 'SGE_vehiculo/mod_mantenimineto.html', context)
-    
+        return render(request, 'SGE_vehiculo/mod_mantenimineto_preventivo.html', context)
+
     if request.method == 'POST':
         mantenimiento = get_object_or_404(MantenimientoVehiculo, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, id=2)
         vehiculo = mantenimiento.vehiculo
-        form_mant = MantenimientoVehiculoForm(request.POST, request.FILES, instance=mantenimiento)
+        form_mant = MantenimientoVehiculoPreventivoForm(request.POST, request.FILES, instance=mantenimiento)
 
         if form_mant.is_valid():
             mantenimiento = form_mant.save(commit=False)
             mantenimiento.vehiculo = vehiculo
+            mantenimiento.tipo = tipo_mantenimiento
+            mantenimiento.partes_y_piezas = ""
             if 'image' in request.FILES:
-                mantenimiento.image = request.FILES['image'] 
+                mantenimiento.image = request.FILES['image']
             mantenimiento.save()
-            return redirect('detalles_vehiculo', id=vehiculo.id)
+            return redirect('mantenimientos_vehiculo_preventivo', id=vehiculo.id)
         else:
             context = {
                 'form_mant': form_mant,
                 'vehiculo': vehiculo,
             }
-            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo") 
-            return render(request, 'SGE_vehiculo/mod_mantenimineto.html', context)
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo")
+            return render(request, 'SGE_vehiculo/mod_mantenimineto_preventivo.html', context)
 
-    return HttpResponse("Method Not Allowed", status=405)    
- 
+    return HttpResponse("Method Not Allowed", status=405)
+
+
 
 
 @login_required
-def registro_de_viajes(request, id):
+def nuevo_mantenimineto_vehiculo_preventivo(request, id):
     if request.method == 'GET':
         vehiculo = get_object_or_404(Vehiculo, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, id=2)
+        form_mant = MantenimientoVehiculoPreventivoForm()
         context = {
+            'form_mant': form_mant,
             'vehiculo': vehiculo,
+            'tipo_mantenimiento': tipo_mantenimiento,
         }
-        return render(request, 'SGE_vehiculo/viajes.html', context)      
+        return render(request, 'SGE_vehiculo/nuevo_mantenimineto_preventivo.html', context)
+
+    if request.method == 'POST':
+        vehiculo = get_object_or_404(Vehiculo, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, id=2)
+        form_mant = MantenimientoVehiculoPreventivoForm(request.POST, request.FILES)
+
+        if form_mant.is_valid():
+            mantenimiento = form_mant.save(commit=False)
+            mantenimiento.vehiculo = vehiculo
+            mantenimiento.tipo = tipo_mantenimiento
+            mantenimiento.partes_y_piezas = ""
+            if 'image' in request.FILES:
+                mantenimiento.image = request.FILES['image']
+            mantenimiento.save()
+            return redirect('mantenimientos_vehiculo_preventivo', id=vehiculo.id)
+        else:
+            context = {
+                'form_mant': form_mant,
+                'vehiculo': vehiculo,
+                'tipo_mantenimiento': tipo_mantenimiento,
+            }
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo")
+            return render(request, 'SGE_vehiculo/nuevo_mantenimineto_preventivo.html', context)
+
+    return HttpResponse("Method Not Allowed", status=405)
 
 
 
 
 @login_required
-def generar_documento_mantenimientos_por_mes(request):
+def mantenimientos_vehiculo_correctivo(request, id):
+    if request.method == 'GET':
+        vehiculo = get_object_or_404(Vehiculo, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, id=1)
+        mantenimientos = vehiculo.mantenimientovehiculo_set.filter(tipo=tipo_mantenimiento).order_by('-fecha', '-hora')
+        context = {
+            'vehiculo': vehiculo,
+            'tipo_mantenimiento': tipo_mantenimiento,
+            'mantenimientos': mantenimientos,
+        }
+        return render(request, 'SGE_vehiculo/manteniminetos_correctivo.html', context)
+
+
+
+
+@login_required
+def mod_mantenimineto_vehiculo_correctivo(request, id):
+    if request.method == 'GET':
+        mantenimiento = get_object_or_404(MantenimientoVehiculo, id=id)
+        vehiculo = mantenimiento.vehiculo
+        form_mant = MantenimientoVehiculoCorrectivoForm(instance=mantenimiento)
+        context = {
+            'form_mant': form_mant,
+            'vehiculo': vehiculo,
+        }
+        return render(request, 'SGE_vehiculo/mod_mantenimineto_correctivo.html', context)
+    
+    if request.method == 'POST':
+        mantenimiento = get_object_or_404(MantenimientoVehiculo, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, id=1)
+        vehiculo = mantenimiento.vehiculo
+        form_mant = MantenimientoVehiculoCorrectivoForm(request.POST, request.FILES, instance=mantenimiento)
+
+        if form_mant.is_valid():
+            mantenimiento = form_mant.save(commit=False)
+            mantenimiento.vehiculo = vehiculo
+            mantenimiento.tipo = tipo_mantenimiento
+            if 'image' in request.FILES:
+                mantenimiento.image = request.FILES['image']
+            mantenimiento.save()
+            return redirect('mantenimientos_vehiculo_correctivo', id=vehiculo.id)
+        else:
+            context = {
+                'form_mant': form_mant,
+                'vehiculo': vehiculo,
+            }
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo")
+            return render(request, 'SGE_vehiculo/mod_mantenimineto_correctivo.html', context)
+
+    return HttpResponse("Method Not Allowed", status=405)
+
+
+
+
+@login_required
+def nuevo_mantenimineto_vehiculo_correctivo(request, id):
+    if request.method == 'GET':
+        vehiculo = get_object_or_404(Vehiculo, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, id=1)
+        form_mant = MantenimientoVehiculoCorrectivoForm()
+        context = {
+            'form_mant': form_mant,
+            'vehiculo': vehiculo,
+            'tipo_mantenimiento': tipo_mantenimiento,
+        }
+        return render(request, 'SGE_vehiculo/nuevo_mantenimineto_correctivo.html', context)
+    
+    if request.method == 'POST':
+        vehiculo = get_object_or_404(Vehiculo, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, id=1)
+        form_mant = MantenimientoVehiculoCorrectivoForm(request.POST, request.FILES)
+
+        if form_mant.is_valid():
+            mantenimiento = form_mant.save(commit=False)
+            mantenimiento.vehiculo = vehiculo
+            mantenimiento.tipo = tipo_mantenimiento
+            if 'image' in request.FILES:
+                mantenimiento.image = request.FILES['image']
+            mantenimiento.save()
+            return redirect('mantenimientos_vehiculo_correctivo', id=vehiculo.id)
+        else:
+            context = {
+                'form_mant': form_mant,
+                'vehiculo': vehiculo,
+                'tipo_mantenimiento': tipo_mantenimiento,
+            }
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo")
+            return render(request, 'SGE_vehiculo/nuevo_mantenimineto_correctivo.html', context)
+
+    return HttpResponse("Method Not Allowed", status=405)
+
+
+
+
+
+
+
+
+# descargas -----------------------------------------------------------------------------------
+
+@login_required
+def documento_general_mantenimientos_vehiculo(request):
     mes = request.GET.get('mes')
     anio = request.GET.get('anio')
     tipo_mantenimiento_id = request.GET.get('tipo_mantenimiento')
 
-    mantenimientos = MantenimientoVehiculo.objects.filter(fecha_fin__year=anio)
+    mantenimientos = MantenimientoVehiculo.objects.filter(fecha__year=anio)
 
     if mes:
-        mantenimientos = mantenimientos.filter(fecha_fin__month=mes)
+        mantenimientos = mantenimientos.filter(fecha__month=mes)
 
     if tipo_mantenimiento_id:  # Si se seleccionó un tipo de mantenimiento
         tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, pk=tipo_mantenimiento_id)
         mantenimientos = mantenimientos.filter(tipo=tipo_mantenimiento)
 
-    mantenimientos = mantenimientos.order_by('-fecha_fin', '-hora_fin')
+    mantenimientos = mantenimientos.order_by('-fecha', '-hora')
 
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     if mes:
-        response['Content-Disposition'] = 'attachment; filename="mantenimientos_vehiculo_{}_{}.xlsx"'.format(mes, anio)
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_vehiculos_{}_{}.xlsx"'.format(mes, anio)
     else:
-        response['Content-Disposition'] = 'attachment; filename="mantenimientos_vehiculo_{}.xlsx"'.format(anio)
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_vehiculos_{}.xlsx"'.format(anio)
 
     wb = openpyxl.Workbook()
     ws = wb.active
@@ -266,13 +416,13 @@ def generar_documento_mantenimientos_por_mes(request):
     row = 2
     for mantenimiento in mantenimientos:
         ws.append([
-            mantenimiento.vehiculo.modelo,
+            mantenimiento.vehiculo.nombre,
             mantenimiento.tipo.tipo,
             mantenimiento.operador,
             mantenimiento.fecha_inicio,
             mantenimiento.hora_inicio,
-            mantenimiento.fecha_fin,
-            mantenimiento.hora_fin,
+            mantenimiento.fecha,
+            mantenimiento.hora,
             mantenimiento.km_recorridos,
             mantenimiento.partes_y_piezas,
             mantenimiento.descripción
@@ -295,34 +445,35 @@ def generar_documento_mantenimientos_por_mes(request):
 
 
 
+
 @login_required
-def generar_documento_mantenimientos_vehiculo(request, id):
+def documento_mantenimientos_preventivos_vehiculo(request, id):
     mes = request.GET.get('mes')
     anio = request.GET.get('anio')
-    tipo_mantenimiento_id = request.GET.get('tipo_mantenimiento')
+    tipo_mantenimiento_id = 2
 
-    maquina = get_object_or_404(Vehiculo, pk=id)
-    mantenimientos = MantenimientoVehiculo.objects.filter(vehiculo=vehiculo).order_by('-fecha_fin', '-hora_fin')
+    vehiculo = get_object_or_404(Vehiculo, pk=id)
+    mantenimientos = MantenimientoVehiculo.objects.filter(vehiculo=vehiculo).order_by('-fecha', '-hora')
 
     if mes:
-        mantenimientos = mantenimientos.filter(fecha_fin__month=mes)
+        mantenimientos = mantenimientos.filter(fecha__month=mes)
     if anio:
-        mantenimientos = mantenimientos.filter(fecha_fin__year=anio)
+        mantenimientos = mantenimientos.filter(fecha__year=anio)
     if tipo_mantenimiento_id: # Si se seleccionó un tipo de mantenimiento
         tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, pk=tipo_mantenimiento_id)
         mantenimientos = mantenimientos.filter(tipo=tipo_mantenimiento)
 
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     if mes:
-        response['Content-Disposition'] = 'attachment; filename="mantenimientos_vehiculos_{}_{}_{}.xlsx"'.format(vehiculo.marca, mes, anio)
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_preventivos_de_{}_{}_{}.xlsx"'.format(vehiculo.nombre, mes, anio)
     else:
-        response['Content-Disposition'] = 'attachment; filename="mantenimientos_vehiculos_{}_{}.xlsx"'.format(vehiculo.marca, anio)
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_preventivos_de_{}_{}.xlsx"'.format(vehiculo.nombre, anio)
 
     wb = openpyxl.Workbook()
     ws = wb.active
 
     # Define los encabezados de la tabla
-    headers = ['Tipo', 'Operador', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Km Recorridos', 'Partes y Piezas', 'Descripción']
+    headers = ['Operador', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Km Recorridos', 'Descripción']
     for col, header in enumerate(headers, start=1):
         ws.cell(row=1, column=col, value=header)
         ws.cell(row=1, column=col).font = Font(bold=True)
@@ -332,12 +483,76 @@ def generar_documento_mantenimientos_vehiculo(request, id):
     row = 2
     for mantenimiento in mantenimientos:
         ws.append([
-            mantenimiento.tipo.tipo,
             mantenimiento.operador,
             mantenimiento.fecha_inicio,
             mantenimiento.hora_inicio,
-            mantenimiento.fecha_fin,
-            mantenimiento.hora_fin,
+            mantenimiento.fecha,
+            mantenimiento.hora,
+            mantenimiento.km_recorridos,
+            mantenimiento.descripción
+        ])
+
+    # Ajusta el ancho de las columnas automáticamente
+    for col in ws.columns:
+        max_length = 0
+        column = col[0].column_letter
+        for cell in col:
+            try:
+                if len(str(cell.value)) > max_length:
+                    max_length = len(cell.value)
+            except:
+                pass
+        adjusted_width = (max_length + 2) * 1.2
+        ws.column_dimensions[column].width = adjusted_width
+
+    wb.save(response)
+    return response
+
+
+
+
+@login_required
+def documento_mantenimientos_correctivos_vehiculo(request, id):
+    mes = request.GET.get('mes')
+    anio = request.GET.get('anio')
+    tipo_mantenimiento_id = 1
+
+    vehiculo = get_object_or_404(Vehiculo, pk=id)
+    mantenimientos = MantenimientoVehiculo.objects.filter(vehiculo=vehiculo).order_by('-fecha', '-hora')
+
+    if mes:
+        mantenimientos = mantenimientos.filter(fecha__month=mes)
+    if anio:
+        mantenimientos = mantenimientos.filter(fecha__year=anio)
+    if tipo_mantenimiento_id: # Si se seleccionó un tipo de mantenimiento
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, pk=tipo_mantenimiento_id)
+        mantenimientos = mantenimientos.filter(tipo=tipo_mantenimiento)
+
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    if mes:
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_correctivos_de_{}_{}_{}.xlsx"'.format(vehiculo.nombre, mes, anio)
+    else:
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_correctivos_de_{}_{}.xlsx"'.format(vehiculo.nombre, anio)
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+
+    # Define los encabezados de la tabla
+    headers = ['Operador', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Km Recorridos', 'Partes y Piezas', 'Descripción']
+    for col, header in enumerate(headers, start=1):
+        ws.cell(row=1, column=col, value=header)
+        ws.cell(row=1, column=col).font = Font(bold=True)
+        ws.cell(row=1, column=col).fill = PatternFill(start_color="BFBFBF", end_color="BFBFBF", fill_type="solid")
+
+    # Agrega los datos de los mantenimientos
+    row = 2
+    for mantenimiento in mantenimientos:
+        ws.append([
+            mantenimiento.operador,
+            mantenimiento.fecha_inicio,
+            mantenimiento.hora_inicio,
+            mantenimiento.fecha,
+            mantenimiento.hora,
             mantenimiento.km_recorridos,
             mantenimiento.partes_y_piezas,
             mantenimiento.descripción
@@ -357,4 +572,4 @@ def generar_documento_mantenimientos_vehiculo(request, id):
         ws.column_dimensions[column].width = adjusted_width
 
     wb.save(response)
-    return response    
+    return response
