@@ -66,7 +66,7 @@
         </span>
     </div>
 
-    <h3 class="text-uppercase">Mantenimientos {{ tipo_mantenimiento }} de {{ vehiculo }}</h3>
+    <h3 class="text-uppercase">Mantenimientos {{ tipo_mantenimiento }} de {{ vehiculo.marca }} {{ vehiculo.modelo }}</h3>
     <table class="table table-striped shadow">
         <thead>
             <tr>
@@ -78,7 +78,7 @@
                 <th>Km Recorridos</th>
                 <th>Partes y piezas</th>
                 <th>Descripción</th>
-                <th>Imagen</th>
+                <th>Imagenes</th>
                 <th>Modificar</th>
                 <th>Eliminar<th>
             </tr>
@@ -88,8 +88,8 @@
                 <tr>
                     <td>{{ mantenimiento.fecha_inicio }}</td>
                     <td>{{ mantenimiento.hora_inicio }}</td>
-                    <td>{{ mantenimiento.fecha }}</td>
-                    <td>{{ mantenimiento.hora }}</td>
+                    <td>{{ mantenimiento.fecha_fin }}</td>
+                    <td>{{ mantenimiento.hora_fin }}</td>
                     <td>{{ mantenimiento.operador }}</td>
                     <td>{{ mantenimiento.km_recorridos }}</td>
                     <td>{{ mantenimiento.partes_y_piezas }}</td>

@@ -285,7 +285,7 @@ def mantenimientos_vehiculo_correctivo(request, id):
     if request.method == 'GET':
         vehiculo = get_object_or_404(Vehiculo, id=id)
         tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, id=1)
-        mantenimientos = vehiculo.mantenimientovehiculo_set.filter(tipo=tipo_mantenimiento).order_by('-fecha', '-hora')
+        mantenimientos = vehiculo.mantenimientovehiculo_set.filter(tipo=tipo_mantenimiento).order_by('-fecha_fin', '-hora_fin')
         context = {
             'vehiculo': vehiculo,
             'tipo_mantenimiento': tipo_mantenimiento,
