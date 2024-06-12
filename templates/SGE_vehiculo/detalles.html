@@ -95,7 +95,10 @@
                 <th scope="col">número_de_chasis</th>
                 <th scope="col">Motor</th>
                 <th scope="col">KM recorridos</th>
-                <th scope="col">Intervalo de mantenimiento "Km"</th>
+                <th scope="col">Intervalo de mantenimiento correctivo</th>
+                <th scope="col">Intervalo para cambio del filtro de aceite</th>
+                <th scope="col">Intervalo para cambio del filtro de aire y combustible</th>
+                <th scope="col">Intervalo para cambio del filtro de caja y corona</th>
             </tr>
         </thead>
         <tbody>
@@ -107,6 +110,9 @@
                 <td>{{ vehiculo.motor }}</td>
                 <td>{{ vehiculo.km_recorridos }}</td>
                 <td>{{ vehiculo.intervalo_mantenimiento }}</td>
+                <td>{{ vehiculo.intervalo_mantenimiento_cambio_filtro_aceite }}</td>
+                <td>{{ vehiculo.intervalo_mantenimiento_cambio_filtro_aire_combustible }}</td>
+                <td>{{ vehiculo.intervalo_mantenimiento_cambio_filtro_caja_corona }}</td>
             </tr>
         </tbody>
     </table>
@@ -135,21 +141,43 @@
 
     
     <div class="row mt-3 d-flex justify-content-center align-item-center ps-5 pe-5">
-        <div class="col-12 col-md-4 p-0 card carta-home m-3">
+        <div class="col-12 col-md-2 p-0 card carta-home m-3">
             <a class="text-decoration-none text-dark" href="{% url "mantenimientos_vehiculo_preventivo" id=vehiculo.id %}">
-                <img src="{% static "images/preventivo.png" %}" class="card-img-top" alt="..." style="max-height: 200px;">
+                <img src="{% static "images/mantenimiento-preventivo-autos-1.jpg" %}" class="card-img-top" alt="..." style="max-height: 100px;">
                 <div class="card-body">
-                    <h5 class="card-title text-uppercase">Mantenimientos Preventivo</h5>
-                    <p class="card-text m-0">Acciones y tareas programadas y realizadas regularmente para de prevenir fallos y problemas</p>
+                    <h6 class="card-title text-uppercase">Mantenimientos Preventivo</h6>
                 </div>
             </a>
         </div>
-        <div class="col-12 col-md-4 p-0 card carta-home m-3">
+        <div class="col-12 col-md-2 p-0 card carta-home m-3">
             <a class="text-decoration-none text-dark" href="{% url "mantenimientos_vehiculo_correctivo" id=vehiculo.id %}">
-                <img src="{% static "images/correctivo.jpg" %}" class="card-img-top" alt="..." style="max-height: 200px;">
+                <img src="{% static "images/mantenimineto_correctivo_vehiculo.jpg" %}" class="card-img-top" alt="..." style="max-height: 100px;">
                 <div class="card-body">
-                    <h5 class="card-title text-uppercase">Mantenimientos Correctivo</h5>
-                    <p class="card-text m-0">Su objetivo es reparar o restaurar el equipo o sistema a su estado operativo normal</p>
+                    <h6 class="card-title text-uppercase">Mantenimientos Correctivo</h6>
+                </div>
+            </a>
+        </div>
+        <div class="col-12 col-md-2 p-0 card carta-home m-3">
+            <a class="text-decoration-none text-dark" href="{% url "mantenimientos_vehiculo_correctivo" id=vehiculo.id %}">
+                <img src="{% static "images/taller-mecanico-859x483.jpg" %}" class="card-img-top" alt="..." style="max-height: 100px;">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase">Cambio del filtro de aceite</h6>
+                </div>
+            </a>
+        </div>
+        <div class="col-12 col-md-2 p-0 card carta-home m-3">
+            <a class="text-decoration-none text-dark" href="{% url "mantenimientos_vehiculo_correctivo" id=vehiculo.id %}">
+                <img src="{% static "images/filtro-del-aire-coche--860x573.jpg" %}" class="card-img-top" alt="..." style="max-height: 100px;">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase">Cambio del filtro de aire y combustible</h6>
+                </div>
+            </a>
+        </div>
+        <div class="col-12 col-md-2 p-0 card carta-home m-3">
+            <a class="text-decoration-none text-dark" href="{% url "mantenimientos_vehiculo_correctivo" id=vehiculo.id %}">
+                <img src="{% static "images/sstt-min.jpg" %}" class="card-img-top" alt="..." style="max-height: 100px;">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase">Cambio del filtro de caja y corona</h6>
                 </div>
             </a>
         </div>

@@ -12,6 +12,10 @@ class VehiculoForm(forms.ModelForm):
             'image': 'Imagen',
             'matricula': 'matrícula',
             'dni_chofer': 'DNI?',
+            'intervalo_mantenimiento': 'Intervalo entre manteniminetos correctivos',
+            'intervalo_mantenimiento_cambio_filtro_aceite': 'Intervalo entre manteniminetos para cambio del filtro de aceite',
+            'intervalo_mantenimiento_cambio_filtro_aire_combustible': 'Intervalo entre manteniminetos para cambio del filtro de aire y combustible',
+            'intervalo_mantenimiento_cambio_filtro_caja_corona': 'Intervalo entre manteniminetos para cambio del filtro de caja y corona',
         }
         widgets = {
             'marca': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: KIA'}),
@@ -21,6 +25,9 @@ class VehiculoForm(forms.ModelForm):
             'motor': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: V8'}),
             'km_recorridos': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'km?'}),
             'intervalo_mantenimiento': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Número determinado en Km'}),
+            'intervalo_mantenimiento_cambio_filtro_aceite': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Número determinado en Km'}),
+            'intervalo_mantenimiento_cambio_filtro_aire_combustible': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Número determinado en Km'}),
+            'intervalo_mantenimiento_cambio_filtro_caja_corona': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Número determinado en Km'}),
             'image': FileInput(attrs={'class': 'form-control-file m-2'}),
 
             'nombre_chofer': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: Juan Chentes'}),

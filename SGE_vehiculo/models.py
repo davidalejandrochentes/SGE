@@ -14,6 +14,11 @@ class Vehiculo(models.Model):
     motor = models.CharField(max_length=50, null=False, blank=False)
     km_recorridos = models.IntegerField(blank=False, null=False)
     intervalo_mantenimiento = models.IntegerField(blank=False, null=False)
+    
+    intervalo_mantenimiento_cambio_filtro_aceite = models.IntegerField(blank=False, null=False, default=0)
+    intervalo_mantenimiento_cambio_filtro_aire_combustible = models.IntegerField(blank=False, null=False, default=0)
+    intervalo_mantenimiento_cambio_filtro_caja_corona = models.IntegerField(blank=False, null=False, default=0)
+    
     image = models.ImageField(upload_to="vehiculo/image", null=False, blank=False)
     fecha_ultimo_mantenimiento = models.DateField(default=date.today, blank=False, null=False)
 
@@ -23,7 +28,7 @@ class Vehiculo(models.Model):
     dirección_chofer = models.CharField(max_length=30, blank=False, null=False)
     dni_chofer = models.IntegerField(max_length=10, blank=False, null=False)
     
-    def km_restantes_mantenimiento(self):
+    def km_restantes_mantenimiento_correctivo(self):
         ultimo_mantenimiento = MantenimientoVehiculo.objects.filter(vehiculo=self, tipo__id=1).order_by('-fecha_fin').first()
         if ultimo_mantenimiento:
             km_recorridos_ultimo_mantenimiento = ultimo_mantenimiento.km_recorridos
@@ -33,9 +38,47 @@ class Vehiculo(models.Model):
         proximo_mantenimineto = km_recorridos_ultimo_mantenimiento + self.intervalo_mantenimiento
         km_restantes = proximo_mantenimineto - self.km_recorridos
         return km_restantes
+
+
+    def km_restantes_cambio_de_filtro_aceite(self):
+        ultimo_mantenimiento = MantenimientoVehiculo.objects.filter(vehiculo=self, tipo__id=3).order_by('-fecha_fin').first()
+        if ultimo_mantenimiento:
+            km_recorridos_ultimo_mantenimiento = ultimo_mantenimiento.km_recorridos
+        else:
+            km_recorridos_ultimo_mantenimiento = 0
+
+        proximo_mantenimineto = km_recorridos_ultimo_mantenimiento + self.intervalo_mantenimiento_cambio_filtro_aceite
+        km_restantes = proximo_mantenimineto - self.km_recorridos
+        return km_restantes    
+    
+
+    def km_restantes_cambio_filtro_aire_combustible(self):
+        ultimo_mantenimiento = MantenimientoVehiculo.objects.filter(vehiculo=self, tipo__id=4).order_by('-fecha_fin').first()
+        if ultimo_mantenimiento:
+            km_recorridos_ultimo_mantenimiento = ultimo_mantenimiento.km_recorridos
+        else:
+            km_recorridos_ultimo_mantenimiento = 0
+
+        proximo_mantenimineto = km_recorridos_ultimo_mantenimiento + self.intervalo_mantenimiento_cambio_filtro_aire_combustible
+        km_restantes = proximo_mantenimineto - self.km_recorridos
+        return km_restantes   
+
+    def km_restantes_cambio_filtro_caja_corona(self):
+        ultimo_mantenimiento = MantenimientoVehiculo.objects.filter(vehiculo=self, tipo__id=5).order_by('-fecha_fin').first()
+        if ultimo_mantenimiento:
+            km_recorridos_ultimo_mantenimiento = ultimo_mantenimiento.km_recorridos
+        else:
+            km_recorridos_ultimo_mantenimiento = 0
+
+        proximo_mantenimineto = km_recorridos_ultimo_mantenimiento + self.intervalo_mantenimiento_cambio_filtro_caja_corona
+        km_restantes = proximo_mantenimineto - self.km_recorridos
+        return km_restantes       
     
     def __str__(self):
-        return self.modelo
+        return self.modelo    
+
+
+
 
 
 class Viaje(models.Model):

@@ -20,7 +20,7 @@ def vehiculo(request):
     total_vehiculos = len(vehiculos)
     alertas = []
     for vehiculo in alert:
-        km_restantes = vehiculo.km_restantes_mantenimiento()
+        km_restantes = vehiculo.km_restantes_mantenimiento_correctivo()
         if km_restantes <= 1000000:
             
             alertas.append({
@@ -42,23 +42,55 @@ def vehiculo(request):
 
 @login_required
 def alertas(request):
-    alert = Vehiculo.objects.filter(marca__icontains=request.GET.get('search', ''))
+    search_query = request.GET.get('search', '')
+    vehiculos = Vehiculo.objects.filter(marca__icontains=search_query)
     alertas = []
-    for vehiculo in alert:
-        km_restantes = vehiculo.km_restantes_mantenimiento()
-        if km_restantes <= 10000000:
-            
+
+    for vehiculo in vehiculos:
+        # Mantenimiento correctivo
+        km_restantes_correctivo = vehiculo.km_restantes_mantenimiento_correctivo()
+        if km_restantes_correctivo <= 10000000:
             alertas.append({
                 'vehiculo': vehiculo,
-                'km_restantes': km_restantes
+                'km_restantes': km_restantes_correctivo,
+                'tipo': TipoMantenimientoVehiculo.objects.get(id=1).tipo
             })
+
+        # Cambio de filtro de aceite
+        km_restantes_filtro_aceite = vehiculo.km_restantes_cambio_de_filtro_aceite()
+        if km_restantes_filtro_aceite <= 10000000:
+            alertas.append({
+                'vehiculo': vehiculo,
+                'km_restantes': km_restantes_filtro_aceite,
+                'tipo': TipoMantenimientoVehiculo.objects.get(id=3).tipo
+            })
+
+        # Cambio de filtro de aire/combustible
+        km_restantes_filtro_aire_combustible = vehiculo.km_restantes_cambio_filtro_aire_combustible()
+        if km_restantes_filtro_aire_combustible <= 10000000:
+            alertas.append({
+                'vehiculo': vehiculo,
+                'km_restantes': km_restantes_filtro_aire_combustible,
+                'tipo': TipoMantenimientoVehiculo.objects.get(id=4).tipo
+            })
+
+        # Cambio de filtro de caja/corona
+        km_restantes_filtro_caja_corona = vehiculo.km_restantes_cambio_filtro_caja_corona()
+        if km_restantes_filtro_caja_corona <= 10000000:
+            alertas.append({
+                'vehiculo': vehiculo,
+                'km_restantes': km_restantes_filtro_caja_corona,
+                'tipo': TipoMantenimientoVehiculo.objects.get(id=5).tipo
+            })
+
     alertas_ordenadas = sorted(alertas, key=lambda x: x['km_restantes'])
     total_alertas = len(alertas_ordenadas)
+    
     context = {
         'alertas': alertas_ordenadas,
         'total_alertas': total_alertas,
     }
-    return render(request, 'SGE_vehiculo/alertas.html', context) 
+    return render(request, 'SGE_vehiculo/alertas.html', context)
 
 
 
