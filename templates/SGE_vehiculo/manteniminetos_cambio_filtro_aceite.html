@@ -1,6 +1,6 @@
 {% extends "layout/base.html" %}
 
-{% block 'title'%} Mantenimientos Correctivo {% endblock %}
+{% block 'title'%} Mantenimientos Preventivo {% endblock %}
 
 
 {% block 'content' %}
@@ -62,11 +62,11 @@
                 </div>
             </div>
 
-            <a class="btn btn-warning mantenimineto shadow rounded-pill" href="{% url "nuevo_mantenimineto_vehiculo_correctivo" id=vehiculo.id %}">Mantenimiento <i class="bi bi-tools"></i></a>
+            <a class="btn btn-warning mantenimineto shadow rounded-pill" href="{% url "nuevo_mantenimineto_vehiculo_cambio_filtro_aceite" id=vehiculo.id %}">Mantenimiento <i class="bi bi-tools"></i></a>
         </span>
     </div>
 
-    <h3 class="text-uppercase">Mantenimientos {{ tipo_mantenimiento }} de {{ vehiculo.marca }} {{ vehiculo.modelo }}</h3>
+    <h3 class="text-uppercase">{{ tipo_mantenimiento }} de {{ vehiculo.marca }} {{ vehiculo.modelo }}</h3>
     <table class="table table-striped shadow">
         <thead>
             <tr>
@@ -76,7 +76,6 @@
                 <th>Hora final</th>
                 <th>Operador</th>
                 <th>Km Recorridos</th>
-                <th>Partes y piezas</th>
                 <th>Descripción</th>
                 <th>Imagenes</th>
                 <th>Modificar</th>
@@ -92,7 +91,6 @@
                     <td>{{ mantenimiento.hora_fin }}</td>
                     <td>{{ mantenimiento.operador }}</td>
                     <td>{{ mantenimiento.km_recorridos }}</td>
-                    <td>{{ mantenimiento.partes_y_piezas }}</td>
                     <td>{{ mantenimiento.descripción }}</td>
                     <td>
                         <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal{{ mantenimiento.id }}">
@@ -140,7 +138,7 @@
                         </div>
                     </td>
                     <td>
-                        <a class="btn btn-info btn-sm" href="{% url "mod_mantenimineto_vehiculo_correctivo" id=mantenimiento.id %}">Modificar</a>
+                        <a class="btn btn-info btn-sm" href="{% url "mod_mantenimineto_vehiculo_cambio_filtro_aceite" id=mantenimiento.id %}">Modificar</a>
                     </td>
                     <td>
                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-eliminar">

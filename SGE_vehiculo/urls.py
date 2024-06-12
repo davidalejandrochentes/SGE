@@ -16,6 +16,10 @@ urlpatterns = [
     path('mantenimientos_vehiculo_correctivo/<int:id>', views.mantenimientos_vehiculo_correctivo, name="mantenimientos_vehiculo_correctivo"),
     path('mod_mantenimineto_vehiculo_correctivo/<int:id>', views.mod_mantenimineto_vehiculo_correctivo, name="mod_mantenimineto_vehiculo_correctivo"),
     path('nuevo_mantenimineto_vehiculo_correctivo/<int:id>', views.nuevo_mantenimineto_vehiculo_correctivo, name="nuevo_mantenimineto_vehiculo_correctivo"),
+    
+    path('mantenimientos_vehiculo_cambio_filtro_aceite/<int:id>', views.mantenimientos_vehiculo_cambio_filtro_aceite, name="mantenimientos_vehiculo_cambio_filtro_aceite"),
+    path('mod_mantenimineto_vehiculo_cambio_filtro_aceite/<int:id>', views.mod_mantenimineto_vehiculo_cambio_filtro_aceite, name="mod_mantenimineto_vehiculo_cambio_filtro_aceite"),
+    path('nuevo_mantenimineto_vehiculo_cambio_filtro_aceite/<int:id>', views.nuevo_mantenimineto_vehiculo_cambio_filtro_aceite, name="nuevo_mantenimineto_vehiculo_cambio_filtro_aceite"),
 
     path('delete_mantenimiento/<int:id>', views.eliminar_mantenimiento, name="eliminar_mantenimiento_vehiculo"),
     

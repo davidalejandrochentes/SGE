@@ -20,13 +20,38 @@ def vehiculo(request):
     total_vehiculos = len(vehiculos)
     alertas = []
     for vehiculo in alert:
-        km_restantes = vehiculo.km_restantes_mantenimiento_correctivo()
-        if km_restantes <= 1000000:
-            
+        # Mantenimiento correctivo
+        km_restantes_correctivo = vehiculo.km_restantes_mantenimiento_correctivo()
+        if km_restantes_correctivo <= 10000000:
             alertas.append({
                 'vehiculo': vehiculo,
-                'km_restantes': km_restantes
+                'km_restantes': km_restantes_correctivo,
             })
+
+        # Cambio de filtro de aceite
+        km_restantes_filtro_aceite = vehiculo.km_restantes_cambio_de_filtro_aceite()
+        if km_restantes_filtro_aceite <= 10000000:
+            alertas.append({
+                'vehiculo': vehiculo,
+                'km_restantes': km_restantes_filtro_aceite,
+            })
+
+        # Cambio de filtro de aire/combustible
+        km_restantes_filtro_aire_combustible = vehiculo.km_restantes_cambio_filtro_aire_combustible()
+        if km_restantes_filtro_aire_combustible <= 10000000:
+            alertas.append({
+                'vehiculo': vehiculo,
+                'km_restantes': km_restantes_filtro_aire_combustible,
+            })
+
+        # Cambio de filtro de caja/corona
+        km_restantes_filtro_caja_corona = vehiculo.km_restantes_cambio_filtro_caja_corona()
+        if km_restantes_filtro_caja_corona <= 10000000:
+            alertas.append({
+                'vehiculo': vehiculo,
+                'km_restantes': km_restantes_filtro_caja_corona,
+            })
+    
     alertas_ordenadas = sorted(alertas, key=lambda x: x['km_restantes'])
     total_alertas = len(alertas_ordenadas)
     context = {
@@ -55,7 +80,6 @@ def alertas(request):
                 'km_restantes': km_restantes_correctivo,
                 'tipo': TipoMantenimientoVehiculo.objects.get(id=1).tipo
             })
-
         # Cambio de filtro de aceite
         km_restantes_filtro_aceite = vehiculo.km_restantes_cambio_de_filtro_aceite()
         if km_restantes_filtro_aceite <= 10000000:
@@ -64,7 +88,6 @@ def alertas(request):
                 'km_restantes': km_restantes_filtro_aceite,
                 'tipo': TipoMantenimientoVehiculo.objects.get(id=3).tipo
             })
-
         # Cambio de filtro de aire/combustible
         km_restantes_filtro_aire_combustible = vehiculo.km_restantes_cambio_filtro_aire_combustible()
         if km_restantes_filtro_aire_combustible <= 10000000:
@@ -73,7 +96,6 @@ def alertas(request):
                 'km_restantes': km_restantes_filtro_aire_combustible,
                 'tipo': TipoMantenimientoVehiculo.objects.get(id=4).tipo
             })
-
         # Cambio de filtro de caja/corona
         km_restantes_filtro_caja_corona = vehiculo.km_restantes_cambio_filtro_caja_corona()
         if km_restantes_filtro_caja_corona <= 10000000:
@@ -202,6 +224,12 @@ def eliminar(request, id):
 
 # fin de vistas generales----------------------------------------------------------------------------------
 
+
+
+
+@login_required
+def viajes(request, id):
+    return render(request, 'SGE_vehiculo/viajes.html', {})
 
 
 
@@ -407,11 +435,107 @@ def nuevo_mantenimineto_vehiculo_correctivo(request, id):
 
 
 
+@login_required
+def mantenimientos_vehiculo_cambio_filtro_aceite(request, id):
+    if request.method == 'GET':
+        vehiculo = get_object_or_404(Vehiculo, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, id=3)
+        mantenimientos = vehiculo.mantenimientovehiculo_set.filter(tipo=tipo_mantenimiento).order_by('-fecha_fin', '-hora_fin')
+        context = {
+            'vehiculo': vehiculo,
+            'tipo_mantenimiento': tipo_mantenimiento,
+            'mantenimientos': mantenimientos,
+        }
+        return render(request, 'SGE_vehiculo/manteniminetos_cambio_filtro_aceite.html', context)
+
+
+
+
+@login_required
+def mod_mantenimineto_vehiculo_cambio_filtro_aceite(request, id):
+    if request.method == 'GET':
+        mantenimiento = get_object_or_404(MantenimientoVehiculo, id=id)
+        vehiculo = mantenimiento.vehiculo
+        form_mant = MantenimientoVehiculoPreventivoForm(instance=mantenimiento)
+        context = {
+            'form_mant': form_mant,
+            'vehiculo': vehiculo,
+        }
+        return render(request, 'SGE_vehiculo/mod_mantenimineto_cambio_filtro_aceite.html', context)
+
+    if request.method == 'POST':
+        mantenimiento = get_object_or_404(MantenimientoVehiculo, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, id=3)
+        vehiculo = mantenimiento.vehiculo
+        form_mant = MantenimientoVehiculoPreventivoForm(request.POST, request.FILES, instance=mantenimiento)
+
+        if form_mant.is_valid():
+            mantenimiento = form_mant.save(commit=False)
+            mantenimiento.vehiculo = vehiculo
+            mantenimiento.tipo = tipo_mantenimiento
+            mantenimiento.partes_y_piezas = ""
+            if 'image' in request.FILES:
+                mantenimiento.image = request.FILES['image']
+            mantenimiento.save()
+            return redirect('mantenimientos_vehiculo_cambio_filtro_aceite', id=vehiculo.id)
+        else:
+            context = {
+                'form_mant': form_mant,
+                'vehiculo': vehiculo,
+            }
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo")
+            return render(request, 'SGE_vehiculo/mod_mantenimineto_cambio_filtro_aceite.html', context)
+
+    return HttpResponse("Method Not Allowed", status=405)
+
+
+
+
+@login_required
+def nuevo_mantenimineto_vehiculo_cambio_filtro_aceite(request, id):
+    if request.method == 'GET':
+        vehiculo = get_object_or_404(Vehiculo, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, id=3)
+        form_mant = MantenimientoVehiculoPreventivoForm()
+        context = {
+            'form_mant': form_mant,
+            'vehiculo': vehiculo,
+            'tipo_mantenimiento': tipo_mantenimiento,
+        }
+        return render(request, 'SGE_vehiculo/nuevo_mantenimineto_cambio_filtro_aceite.html', context)
+
+    if request.method == 'POST':
+        vehiculo = get_object_or_404(Vehiculo, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, id=3)
+        form_mant = MantenimientoVehiculoPreventivoForm(request.POST, request.FILES)
+
+        if form_mant.is_valid():
+            mantenimiento = form_mant.save(commit=False)
+            mantenimiento.vehiculo = vehiculo
+            mantenimiento.tipo = tipo_mantenimiento
+            mantenimiento.partes_y_piezas = ""
+            if 'image' in request.FILES:
+                mantenimiento.image = request.FILES['image']
+            mantenimiento.save()
+            return redirect('mantenimientos_vehiculo_cambio_filtro_aceite', id=vehiculo.id)
+        else:
+            context = {
+                'form_mant': form_mant,
+                'vehiculo': vehiculo,
+                'tipo_mantenimiento': tipo_mantenimiento,
+            }
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo")
+            return render(request, 'SGE_vehiculo/nuevo_mantenimineto_cambio_filtro_aceite.html', context)
+
+    return HttpResponse("Method Not Allowed", status=405)    
 
 
 
 
 # descargas -----------------------------------------------------------------------------------
+
+
+
 
 @login_required
 def documento_general_mantenimientos_vehiculo(request):
