@@ -532,6 +532,103 @@ def nuevo_mantenimineto_vehiculo_cambio_filtro_aceite(request, id):
 
 
 
+@login_required
+def mantenimientos_vehiculo_cambio_filtro_aire_combustible(request, id):
+    if request.method == 'GET':
+        vehiculo = get_object_or_404(Vehiculo, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, id=4)
+        mantenimientos = vehiculo.mantenimientovehiculo_set.filter(tipo=tipo_mantenimiento).order_by('-fecha_fin', '-hora_fin')
+        context = {
+            'vehiculo': vehiculo,
+            'tipo_mantenimiento': tipo_mantenimiento,
+            'mantenimientos': mantenimientos,
+        }
+        return render(request, 'SGE_vehiculo/manteniminetos_cambio_filtro_aire_combustible.html', context)
+
+
+
+
+@login_required
+def mod_mantenimineto_vehiculo_cambio_filtro_aire_combustible(request, id):
+    if request.method == 'GET':
+        mantenimiento = get_object_or_404(MantenimientoVehiculo, id=id)
+        vehiculo = mantenimiento.vehiculo
+        form_mant = MantenimientoVehiculoPreventivoForm(instance=mantenimiento)
+        context = {
+            'form_mant': form_mant,
+            'vehiculo': vehiculo,
+        }
+        return render(request, 'SGE_vehiculo/mod_mantenimineto_cambio_filtro_aire_combustible.html', context)
+
+    if request.method == 'POST':
+        mantenimiento = get_object_or_404(MantenimientoVehiculo, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, id=4)
+        vehiculo = mantenimiento.vehiculo
+        form_mant = MantenimientoVehiculoPreventivoForm(request.POST, request.FILES, instance=mantenimiento)
+
+        if form_mant.is_valid():
+            mantenimiento = form_mant.save(commit=False)
+            mantenimiento.vehiculo = vehiculo
+            mantenimiento.tipo = tipo_mantenimiento
+            mantenimiento.partes_y_piezas = ""
+            if 'image' in request.FILES:
+                mantenimiento.image = request.FILES['image']
+            mantenimiento.save()
+            return redirect('mantenimientos_vehiculo_cambio_filtro_aire_combustible', id=vehiculo.id)
+        else:
+            context = {
+                'form_mant': form_mant,
+                'vehiculo': vehiculo,
+            }
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo")
+            return render(request, 'SGE_vehiculo/mod_mantenimineto_cambio_filtro_aire_combustible.html', context)
+
+    return HttpResponse("Method Not Allowed", status=405)
+
+
+
+
+@login_required
+def nuevo_mantenimineto_vehiculo_cambio_filtro_aire_combustible(request, id):
+    if request.method == 'GET':
+        vehiculo = get_object_or_404(Vehiculo, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, id=4)
+        form_mant = MantenimientoVehiculoPreventivoForm()
+        context = {
+            'form_mant': form_mant,
+            'vehiculo': vehiculo,
+            'tipo_mantenimiento': tipo_mantenimiento,
+        }
+        return render(request, 'SGE_vehiculo/nuevo_mantenimineto_cambio_filtro_aire_combustible.html', context)
+
+    if request.method == 'POST':
+        vehiculo = get_object_or_404(Vehiculo, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, id=4)
+        form_mant = MantenimientoVehiculoPreventivoForm(request.POST, request.FILES)
+
+        if form_mant.is_valid():
+            mantenimiento = form_mant.save(commit=False)
+            mantenimiento.vehiculo = vehiculo
+            mantenimiento.tipo = tipo_mantenimiento
+            mantenimiento.partes_y_piezas = ""
+            if 'image' in request.FILES:
+                mantenimiento.image = request.FILES['image']
+            mantenimiento.save()
+            return redirect('mantenimientos_vehiculo_cambio_filtro_aire_combustible', id=vehiculo.id)
+        else:
+            context = {
+                'form_mant': form_mant,
+                'vehiculo': vehiculo,
+                'tipo_mantenimiento': tipo_mantenimiento,
+            }
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo")
+            return render(request, 'SGE_vehiculo/nuevo_mantenimineto_cambio_filtro_aire_combustible.html', context)
+
+    return HttpResponse("Method Not Allowed", status=405)      
+
+
+
+
 # descargas -----------------------------------------------------------------------------------
 
 

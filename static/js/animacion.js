@@ -54,3 +54,7 @@ sr.reveal('.editar', {
 sr.reveal('.eliminar', {
     duration: 5500,
 });
+
+sr.reveal('.viajes', {
+    duration: 3000,
+});
