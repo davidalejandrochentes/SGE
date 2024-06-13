@@ -1,6 +1,6 @@
 {% extends "layout/base.html" %}
 
-{% block 'title'%} Mantenimientos cambio del filtro de aire y combustible {% endblock %}
+{% block 'title'%} Mantenimientos cambio del filtro de caja y corona {% endblock %}
 
 
 {% block 'content' %}
@@ -22,7 +22,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="" action="{% url 'documento_mantenimientos_cambio_filtro_aire_combustible_vehiculo' id=vehiculo.id %}" method="get">
+                        <form class="" action="{% url 'documento_mantenimientos_cambio_filtro_caja_corona_vehiculo' id=vehiculo.id %}" method="get">
                             <label class="" for="mes">Mes:</label>
                             <select class="form-select form-select-sm" name="mes" id="mes">
                                 <option value="">Todos los meses</option>
@@ -62,7 +62,7 @@
                 </div>
             </div>
 
-            <a class="btn btn-warning mantenimineto shadow rounded-pill" href="{% url "nuevo_mantenimineto_vehiculo_cambio_filtro_aire_combustible" id=vehiculo.id %}">Mantenimiento <i class="bi bi-tools"></i></a>
+            <a class="btn btn-warning mantenimineto shadow rounded-pill" href="{% url "nuevo_mantenimineto_vehiculo_cambio_filtro_caja_corona" id=vehiculo.id %}">Mantenimiento <i class="bi bi-tools"></i></a>
         </span>
     </div>
 
@@ -138,7 +138,7 @@
                         </div>
                     </td>
                     <td>
-                        <a class="btn btn-info btn-sm" href="{% url "mod_mantenimineto_vehiculo_cambio_filtro_aire_combustible" id=mantenimiento.id %}">Modificar</a>
+                        <a class="btn btn-info btn-sm" href="{% url "mod_mantenimineto_vehiculo_cambio_filtro_caja_corona" id=mantenimiento.id %}">Modificar</a>
                     </td>
                     <td>
                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-eliminar">

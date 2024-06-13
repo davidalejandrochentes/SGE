@@ -25,9 +25,16 @@ urlpatterns = [
     path('mod_mantenimineto_vehiculo_cambio_filtro_aire_combustible/<int:id>', views.mod_mantenimineto_vehiculo_cambio_filtro_aire_combustible, name="mod_mantenimineto_vehiculo_cambio_filtro_aire_combustible"),
     path('nuevo_mantenimineto_vehiculo_cambio_filtro_aire_combustible/<int:id>', views.nuevo_mantenimineto_vehiculo_cambio_filtro_aire_combustible, name="nuevo_mantenimineto_vehiculo_cambio_filtro_aire_combustible"),
 
+    path('mantenimientos_vehiculo_cambio_filtro_caja_corona/<int:id>', views.mantenimientos_vehiculo_cambio_filtro_caja_corona, name="mantenimientos_vehiculo_cambio_filtro_caja_corona"),
+    path('mod_mantenimineto_vehiculo_cambio_filtro_caja_corona/<int:id>', views.mod_mantenimineto_vehiculo_cambio_filtro_caja_corona, name="mod_mantenimineto_vehiculo_cambio_filtro_caja_corona"),
+    path('nuevo_mantenimineto_vehiculo_cambio_filtro_caja_corona/<int:id>', views.nuevo_mantenimineto_vehiculo_cambio_filtro_caja_corona, name="nuevo_mantenimineto_vehiculo_cambio_filtro_caja_corona"),
+    
     path('delete_mantenimiento/<int:id>', views.eliminar_mantenimiento, name="eliminar_mantenimiento_vehiculo"),
     
     path('documento_general_mantenimientos_vehiculo/', views.documento_general_mantenimientos_vehiculo, name='documento_general_mantenimientos_vehiculo'),
     path('documento_mantenimientos_preventivos_vehiculo/<int:id>/', views.documento_mantenimientos_preventivos_vehiculo, name='documento_mantenimientos_preventivos_vehiculo'),
     path('documento_mantenimientos_correctivos_vehiculo/<int:id>/', views.documento_mantenimientos_correctivos_vehiculo, name='documento_mantenimientos_correctivos_vehiculo'),
+    path('documento_mantenimientos_cambio_filtro_aceite_vehiculo/<int:id>/', views.documento_mantenimientos_cambio_filtro_aceite_vehiculo, name='documento_mantenimientos_cambio_filtro_aceite_vehiculo'),
+    path('documento_mantenimientos_cambio_filtro_aire_combustible_vehiculo/<int:id>/', views.documento_mantenimientos_cambio_filtro_aire_combustible_vehiculo, name='documento_mantenimientos_cambio_filtro_aire_combustible_vehiculo'),
+    path('documento_mantenimientos_cambio_filtro_caja_corona_vehiculo/<int:id>/', views.documento_mantenimientos_cambio_filtro_caja_corona_vehiculo, name='documento_mantenimientos_cambio_filtro_caja_corona_vehiculo'),
 ]

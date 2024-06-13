@@ -624,7 +624,104 @@ def nuevo_mantenimineto_vehiculo_cambio_filtro_aire_combustible(request, id):
             messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo")
             return render(request, 'SGE_vehiculo/nuevo_mantenimineto_cambio_filtro_aire_combustible.html', context)
 
-    return HttpResponse("Method Not Allowed", status=405)      
+    return HttpResponse("Method Not Allowed", status=405)
+
+
+
+
+@login_required
+def mantenimientos_vehiculo_cambio_filtro_caja_corona(request, id):
+    if request.method == 'GET':
+        vehiculo = get_object_or_404(Vehiculo, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, id=5)
+        mantenimientos = vehiculo.mantenimientovehiculo_set.filter(tipo=tipo_mantenimiento).order_by('-fecha_fin', '-hora_fin')
+        context = {
+            'vehiculo': vehiculo,
+            'tipo_mantenimiento': tipo_mantenimiento,
+            'mantenimientos': mantenimientos,
+        }
+        return render(request, 'SGE_vehiculo/manteniminetos_cambio_filtro_caja_corona.html', context)
+
+
+
+
+@login_required
+def mod_mantenimineto_vehiculo_cambio_filtro_caja_corona(request, id):
+    if request.method == 'GET':
+        mantenimiento = get_object_or_404(MantenimientoVehiculo, id=id)
+        vehiculo = mantenimiento.vehiculo
+        form_mant = MantenimientoVehiculoPreventivoForm(instance=mantenimiento)
+        context = {
+            'form_mant': form_mant,
+            'vehiculo': vehiculo,
+        }
+        return render(request, 'SGE_vehiculo/mod_mantenimineto_cambio_filtro_caja_corona.html', context)
+
+    if request.method == 'POST':
+        mantenimiento = get_object_or_404(MantenimientoVehiculo, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, id=5)
+        vehiculo = mantenimiento.vehiculo
+        form_mant = MantenimientoVehiculoPreventivoForm(request.POST, request.FILES, instance=mantenimiento)
+
+        if form_mant.is_valid():
+            mantenimiento = form_mant.save(commit=False)
+            mantenimiento.vehiculo = vehiculo
+            mantenimiento.tipo = tipo_mantenimiento
+            mantenimiento.partes_y_piezas = ""
+            if 'image' in request.FILES:
+                mantenimiento.image = request.FILES['image']
+            mantenimiento.save()
+            return redirect('mantenimientos_vehiculo_cambio_filtro_caja_corona', id=vehiculo.id)
+        else:
+            context = {
+                'form_mant': form_mant,
+                'vehiculo': vehiculo,
+            }
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo")
+            return render(request, 'SGE_vehiculo/mod_mantenimineto_cambio_filtro_caja_corona.html', context)
+
+    return HttpResponse("Method Not Allowed", status=405)
+
+
+
+
+@login_required
+def nuevo_mantenimineto_vehiculo_cambio_filtro_caja_corona(request, id):
+    if request.method == 'GET':
+        vehiculo = get_object_or_404(Vehiculo, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, id=5)
+        form_mant = MantenimientoVehiculoPreventivoForm()
+        context = {
+            'form_mant': form_mant,
+            'vehiculo': vehiculo,
+            'tipo_mantenimiento': tipo_mantenimiento,
+        }
+        return render(request, 'SGE_vehiculo/nuevo_mantenimineto_cambio_filtro_caja_corona.html', context)
+
+    if request.method == 'POST':
+        vehiculo = get_object_or_404(Vehiculo, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, id=5)
+        form_mant = MantenimientoVehiculoPreventivoForm(request.POST, request.FILES)
+
+        if form_mant.is_valid():
+            mantenimiento = form_mant.save(commit=False)
+            mantenimiento.vehiculo = vehiculo
+            mantenimiento.tipo = tipo_mantenimiento
+            mantenimiento.partes_y_piezas = ""
+            if 'image' in request.FILES:
+                mantenimiento.image = request.FILES['image']
+            mantenimiento.save()
+            return redirect('mantenimientos_vehiculo_cambio_filtro_caja_corona', id=vehiculo.id)
+        else:
+            context = {
+                'form_mant': form_mant,
+                'vehiculo': vehiculo,
+                'tipo_mantenimiento': tipo_mantenimiento,
+            }
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo")
+            return render(request, 'SGE_vehiculo/nuevo_mantenimineto_cambio_filtro_caja_corona.html', context)
+
+    return HttpResponse("Method Not Allowed", status=405)  
 
 
 
@@ -809,6 +906,201 @@ def documento_mantenimientos_correctivos_vehiculo(request, id):
             mantenimiento.hora_fin,
             mantenimiento.km_recorridos,
             mantenimiento.partes_y_piezas,
+            mantenimiento.descripción
+        ])
+
+    # Ajusta el ancho de las columnas automáticamente
+    for col in ws.columns:
+        max_length = 0
+        column = col[0].column_letter
+        for cell in col:
+            try:
+                if len(str(cell.value)) > max_length:
+                    max_length = len(cell.value)
+            except:
+                pass
+        adjusted_width = (max_length + 2) * 1.2
+        ws.column_dimensions[column].width = adjusted_width
+
+    wb.save(response)
+    return response
+
+
+
+
+@login_required
+def documento_mantenimientos_cambio_filtro_aceite_vehiculo(request, id):
+    mes = request.GET.get('mes')
+    anio = request.GET.get('anio')
+    tipo_mantenimiento_id = 3
+
+    vehiculo = get_object_or_404(Vehiculo, pk=id)
+    mantenimientos = MantenimientoVehiculo.objects.filter(vehiculo=vehiculo).order_by('-fecha_fin', '-hora_fin')
+
+    if mes:
+        mantenimientos = mantenimientos.filter(fecha_fin__month=mes)
+    if anio:
+        mantenimientos = mantenimientos.filter(fecha_fin__year=anio)
+    if tipo_mantenimiento_id: # Si se seleccionó un tipo de mantenimiento
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, pk=tipo_mantenimiento_id)
+        mantenimientos = mantenimientos.filter(tipo=tipo_mantenimiento)
+
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    if mes:
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_cambio_filtro_aceite_de_{}_{}_{}_{}.xlsx"'.format(vehiculo.marca, vehiculo.modelo, mes, anio)
+    else:
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_cambio_filtro_aceite_de_{}_{}_{}.xlsx"'.format(vehiculo.marca, vehiculo.modelo, anio)
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+
+    # Define los encabezados de la tabla
+    headers = ['Operador', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Km Recorridos', 'Descripción']
+    for col, header in enumerate(headers, start=1):
+        ws.cell(row=1, column=col, value=header)
+        ws.cell(row=1, column=col).font = Font(bold=True)
+        ws.cell(row=1, column=col).fill = PatternFill(start_color="BFBFBF", end_color="BFBFBF", fill_type="solid")
+
+    # Agrega los datos de los mantenimientos
+    row = 2
+    for mantenimiento in mantenimientos:
+        ws.append([
+            mantenimiento.operador,
+            mantenimiento.fecha_inicio,
+            mantenimiento.hora_inicio,
+            mantenimiento.fecha_fin,
+            mantenimiento.hora_fin,
+            mantenimiento.km_recorridos,
+            mantenimiento.descripción
+        ])
+
+    # Ajusta el ancho de las columnas automáticamente
+    for col in ws.columns:
+        max_length = 0
+        column = col[0].column_letter
+        for cell in col:
+            try:
+                if len(str(cell.value)) > max_length:
+                    max_length = len(cell.value)
+            except:
+                pass
+        adjusted_width = (max_length + 2) * 1.2
+        ws.column_dimensions[column].width = adjusted_width
+
+    wb.save(response)
+    return response
+
+
+
+
+@login_required
+def documento_mantenimientos_cambio_filtro_aire_combustible_vehiculo(request, id):
+    mes = request.GET.get('mes')
+    anio = request.GET.get('anio')
+    tipo_mantenimiento_id = 4
+
+    vehiculo = get_object_or_404(Vehiculo, pk=id)
+    mantenimientos = MantenimientoVehiculo.objects.filter(vehiculo=vehiculo).order_by('-fecha_fin', '-hora_fin')
+
+    if mes:
+        mantenimientos = mantenimientos.filter(fecha_fin__month=mes)
+    if anio:
+        mantenimientos = mantenimientos.filter(fecha_fin__year=anio)
+    if tipo_mantenimiento_id: # Si se seleccionó un tipo de mantenimiento
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, pk=tipo_mantenimiento_id)
+        mantenimientos = mantenimientos.filter(tipo=tipo_mantenimiento)
+
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    if mes:
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_cambio_filtro_aire_combustible_de_{}_{}_{}_{}.xlsx"'.format(vehiculo.marca, vehiculo.modelo, mes, anio)
+    else:
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_cambio_filtro_aire_combustible_de_{}_{}_{}.xlsx"'.format(vehiculo.marca, vehiculo.modelo, anio)
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+
+    # Define los encabezados de la tabla
+    headers = ['Operador', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Km Recorridos', 'Descripción']
+    for col, header in enumerate(headers, start=1):
+        ws.cell(row=1, column=col, value=header)
+        ws.cell(row=1, column=col).font = Font(bold=True)
+        ws.cell(row=1, column=col).fill = PatternFill(start_color="BFBFBF", end_color="BFBFBF", fill_type="solid")
+
+    # Agrega los datos de los mantenimientos
+    row = 2
+    for mantenimiento in mantenimientos:
+        ws.append([
+            mantenimiento.operador,
+            mantenimiento.fecha_inicio,
+            mantenimiento.hora_inicio,
+            mantenimiento.fecha_fin,
+            mantenimiento.hora_fin,
+            mantenimiento.km_recorridos,
+            mantenimiento.descripción
+        ])
+
+    # Ajusta el ancho de las columnas automáticamente
+    for col in ws.columns:
+        max_length = 0
+        column = col[0].column_letter
+        for cell in col:
+            try:
+                if len(str(cell.value)) > max_length:
+                    max_length = len(cell.value)
+            except:
+                pass
+        adjusted_width = (max_length + 2) * 1.2
+        ws.column_dimensions[column].width = adjusted_width
+
+    wb.save(response)
+    return response
+
+
+
+
+@login_required
+def documento_mantenimientos_cambio_filtro_caja_corona_vehiculo(request, id):
+    mes = request.GET.get('mes')
+    anio = request.GET.get('anio')
+    tipo_mantenimiento_id = 5
+
+    vehiculo = get_object_or_404(Vehiculo, pk=id)
+    mantenimientos = MantenimientoVehiculo.objects.filter(vehiculo=vehiculo).order_by('-fecha_fin', '-hora_fin')
+
+    if mes:
+        mantenimientos = mantenimientos.filter(fecha_fin__month=mes)
+    if anio:
+        mantenimientos = mantenimientos.filter(fecha_fin__year=anio)
+    if tipo_mantenimiento_id: # Si se seleccionó un tipo de mantenimiento
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoVehiculo, pk=tipo_mantenimiento_id)
+        mantenimientos = mantenimientos.filter(tipo=tipo_mantenimiento)
+
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    if mes:
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_cambio_filtro_caja_corona_de_{}_{}_{}_{}.xlsx"'.format(vehiculo.marca, vehiculo.modelo, mes, anio)
+    else:
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_cambio_filtro_caja_corona_de_{}_{}_{}.xlsx"'.format(vehiculo.marca, vehiculo.modelo, anio)
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+
+    # Define los encabezados de la tabla
+    headers = ['Operador', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Km Recorridos', 'Descripción']
+    for col, header in enumerate(headers, start=1):
+        ws.cell(row=1, column=col, value=header)
+        ws.cell(row=1, column=col).font = Font(bold=True)
+        ws.cell(row=1, column=col).fill = PatternFill(start_color="BFBFBF", end_color="BFBFBF", fill_type="solid")
+
+    # Agrega los datos de los mantenimientos
+    row = 2
+    for mantenimiento in mantenimientos:
+        ws.append([
+            mantenimiento.operador,
+            mantenimiento.fecha_inicio,
+            mantenimiento.hora_inicio,
+            mantenimiento.fecha_fin,
+            mantenimiento.hora_fin,
+            mantenimiento.km_recorridos,
             mantenimiento.descripción
         ])
 
