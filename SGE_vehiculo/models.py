@@ -207,3 +207,37 @@ def eliminar_imagen_anterior_al_actualizar_mantenimineto(sender, instance, **kwa
     if mantenimiento_anterior.image3 and instance.image3 != mantenimiento_anterior.image3:
         if os.path.isfile(mantenimiento_anterior.image3.path):
             os.remove(mantenimiento_anterior.image3.path)
+
+#---------------------------------------------------------------------------------------------            
+
+@receiver(pre_delete, sender=Viaje)
+def eliminar_imagen_de_viaje(sender, instance, **kwargs):
+    # Verificar si Vehiculo tiene una imagen asociada y eliminarla
+    if instance.imagen_de_salida:
+        if os.path.isfile(instance.imagen_de_salida.path):
+            os.remove(instance.imagen_de_salida.path)
+    if instance.imagen_de_llegada:
+        if os.path.isfile(instance.imagen_de_llegada.path):
+            os.remove(instance.imagen_de_llegada.path)
+            
+
+@receiver(pre_save, sender=Viaje)
+def eliminar_imagen_anterior_al_actualizar_viaje(sender, instance, **kwargs):
+    if not instance.pk:
+        return False
+
+    try:
+        viaje_anterior = Viaje.objects.get(pk=instance.pk)
+    except Viaje.DoesNotExist:
+        return False
+
+    # Comparar y eliminar image
+    if viaje_anterior.imagen_de_salida and instance.imagen_de_salida != viaje_anterior.imagen_de_salida:
+        if os.path.isfile(viaje_anterior.imagen_de_salida.path):
+            os.remove(viaje_anterior.imagen_de_salida.path)
+    
+    # Comparar y eliminar image2
+    if viaje_anterior.imagen_de_llegada and instance.imagen_de_llegada != viaje_anterior.imagen_de_llegada:
+        if os.path.isfile(viaje_anterior.image2.path):
+            os.remove(viaje_anterior.imagen_de_llegada.path)
+
