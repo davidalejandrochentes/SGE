@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Vehiculo, MantenimientoVehiculo, TipoMantenimientoVehiculo, Viaje
-from .forms import VehiculoForm, MantenimientoVehiculoCorrectivoForm, MantenimientoVehiculoPreventivoForm
+from .forms import VehiculoForm, MantenimientoVehiculoCorrectivoForm, MantenimientoVehiculoPreventivoForm, ViajeVehiculoForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
@@ -222,14 +222,65 @@ def eliminar(request, id):
     vehiculo.delete()
     return redirect ('vehiculo')    
 
+
+
+
 # fin de vistas generales----------------------------------------------------------------------------------
 
 
 
 
+def viaje(request, id):
+    vehiculo = get_object_or_404(Vehiculo, id=id)
+    viajes = vehiculo.viaje_set.all().order_by('-fecha_llegada', '-hora_llegada')
+    context = {
+        'vehiculo': vehiculo,
+        'viajes': viajes,
+    }
+    return render(request, 'SGE_vehiculo/viajes.html', context)
+
+
+
+
+def nuevo_viaje_vehiculo(request, id):
+    if request.method == 'GET':
+        vehiculo = get_object_or_404(Vehiculo, id=id)
+        viaje_form = ViajeVehiculoForm()
+        context = {
+            'viaje_form': viaje_form,
+            'vehiculo': vehiculo,
+        }
+        return render(request, 'SGE_vehiculo/nuevo_viaje.html', context)
+
+    if request.method == 'POST':
+        vehiculo = get_object_or_404(Vehiculo, id=id)
+        viaje_form = ViajeVehiculoForm(request.POST, request.FILES)
+
+        if viaje_form.is_valid():
+            viaje = viaje_form.save(commit=False)
+            viaje.vehiculo = vehiculo
+            viaje.save()
+            return redirect('viaje', id=vehiculo.id)
+        else:
+            context = {
+                'viaje_form': viaje_form,
+                'vehiculo': vehiculo,
+            }
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo")
+            return render(request, 'SGE_vehiculo/nuevo_viaje.html', context)
+
+    return HttpResponse("Method Not Allowed", status=405)
+
+
+
+
 @login_required
-def viajes(request, id):
-    return render(request, 'SGE_vehiculo/viajes.html', {})
+def eliminar_viaje(request, id):
+    viaje = get_object_or_404(Viaje, id=id)
+    viaje.delete()
+    previous_url = request.META.get('HTTP_REFERER')
+    return HttpResponseRedirect(previous_url)
+
 
 
 

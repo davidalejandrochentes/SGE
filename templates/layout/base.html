@@ -26,9 +26,8 @@
 <body class="" id="page-top">
 
     <main>
-        
         <div class="row">
-            
+            {% if user.is_authenticated %}
             <div class="col-12 col-md-2 m-0 p-0 text-light text-center barra d-none d-md-block">
                 <li class="nav-item active text-center fs-3 lista-menu m-2" style="transition: background-color 0.5s ease">
                     <a class="nav-link" href="{% url "index" %}">
@@ -70,9 +69,12 @@
                         </li>
                     {% endif %}
                 </ul>
-            </div> 
+            </div>
+            {% endif %} 
+            
 
             <div class="col-12 col-md-10 m-0 p-0">
+                {% if user.is_authenticated %}
                 <nav class="row navbar bg-body-secondary p-2 m-0 shadow sticky-top navbar-expand-lg"> 
                         <div class="col-12 col-md-6 order-lg-first order-last">
                             <form class="d-flex form-inline mr-auto ml-md-3 my-2 my-md-0 ms-3 me-3 mw-100 navbar-search" role="search" action="" method='GET'>
@@ -149,7 +151,8 @@
                             </div>
                         </div>
                 </nav>
-                
+                {% endif %} 
+
                 {% block 'content' %}{% endblock %}
 
             </div>

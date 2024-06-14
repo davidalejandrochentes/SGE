@@ -95,7 +95,8 @@ class Viaje(models.Model):
     imagen_de_llegada = models.ImageField(upload_to="vehiculo/viaje/llegada", null=False, blank=False)
 
     def __str__(self):
-        return self.destino
+        txt = "Vehiculo: {}, Origen: {}, Destino: {}"
+        return txt.format(self.vehiculo, self.origen, self.destino) 
 
 
 class TipoMantenimientoVehiculo(models.Model):

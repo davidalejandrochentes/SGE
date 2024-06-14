@@ -1,5 +1,5 @@
 from django import forms
-from .models import Vehiculo, MantenimientoVehiculo
+from .models import Vehiculo, MantenimientoVehiculo, Viaje
 from django.forms import Textarea, FileInput
 from datetime import date
 
@@ -113,3 +113,46 @@ class MantenimientoVehiculoPreventivoForm(forms.ModelForm):
             self.add_error('fecha_fin', 'La fecha de fin no puede ser en el futuro.')
         
         return cleaned_data
+
+
+
+class ViajeVehiculoForm(forms.ModelForm):
+    class Meta:
+        model = Viaje
+        fields = '__all__'
+        exclude = ['vehiculo']
+        widgets = {
+            'origen': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Lugar de partida'}),
+            'destino': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Lugar de llegada'}),
+
+            'fecha_salida': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de inicio'}),
+            'hora_salida': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora de inicio'}),
+            'kilometraje_de_salida': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Km?'}),
+            'imagen_de_salida': FileInput(attrs={'class': 'form-control-file m-2'}),
+
+            'fecha_llegada': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de fin'}),
+            'hora_llegada': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora de fin'}),
+            'kilometraje_de_llegada': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Km?'}),
+            'imagen_de_llegada': FileInput(attrs={'class': 'form-control-file m-2'}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        fecha_salida = cleaned_data.get('fecha_salida')
+        fecha_llegada = cleaned_data.get('fecha_llegada')
+        kilometraje_de_salida = cleaned_data.get('kilometraje_de_salida')
+        kilometraje_de_llegada = cleaned_data.get('kilometraje_de_llegada')
+
+        if kilometraje_de_salida > kilometraje_de_llegada:
+            self.add_error('kilometraje_de_salida', 'El kilometraje de salida no puede ser mayor al de llegada')
+
+        if kilometraje_de_llegada < kilometraje_de_salida:
+            self.add_error('kilometraje_de_llegada', 'El kilometraje de llegada no puede ser menor al de salida')    
+        
+        if fecha_salida > date.today():
+            self.add_error('fecha_salida', 'La fecha de salida no puede ser en el futuro.')
+        
+        if fecha_llegada > date.today():
+            self.add_error('fecha_llegada', 'La fecha de llegada no puede ser en el futuro.')
+        
+        return cleaned_data        
