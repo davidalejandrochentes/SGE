@@ -12,6 +12,7 @@ class VehiculoForm(forms.ModelForm):
             'image': 'Imagen',
             'matricula': 'matrícula',
             'dni_chofer': 'DNI?',
+            'nombre_usuario_chofer': 'Nombre de Usuario',
             'intervalo_mantenimiento': 'Intervalo entre manteniminetos correctivos',
             'intervalo_mantenimiento_cambio_filtro_aceite': 'Intervalo entre manteniminetos para cambio del filtro de aceite',
             'intervalo_mantenimiento_cambio_filtro_aire_combustible': 'Intervalo entre manteniminetos para cambio del filtro de aire y combustible',
@@ -31,6 +32,7 @@ class VehiculoForm(forms.ModelForm):
             'image': FileInput(attrs={'class': 'form-control-file m-2'}),
 
             'nombre_chofer': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: Juan Chentes'}),
+            'nombre_usuario_chofer': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: JuanChentes'}),
             'contraseña_chofer': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': '1234juan'}),
             'teléfono_chofer': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: +53589874'}),
             'dirección_chofer': Textarea(attrs={'class': 'form-control m-2', 'placeholder': 'Dirección'}),

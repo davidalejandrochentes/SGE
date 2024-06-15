@@ -25,6 +25,7 @@ class Vehiculo(models.Model):
     fecha_ultimo_mantenimiento = models.DateField(default=date.today, blank=False, null=False)
 
     nombre_chofer = models.CharField(max_length=50, null=False, blank=False)
+    nombre_usuario_chofer = models.CharField(max_length=20, null=False, blank=False, default="")
     contraseña_chofer = models.CharField(max_length=20, blank=False, null=False)
     teléfono_chofer = models.CharField(max_length=10, blank=False, null=False)
     dirección_chofer = models.CharField(max_length=30, blank=False, null=False)

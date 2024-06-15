@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.forms import AuthenticationForm
 
 import openpyxl
 from openpyxl.styles import Font, PatternFill
@@ -221,10 +222,6 @@ def eliminar(request, id):
     vehiculo = get_object_or_404(Vehiculo, id=id)
     vehiculo.delete()
     return redirect ('vehiculo')    
-
-
-
-
 # fin de vistas generales----------------------------------------------------------------------------------
 
 
@@ -238,6 +235,23 @@ def viaje(request, id):
         'viajes': viajes,
     }
     return render(request, 'SGE_vehiculo/viajes.html', context)
+
+
+
+
+def log_in_vehiculo(request):
+    if request.method =='GET':
+        return render(request, 'SGE_vehiculo/log.html', {'form': AuthenticationForm})
+    else:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        try:
+            vehiculo = Vehiculo.objects.get(nombre_usuario_chofer=username, contraseña_chofer=password)
+            return redirect('viaje', id=vehiculo.id)
+        except Vehiculo.DoesNotExist:
+            messages.error(request, "El usuario no existe, o la contraseña es incorrecta")
+            return render(request, 'SGE_vehiculo/log.html', {'form': AuthenticationForm})
 
 
 
