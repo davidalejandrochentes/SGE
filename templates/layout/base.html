@@ -158,9 +158,11 @@
             </div>
 
     </main>
+    {% if user.is_authenticated %}
     <footer class="footer">
         <div class="small text-center p-4 text-white">Copyright &copy; 2023 - Innovaplast</div>
     </footer>
+    {% endif %} 
     
     <script src="{% static "js/animacion.js" %}"></script>
     <script src="{% static "js/main.js" %}"></script>

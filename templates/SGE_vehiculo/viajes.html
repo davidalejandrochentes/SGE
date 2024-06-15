@@ -15,6 +15,7 @@
         {% endif %} 
 
         <span class="p-3">
+            {% if user.is_authenticated %}
             <button type="button" class="btn btn-success descargar shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-descargar">
                 Descargar <i class="bi bi-box-arrow-down "></i>
             </button>
@@ -65,6 +66,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %} 
 
             <a class="btn btn-warning mantenimineto shadow rounded-pill" href="{% url "nuevo_viaje_vehiculo" id=vehiculo.id %}">nuevo viaje <i class="bi bi-car-front"></i></a>
         </span>
@@ -85,8 +87,10 @@
                     <th scope="col">Hora de llegada</th>
                     <th scope="col">Kilometraje de llegada</th>
                     <th scope="col">imagen de llegada</th>
-                    <th scope="col">Modificar</th>
-                    <th scope="col">Eliminar</th>
+                    {% if user.is_authenticated %}
+                        <th scope="col">Modificar</th>
+                        <th scope="col">Eliminar</th>
+                    {% endif %} 
                 </tr>
             </thead>
             <tbody>
@@ -136,8 +140,9 @@
                             </div>
                         </div>
                     </td>
+                    {% if user.is_authenticated %}
                     <td>
-                        <a class="btn btn-info btn-sm" href="">Modificar</a>
+                        <a class="btn btn-info btn-sm" href="{% url "mod_viaje_vehiculo_admin" id=viaje.id %}">Modificar</a>
                     </td>
                     <td>
                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-eliminar">
@@ -161,6 +166,7 @@
                             </div>
                         </div>
                     </td>
+                    {% endif %} 
                 </tr>
             {% endfor %}
             </tbody>

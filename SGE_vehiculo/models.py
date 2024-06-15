@@ -94,6 +94,7 @@ class Viaje(models.Model):
     kilometraje_de_llegada = models.IntegerField(max_length=50, blank=False, null=False)
     imagen_de_llegada = models.ImageField(upload_to="vehiculo/viaje/llegada", null=False, blank=False)
 
+
     def __str__(self):
         txt = "Vehiculo: {}, Origen: {}, Destino: {}"
         return txt.format(self.vehiculo, self.origen, self.destino) 
