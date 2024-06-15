@@ -41,4 +41,5 @@ urlpatterns = [
     path('documento_mantenimientos_cambio_filtro_aceite_vehiculo/<int:id>/', views.documento_mantenimientos_cambio_filtro_aceite_vehiculo, name='documento_mantenimientos_cambio_filtro_aceite_vehiculo'),
     path('documento_mantenimientos_cambio_filtro_aire_combustible_vehiculo/<int:id>/', views.documento_mantenimientos_cambio_filtro_aire_combustible_vehiculo, name='documento_mantenimientos_cambio_filtro_aire_combustible_vehiculo'),
     path('documento_mantenimientos_cambio_filtro_caja_corona_vehiculo/<int:id>/', views.documento_mantenimientos_cambio_filtro_caja_corona_vehiculo, name='documento_mantenimientos_cambio_filtro_caja_corona_vehiculo'),
+    path('documento_viajes_vehiculo/<int:id>/', views.documento_viajes_vehiculo, name='documento_viajes_vehiculo'),
 ]

@@ -263,6 +263,10 @@ def nuevo_viaje_vehiculo(request, id):
         if viaje_form.is_valid():
             viaje = viaje_form.save(commit=False)
             viaje.vehiculo = vehiculo
+            if 'imagen_de_salida' in request.FILES:
+                viaje.image = request.FILES['imagen_de_salida']
+            if 'imagen_de_llegada' in request.FILES:
+                viaje.image = request.FILES['imagen_de_llegada'] 
             viaje.save()
             return redirect('viaje', id=vehiculo.id)
         else:
@@ -297,6 +301,10 @@ def mod_viaje_vehiculo_admin(request, id):
         if form_viaje.is_valid():
             viaje = form_viaje.save(commit=False)
             viaje.vehiculo = vehiculo
+            if 'imagen_de_salida' in request.FILES:
+                viaje.image = request.FILES['imagen_de_salida']
+            if 'imagen_de_llegada' in request.FILES:
+                viaje.image = request.FILES['imagen_de_llegada']    
             viaje.save()
             return redirect('viaje', id=vehiculo.id)
         else:
@@ -1191,6 +1199,68 @@ def documento_mantenimientos_cambio_filtro_caja_corona_vehiculo(request, id):
             mantenimiento.hora_fin,
             mantenimiento.km_recorridos,
             mantenimiento.descripción
+        ])
+
+    # Ajusta el ancho de las columnas automáticamente
+    for col in ws.columns:
+        max_length = 0
+        column = col[0].column_letter
+        for cell in col:
+            try:
+                if len(str(cell.value)) > max_length:
+                    max_length = len(cell.value)
+            except:
+                pass
+        adjusted_width = (max_length + 2) * 1.2
+        ws.column_dimensions[column].width = adjusted_width
+
+    wb.save(response)
+    return response
+
+
+
+
+@login_required
+def documento_viajes_vehiculo(request, id):
+    mes = request.GET.get('mes')
+    anio = request.GET.get('anio')
+
+    vehiculo = get_object_or_404(Vehiculo, pk=id)
+    viajes = Viaje.objects.filter(vehiculo=vehiculo).order_by('-fecha_llegada', '-hora_llegada')
+
+    if mes:
+        viajes = viajes.filter(fecha_llegada__month=mes)
+    if anio:
+        viajes = viajes.filter(fecha_llegada__year=anio)
+
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    if mes:
+        response['Content-Disposition'] = 'attachment; filename="viajes_de_{}_{}_{}_{}.xlsx"'.format(vehiculo.marca, vehiculo.modelo, mes, anio)
+    else:
+        response['Content-Disposition'] = 'attachment; filename="viajes_de_{}_{}_{}.xlsx"'.format(vehiculo.marca, vehiculo.modelo, anio)
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+
+    # Define los encabezados de la tabla
+    headers = ['Origen', 'Destino', 'Fecha de salida', 'Hora de salida', 'Kilometraje de salida', 'Fecha de llegada', 'Hora de llegada', 'Kilometraje de llegada']
+    for col, header in enumerate(headers, start=1):
+        ws.cell(row=1, column=col, value=header)
+        ws.cell(row=1, column=col).font = Font(bold=True)
+        ws.cell(row=1, column=col).fill = PatternFill(start_color="BFBFBF", end_color="BFBFBF", fill_type="solid")
+
+    # Agrega los datos de los mantenimientos
+    row = 2
+    for viaje in viajes:
+        ws.append([
+            viaje.origen,
+            viaje.destino,
+            viaje.fecha_salida,
+            viaje.hora_salida,
+            viaje.kilometraje_de_salida,
+            viaje.fecha_llegada,
+            viaje.hora_llegada,
+            viaje.kilometraje_de_llegada,
         ])
 
     # Ajusta el ancho de las columnas automáticamente

@@ -6,6 +6,8 @@ from django.dispatch import receiver
 import os
 
 
+
+
 class Vehiculo(models.Model):
     marca = models.CharField(max_length=50, null=False, blank=False)
     modelo = models.CharField(max_length=50, null=False, blank=False)
@@ -27,7 +29,8 @@ class Vehiculo(models.Model):
     teléfono_chofer = models.CharField(max_length=10, blank=False, null=False)
     dirección_chofer = models.CharField(max_length=30, blank=False, null=False)
     dni_chofer = models.IntegerField(max_length=10, blank=False, null=False)
-    
+
+
     def km_restantes_mantenimiento_correctivo(self):
         ultimo_mantenimiento = MantenimientoVehiculo.objects.filter(vehiculo=self, tipo__id=1).order_by('-fecha_fin').first()
         if ultimo_mantenimiento:
@@ -63,6 +66,7 @@ class Vehiculo(models.Model):
         km_restantes = proximo_mantenimineto - self.km_recorridos
         return km_restantes   
 
+
     def km_restantes_cambio_filtro_caja_corona(self):
         ultimo_mantenimiento = MantenimientoVehiculo.objects.filter(vehiculo=self, tipo__id=5).order_by('-fecha_fin').first()
         if ultimo_mantenimiento:
@@ -76,7 +80,6 @@ class Vehiculo(models.Model):
     
     def __str__(self):
         return self.modelo    
-
 
 
 
@@ -100,11 +103,15 @@ class Viaje(models.Model):
         return txt.format(self.vehiculo, self.origen, self.destino) 
 
 
+
+
 class TipoMantenimientoVehiculo(models.Model):
     tipo = models.CharField(max_length=100, blank=False, null=False)
 
     def __str__(self):
         return self.tipo
+
+
 
 
 class MantenimientoVehiculo(models.Model):
@@ -127,12 +134,18 @@ class MantenimientoVehiculo(models.Model):
         return txt.format(self.vehiculo, self.tipo, self.fecha_fin)  
 
 
+
+#----------signals------------------------------------------------------------------------------
+
 @receiver(post_save, sender=MantenimientoVehiculo)
 def actualizar_fecha_ultimo_mantenimiento(sender, instance, **kwargs):
     vehiculo = instance.vehiculo
     if instance.fecha_fin > vehiculo.fecha_ultimo_mantenimiento:
         vehiculo.fecha_ultimo_mantenimiento = instance.fecha_fin
         vehiculo.save()  
+
+
+
 
 @receiver(pre_delete, sender=MantenimientoVehiculo)
 def revertir_fecha_ultimo_mantenimiento(sender, instance, **kwargs):
@@ -146,12 +159,38 @@ def revertir_fecha_ultimo_mantenimiento(sender, instance, **kwargs):
     vehiculo.save()
 
 
+
+
+@receiver(post_save, sender=Viaje)
+def actualizar_kilometraje(sender, instance, **kwargs):
+    vehiculo = instance.vehiculo
+    if instance.kilometraje_de_llegada > vehiculo.km_recorridos:
+        vehiculo.km_recorridos = instance.kilometraje_de_llegada
+        vehiculo.save()  
+
+
+
+
+@receiver(pre_delete, sender=Viaje)
+def revertir_kilometraje(sender, instance, **kwargs):
+    vehiculo = instance.vehiculo
+    viajes_restantes = Viaje.objects.filter(vehiculo=vehiculo).exclude(id=instance.id).order_by('-kilometraje_de_llegada')
+    if viajes_restantes.exists():
+        ultimo_viaje = viajes_restantes.first()
+        vehiculo.km_recorridos = ultimo_viaje.kilometraje_de_llegada
+    else:
+        vehiculo.km_recorridos = vehiculo.km_recorridos  # Otra opción si no hay mantenimientos restantes
+    vehiculo.save()
+
+
 @receiver(pre_delete, sender=Vehiculo)
 def eliminar_imagen_de_vehiculo(sender, instance, **kwargs):
     # Verificar si Vehiculo tiene una imagen asociada y eliminarla
     if instance.image:
         if os.path.isfile(instance.image.path):
             os.remove(instance.image.path)
+
+
 
 @receiver(pre_save, sender=Vehiculo)
 def eliminar_imagen_anterior_al_actualizar(sender, instance, **kwargs):
@@ -239,6 +278,6 @@ def eliminar_imagen_anterior_al_actualizar_viaje(sender, instance, **kwargs):
     
     # Comparar y eliminar image2
     if viaje_anterior.imagen_de_llegada and instance.imagen_de_llegada != viaje_anterior.imagen_de_llegada:
-        if os.path.isfile(viaje_anterior.image2.path):
+        if os.path.isfile(viaje_anterior.imagen_de_llegada.path):
             os.remove(viaje_anterior.imagen_de_llegada.path)
 
