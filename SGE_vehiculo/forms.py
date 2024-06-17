@@ -130,12 +130,12 @@ class ViajeVehiculoForm(forms.ModelForm):
             'fecha_salida': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de inicio'}),
             'hora_salida': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora de inicio'}),
             'kilometraje_de_salida': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Km?', 'readonly': 'readonly'}),
-            'imagen_de_salida': FileInput(attrs={'class': 'form-control-file m-2'}),
+            'imagen_de_salida': forms.FileInput(attrs={'class': 'form-control-file m-2', 'capture': 'camera'}),
 
             'fecha_llegada': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de fin'}),
             'hora_llegada': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora de fin'}),
             'kilometraje_de_llegada': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Km?'}),
-            'imagen_de_llegada': FileInput(attrs={'class': 'form-control-file m-2'}),
+            'imagen_de_llegada': forms.FileInput(attrs={'class': 'form-control-file m-2', 'capture': 'camera'}),
         }
 
     def clean(self):

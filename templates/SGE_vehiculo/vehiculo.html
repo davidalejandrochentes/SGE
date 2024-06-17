@@ -38,11 +38,10 @@
             <a class="text-decoration-none text-dark" href="{% url "detalles_vehiculo" id=vehiculo.id %}">
                 <img src="{{ vehiculo.image.url }}" class="card-img-top" alt="..." style="max-height: 200px;">
                 <div class="card-body">
-                    <h5 class="card-title">{{ vehiculo.nombre }}</h5>
-                    <p class="card-text m-0"><b>Encargado:</b> {{ vehiculo.encargado }}</p>
-                    <p class="card-text m-0"><b>Tipo de vehículo:</b> {{ vehiculo.tipo_de_vehículo }}</p>
-                    <p class="card-text m-0"><b>Número de serie:</b> {{ vehiculo.número_de_serie_o_modelo }}</p>
-                    <p class="card-text m-0"><b>Ultimo mantenimiento:</b> {{ vehiculo.fecha_ultimo_mantenimiento }}</p>
+                    <h5 class="card-title">{{ vehiculo.marca }} {{ vehiculo.modelo }}</h5>
+                    <p class="card-text m-0"><b>Matricula:</b> {{ vehiculo.matricula }}</p>
+                    <p class="card-text m-0"><b>Km Recorridos:</b> {{ vehiculo.km_recorridos }}</p>
+                    <p class="card-text m-0"><b>Chofer:</b> {{ vehiculo.nombre_chofer }}</p>
                 </div>      
             </a>
         </div>
