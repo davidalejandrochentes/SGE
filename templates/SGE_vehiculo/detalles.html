@@ -13,9 +13,9 @@
         </a>
         <span class="p-3">
 
-            <a class="btn btn-light shadow rounded-pill viajes" href="{% url "viaje" id=vehiculo.id %}">viajes <i class="bi bi-car-front"></i></a>
+            <a class="btn bg-body-tertiary shadow rounded-pill viajes" href="{% url "viaje" id=vehiculo.id %}">viajes <i class="bi bi-car-front"></i></a>
             
-            <button type="button" class="btn btn-secondary imagen shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" class="btn bg-body-tertiary imagen shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Ver Imagen <i class="bi bi-image"></i>
             </button>
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -32,7 +32,7 @@
                 </div>
             </div>
 
-            <button type="button" class="btn btn-primary editar shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-editar">
+            <button type="button" class="btn bg-body-tertiary editar shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-editar">
                 Editar <i class="bi bi-pencil-square"></i>
             </button>
             <div class="modal fade modal-lg" id="modal-editar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -60,7 +60,7 @@
                 </div>
             </div>
             
-            <button type="button" class="btn btn-danger eliminar mt-md-0 mt-2 shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-eliminar">
+            <button type="button" class="btn bg-body-tertiary eliminar mt-md-0 mt-2 shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-eliminar">
                 Eliminar <i class="bi bi-trash"></i>
             </button>
             <div class="modal fade" id="modal-eliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -71,7 +71,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Esta seguro de <b>eliminar</b> la máquina <b>"{{ vehhiculo.nombre }}"</b>
+                        Esta seguro de <b>eliminar</b> <b>"{{ vehiculo.marca }} {{ vehiculo.modelo }}"</b>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -87,11 +87,11 @@
         </span>
     </div>
 
-    <h3 class="mt-1 text-uppercase">Datos de ({{ vehiculo.marca }} {{ vehiculo.modelo }})</h3>
+    <h3 class="mt-1 text-uppercase">Datos de {{ vehiculo.marca }} {{ vehiculo.modelo }}</h3>
     <div class="table-responsive">
         <table class="table table-striped shadow">
             <thead>
-                <tr>
+                <tr class="border border-end-0 border-start-0 border-top-0 border-3 border-dark-subtle">
                     <th scope="col">Marca</th>
                     <th scope="col">Modelo</th>
                     <th scope="col">Matrícula</th>
@@ -125,7 +125,7 @@
     <div class="table-responsive">
         <table class="table table-striped shadow">
             <thead>
-                <tr>
+                <tr class="border border-end-0 border-start-0 border-top-0 border-3 border-dark-subtle">
                     <th scope="col">Nombre del Chofer</th>
                     <th scope="col">Nombre de Usuario</th>
                     <th scope="col">Contraseña del chofer</th>
@@ -149,7 +149,7 @@
 
     
     <div class="row mt-3 d-flex justify-content-center align-item-center ps-5 pe-5">
-        <div class="col-12 col-md-2 p-0 card carta-home m-3">
+        <div class="col-12 col-md-2 p-0 card m-3 shadow bg-body-tertiary carta-home">
             <a class="text-decoration-none text-dark" href="{% url "mantenimientos_vehiculo_preventivo" id=vehiculo.id %}">
                 <img src="{% static "images/mantenimiento-preventivo-autos-1.jpg" %}" class="card-img-top" alt="..." style="max-height: 100px;">
                 <div class="card-body">
@@ -157,7 +157,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-12 col-md-2 p-0 card carta-home m-3">
+        <div class="col-12 col-md-2 p-0 card m-3 shadow bg-body-tertiary carta-home">
             <a class="text-decoration-none text-dark" href="{% url "mantenimientos_vehiculo_correctivo" id=vehiculo.id %}">
                 <img src="{% static "images/mantenimineto_correctivo_vehiculo.jpg" %}" class="card-img-top" alt="..." style="max-height: 100px;">
                 <div class="card-body">
@@ -165,7 +165,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-12 col-md-2 p-0 card carta-home m-3">
+        <div class="col-12 col-md-2 p-0 card m-3 shadow bg-body-tertiary carta-home">
             <a class="text-decoration-none text-dark" href="{% url "mantenimientos_vehiculo_cambio_filtro_aceite" id=vehiculo.id %}">
                 <img src="{% static "images/taller-mecanico-859x483.jpg" %}" class="card-img-top" alt="..." style="max-height: 100px;">
                 <div class="card-body">
@@ -173,7 +173,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-12 col-md-2 p-0 card carta-home m-3">
+        <div class="col-12 col-md-2 p-0 card m-3 shadow bg-body-tertiary carta-home">
             <a class="text-decoration-none text-dark" href="{% url "mantenimientos_vehiculo_cambio_filtro_aire_combustible" id=vehiculo.id %}">
                 <img src="{% static "images/filtro-del-aire-coche--860x573.jpg" %}" class="card-img-top" alt="..." style="max-height: 100px;">
                 <div class="card-body">
@@ -181,7 +181,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-12 col-md-2 p-0 card carta-home m-3">
+        <div class="col-12 col-md-2 p-0 card m-3 shadow bg-body-tertiary carta-home">
             <a class="text-decoration-none text-dark" href="{% url "mantenimientos_vehiculo_cambio_filtro_caja_corona" id=vehiculo.id %}">
                 <img src="{% static "images/sstt-min.jpg" %}" class="card-img-top" alt="..." style="max-height: 100px;">
                 <div class="card-body">

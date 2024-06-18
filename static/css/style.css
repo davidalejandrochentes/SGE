@@ -1,5 +1,7 @@
 :root{
-    --color-primary: #2ea3f2;
+    --color-primary: #6c757d;
+    --color-secondary: #212529;
+    --footer: #aaadaf;
 }
 
 *{
@@ -8,7 +10,7 @@
     box-sizing: border-box;
 }
 body{
-    background-color: #d9dbdd;
+    background-color: #ffffff;
 }
 
 .prueba{
@@ -23,7 +25,7 @@ body{
 }
 
 .barra{
-    background-color: blue;
+    background-color: var(--color-secondary);
 }
 
 .boton-menu{
@@ -38,7 +40,7 @@ ul {
 }
 
 .icono-persona{
-    color: blue;
+    color: var(--color-primary);
 }
 
 .lista-menu:hover {
@@ -66,19 +68,16 @@ ul {
     background-blend-mode: multiply;
 }
 
-.carta-home{
-    box-shadow: rgb(0, 0, 255) 5px 5px 12px 2px;
-    background-color: #e9ecef;
-}
+
 
 .carta-home:hover {
-    background-color:rgb(188, 208, 247) !important;
-    color: black !important;
+    background-color: var(--color-secondary) !important;
+    color: white !important;
 }
 .carta-home a :hover {
-    color: black !important;
+    color: white !important;
 }
 
 .footer{
-    background-color: #aaadaf;
+    background-color: var(--footer);
 }

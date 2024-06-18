@@ -11,7 +11,7 @@
         </a>
         <span class="p-3">
             
-            <button type="button" class="btn btn-success descargar shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-descargar">
+            <button type="button" class="btn bg-body-tertiary descargar shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-descargar">
                 Descargar <i class="bi bi-box-arrow-down "></i>
             </button>
             <div class="modal fade" id="modal-descargar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -51,7 +51,7 @@
                             </select>
                             
                             <div class="d-grid gap-2 mt-3">
-                                <button type="submit" value="Submit" class="btn btn-success">Descargar <i class="bi bi-box-arrow-down"></i></button>
+                                <button type="submit" value="Submit" class="btn btn-secondary">Descargar <i class="bi bi-box-arrow-down"></i></button>
                             </div>
                         </form>
                     </div>
@@ -62,14 +62,14 @@
                 </div>
             </div>
 
-            <a class="btn btn-warning mantenimineto shadow rounded-pill" href="{% url "nuevo_mantenimineto_vehiculo_cambio_filtro_aceite" id=vehiculo.id %}">Mantenimiento <i class="bi bi-tools"></i></a>
+            <a class="btn bg-body-tertiary mantenimineto shadow rounded-pill" href="{% url "nuevo_mantenimineto_vehiculo_cambio_filtro_aceite" id=vehiculo.id %}">Mantenimiento <i class="bi bi-tools"></i></a>
         </span>
     </div>
 
     <h3 class="text-uppercase">{{ tipo_mantenimiento }} de {{ vehiculo.marca }} {{ vehiculo.modelo }}</h3>
     <table class="table table-striped shadow">
         <thead>
-            <tr>
+            <tr class="border border-end-0 border-start-0 border-top-0 border-3 border-dark-subtle">
                 <th>Fecha inicio</th>
                 <th>Hora inicio</th>
                 <th>Fecha final</th>
@@ -94,7 +94,7 @@
                     <td>{{ mantenimiento.descripción }}</td>
                     <td>
                         <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal{{ mantenimiento.id }}">
-                            Imagenes
+                            <i class="bi bi-image"></i>
                         </button>
                         <div class="modal fade" id="exampleModal{{ mantenimiento.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -138,11 +138,11 @@
                         </div>
                     </td>
                     <td>
-                        <a class="btn btn-info btn-sm" href="{% url "mod_mantenimineto_vehiculo_cambio_filtro_aceite" id=mantenimiento.id %}">Modificar</a>
+                        <a class="btn btn-info btn-sm" href="{% url "mod_mantenimineto_vehiculo_cambio_filtro_aceite" id=mantenimiento.id %}"><i class="bi bi-pencil-square"></i></a>
                     </td>
                     <td>
                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-eliminar">
-                            Eliminar
+                            <i class="bi bi-trash"></i>
                         </button>
                         <div class="modal fade" id="modal-eliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">

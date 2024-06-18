@@ -16,7 +16,7 @@
 
         <span class="p-3">
             {% if user.is_authenticated %}
-            <button type="button" class="btn btn-success descargar shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-descargar">
+            <button type="button" class="btn bg-body-tertiary descargar shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-descargar">
                 Descargar <i class="bi bi-box-arrow-down "></i>
             </button>
             <div class="modal fade" id="modal-descargar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -56,7 +56,7 @@
                             </select>
                             
                             <div class="d-grid gap-2 mt-3">
-                                <button type="submit" value="Submit" class="btn btn-success">Descargar <i class="bi bi-box-arrow-down"></i></button>
+                                <button type="submit" value="Submit" class="btn btn-secondary">Descargar <i class="bi bi-box-arrow-down"></i></button>
                             </div>
                         </form>
                     </div>
@@ -68,7 +68,7 @@
             </div>
             {% endif %} 
 
-            <a class="btn btn-warning mantenimineto shadow rounded-pill" href="{% url "nuevo_viaje_vehiculo" id=vehiculo.id %}">nuevo viaje <i class="bi bi-car-front"></i></a>
+            <a class="btn bg-body-tertiary mantenimineto shadow rounded-pill" href="{% url "nuevo_viaje_vehiculo" id=vehiculo.id %}">nuevo viaje <i class="bi bi-car-front"></i></a>
         </span>
     </div>
 
@@ -76,7 +76,7 @@
     <div class="table-responsive">
         <table class="table table-striped shadow">
             <thead>
-                <tr>
+                <tr class="border border-end-0 border-start-0 border-top-0 border-3 border-dark-subtle">
                     <th scope="col">Origen</th>
                     <th scope="col">Destino</th>
                     <th scope="col">Fecha de salida</th>
@@ -103,7 +103,7 @@
                     <td>{{ viaje.kilometraje_de_salida }}</td>
                     <td>
                         <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal{{ viaje.id }}1">
-                            Ver Imagen
+                            <i class="bi bi-image"></i>
                         </button>
                         <div class="modal fade" id="exampleModal{{ viaje.id }}1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -124,7 +124,7 @@
                     <td>{{ viaje.kilometraje_de_llegada }}</td>
                     <td>
                         <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal{{ viaje.id }}2">
-                            Ver Imagen
+                            <i class="bi bi-image"></i>
                         </button>
                         <div class="modal fade" id="exampleModal{{ viaje.id }}2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -142,11 +142,11 @@
                     </td>
                     {% if user.is_authenticated %}
                     <td>
-                        <a class="btn btn-info btn-sm" href="{% url "mod_viaje_vehiculo_admin" id=viaje.id %}">Modificar</a>
+                        <a class="btn btn-info btn-sm" href="{% url "mod_viaje_vehiculo_admin" id=viaje.id %}"><i class="bi bi-pencil-square"></i></a>
                     </td>
                     <td>
                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-eliminar">
-                            Eliminar
+                            <i class="bi bi-trash"></i>
                         </button>
                         <div class="modal fade" id="modal-eliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -156,7 +156,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    Esta seguro de <b>eliminar</b> este mantenimiento</b>
+                                    Esta seguro de <b>eliminar</b> este viaje</b>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

@@ -19,12 +19,12 @@
     <h2 class="text-center">Modificar viaje de {{ vehiculo.marca }} {{ vehiculo.modelo }}</h2>
     <div class="d-flex justify-content-center align-items-center">
 
-        <form class="p-5 rounded-3 bg-body-tertiary sombra-login" action="" method='POST' enctype="multipart/form-data">
+        <form class="p-5 rounded-3 bg-body-tertiary shadow-lg" action="" method='POST' enctype="multipart/form-data">
             {% csrf_token %}
             {% if messages %}
                 <ul class="messages">
                     {% for message in messages %}
-                        <div {% if message.tags %} class="alert alert-primary alerta" role="alert"{% endif %}>{{ message }}</div>
+                        <div {% if message.tags %} class="alert alert-danger" role="alert"{% endif %}>{{ message }}</div>
                     {% endfor %}
                 </ul>
             {% endif %}
@@ -32,7 +32,7 @@
                 {{ form_viaje }}
             </table>
             <div class="d-grid gap-2 mt-3">
-                <button type="submit" class="btn btn-primary">Guardar</button>
+                <button type="submit" class="btn btn-secondary">Guardar</button>
             </div>
         </form>
 
