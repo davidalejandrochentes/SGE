@@ -1,6 +1,7 @@
 :root{
     --color-primary: #6c757d;
     --color-secondary: #212529;
+    --body: #ffffff;
     --footer: #aaadaf;
 }
 
@@ -10,7 +11,7 @@
     box-sizing: border-box;
 }
 body{
-    background-color: #ffffff;
+    background-color: var(--body);
 }
 
 .prueba{
@@ -37,7 +38,14 @@ ul {
 }
 
 .lista-menu:hover {
-    color:rgb(55, 247, 7) !important;
+    background-color: var(--body);
+    color: var(--color-secondary) !important;
+}
+
+.img-shadow{
+    filter: drop-shadow(
+        0 0 10px rgba(0, 0, 0, .8)
+    );
 }
 
 .cabecera{
