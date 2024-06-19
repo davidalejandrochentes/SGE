@@ -152,7 +152,6 @@ def crear_vehiculo(request):
                 }
                 return render(request, 'SGE_vehiculo/nuevo.html', context)
             else:
-                # Manejo del archivo de imagen
                 if 'image' in request.FILES:
                     form.instance.image = request.FILES['image']
                 form.save()
@@ -277,10 +276,11 @@ def nuevo_viaje_vehiculo(request, id):
         if viaje_form.is_valid():
             viaje = viaje_form.save(commit=False)
             viaje.vehiculo = vehiculo
+            viaje.kilometraje_de_llegada = int(request.POST.get('kilometraje_de_salida'))
+            
             if 'imagen_de_salida' in request.FILES:
-                viaje.image = request.FILES['imagen_de_salida']
-            if 'imagen_de_llegada' in request.FILES:
-                viaje.image = request.FILES['imagen_de_llegada'] 
+                viaje.imagen_de_salida = request.FILES['imagen_de_salida']
+                viaje.imagen_de_llegada = request.FILES['imagen_de_salida']
             viaje.save()
             return redirect('viaje', id=vehiculo.id)
         else:

@@ -29,7 +29,7 @@ class Vehiculo(models.Model):
     contraseña_chofer = models.CharField(max_length=20, blank=False, null=False)
     teléfono_chofer = models.CharField(max_length=10, blank=False, null=False)
     dirección_chofer = models.CharField(max_length=30, blank=False, null=False)
-    dni_chofer = models.BigIntegerField(max_length=20, blank=False, null=False)
+    dni_chofer = models.BigIntegerField(max_length=20, blank=True, null=True, default=0)
 
 
     def km_restantes_mantenimiento_correctivo(self):
@@ -93,10 +93,11 @@ class Viaje(models.Model):
     hora_salida = models.TimeField(default=datetime.now().time())
     kilometraje_de_salida = models.BigIntegerField(max_length=50, blank=False, null=False)
     imagen_de_salida = models.ImageField(upload_to="vehiculo/viaje/salida", null=False, blank=False)
-    fecha_llegada = models.DateField(default=date.today)
-    hora_llegada = models.TimeField(default=datetime.now().time())
-    kilometraje_de_llegada = models.BigIntegerField(max_length=50, blank=False, null=False)
-    imagen_de_llegada = models.ImageField(upload_to="vehiculo/viaje/llegada", null=False, blank=False)
+    
+    fecha_llegada = models.DateField(default=date.today, blank=True, null=True)
+    hora_llegada = models.TimeField(default=datetime.now().time(), blank=True, null=True)
+    kilometraje_de_llegada = models.BigIntegerField(max_length=50, blank=True, null=True)
+    imagen_de_llegada = models.ImageField(upload_to="vehiculo/viaje/llegada", null=True, blank=True, default='')
 
 
     def __str__(self):

@@ -7,11 +7,10 @@ class VehiculoForm(forms.ModelForm):
     class Meta:
         model = Vehiculo
         fields = '__all__' 
-        exclude = ['fecha_ultimo_mantenimiento']
+        exclude = ['fecha_ultimo_mantenimiento', 'dni_chofer']
         labels = {
             'image': 'Imagen',
             'matricula': 'matrícula',
-            'dni_chofer': 'DNI?',
             'nombre_usuario_chofer': 'Nombre de Usuario',
             'intervalo_mantenimiento': 'Intervalo entre manteniminetos correctivos',
             'intervalo_mantenimiento_cambio_filtro_aceite': 'Intervalo entre manteniminetos para cambio del filtro de aceite',
@@ -36,7 +35,7 @@ class VehiculoForm(forms.ModelForm):
             'contraseña_chofer': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': '1234juan'}),
             'teléfono_chofer': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: +53589874'}),
             'dirección_chofer': Textarea(attrs={'class': 'form-control m-2', 'placeholder': 'Dirección'}),
-            'dni_chofer': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'DNI?'}),
+            #'dni_chofer': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'DNI?'}),
         }
 
 
@@ -113,7 +112,7 @@ class MantenimientoVehiculoPreventivoForm(forms.ModelForm):
         
         if fecha_fin > date.today():
             self.add_error('fecha_fin', 'La fecha de fin no puede ser en el futuro.')
-        
+
         return cleaned_data
 
 
@@ -122,7 +121,7 @@ class ViajeVehiculoForm(forms.ModelForm):
     class Meta:
         model = Viaje
         fields = '__all__'
-        exclude = ['vehiculo']
+        exclude = ['vehiculo', 'fecha_llegada', 'hora_llegada', 'kilometraje_de_llegada', 'imagen_de_llegada']
         widgets = {
             'origen': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Lugar de partida'}),
             'destino': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Lugar de llegada'}),
@@ -131,33 +130,7 @@ class ViajeVehiculoForm(forms.ModelForm):
             'hora_salida': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora de inicio'}),
             'kilometraje_de_salida': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Km?', 'readonly': 'readonly'}),
             'imagen_de_salida': forms.FileInput(attrs={'class': 'form-control-file m-2', 'capture': 'camera'}),
-
-            'fecha_llegada': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de fin'}),
-            'hora_llegada': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora de fin'}),
-            'kilometraje_de_llegada': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Km?'}),
-            'imagen_de_llegada': forms.FileInput(attrs={'class': 'form-control-file m-2', 'capture': 'camera'}),
         }
-
-    def clean(self):
-        cleaned_data = super().clean()
-        fecha_salida = cleaned_data.get('fecha_salida')
-        fecha_llegada = cleaned_data.get('fecha_llegada')
-        kilometraje_de_salida = cleaned_data.get('kilometraje_de_salida')
-        kilometraje_de_llegada = cleaned_data.get('kilometraje_de_llegada')
-
-        if kilometraje_de_salida > kilometraje_de_llegada:
-            self.add_error('kilometraje_de_salida', 'El kilometraje de salida no puede ser mayor al de llegada')
-
-        if kilometraje_de_llegada < kilometraje_de_salida:
-            self.add_error('kilometraje_de_llegada', 'El kilometraje de llegada no puede ser menor al de salida')    
-        
-        if fecha_salida > date.today():
-            self.add_error('fecha_salida', 'La fecha de salida no puede ser en el futuro.')
-        
-        if fecha_llegada > date.today():
-            self.add_error('fecha_llegada', 'La fecha de llegada no puede ser en el futuro.')
-        
-        return cleaned_data
 
 
 
@@ -172,7 +145,7 @@ class ViajeVehiculoModAdminForm(forms.ModelForm):
 
             'fecha_salida': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de inicio'}),
             'hora_salida': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora de inicio'}),
-            'kilometraje_de_salida': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Km?'}),
+            'kilometraje_de_salida': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Km?', 'readonly': 'readonly'}),
             'imagen_de_salida': FileInput(attrs={'class': 'form-control-file m-2'}),
 
             'fecha_llegada': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de fin'}),

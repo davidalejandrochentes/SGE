@@ -28,13 +28,6 @@ body{
     background-color: var(--color-secondary);
 }
 
-.boton-menu{
-    background-color: blue;
-}
-.boton-menu:hover{
-    background-color: blue;
-}
-
 ul {
     list-style-type: none;
 }
