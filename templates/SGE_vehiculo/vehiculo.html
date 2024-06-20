@@ -34,7 +34,7 @@
 
     <div class="row mt-5 d-flex justify-content-center align-item-center ps-5 pe-5">
         {% for vehiculo in vehiculos %}
-        <div class="col-12 col-md-3 card carta-home p-0 m-3 shadow bg-body-tertiary">
+        <div class="col-12 col-md-3 card carta-home p-0 m-3 shadow-lg bg-body-tertiary">
             <a class="text-decoration-none text-dark" href="{% url "detalles_vehiculo" id=vehiculo.id %}">
                 <img src="{{ vehiculo.image.url }}" class="card-img-top" alt="..." style="max-height: 200px;">
                 <div class="card-body">
