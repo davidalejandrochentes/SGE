@@ -27,7 +27,7 @@
 
     
     <div class="d-flex justify-content-center align-items-center">
-        <form  class="p-5 rounded-3 bg-primary bg-opacity-75 text-light sombra-login" actions="{% url "login" %}" method="POST">
+        <form  class="p-5 rounded-3 bg-secondary bg-opacity-75 text-light sombra-login" actions="{% url "login" %}" method="POST">
             {% csrf_token %}
             {% if messages %}
             <ul class="messages">

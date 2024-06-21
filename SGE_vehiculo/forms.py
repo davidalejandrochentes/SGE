@@ -125,6 +125,7 @@ class ViajeVehiculoForm(forms.ModelForm):
         widgets = {
             'origen': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Lugar de partida'}),
             'destino': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Lugar de llegada'}),
+            'conductor': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Chofer al volante'}),
 
             'fecha_salida': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de inicio'}),
             'hora_salida': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora de inicio'}),
@@ -142,6 +143,7 @@ class ViajeVehiculoModAdminForm(forms.ModelForm):
         widgets = {
             'origen': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Lugar de partida'}),
             'destino': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Lugar de llegada'}),
+            'conductor': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Chofer al volante'}),
 
             'fecha_salida': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de inicio'}),
             'hora_salida': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora de inicio'}),

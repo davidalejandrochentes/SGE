@@ -88,6 +88,7 @@ class Vehiculo(models.Model):
 class Viaje(models.Model):
     vehiculo = models.ForeignKey(Vehiculo, on_delete=models.CASCADE)
     origen = models.CharField(max_length=30, blank=False, null=False)
+    conductor = models.CharField(max_length=30, blank=False, null=False, default="")
     destino = models.CharField(max_length=30, blank=False, null=False)
     fecha_salida = models.DateField(default=date.today)
     hora_salida = models.TimeField(default=datetime.now().time())
