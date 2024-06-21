@@ -14,12 +14,12 @@
         
         <div class="pt-2 me-3 me-md-0">
 
-            <button type="button" class="btn btn-success shadow rounded-pill" onclick="window.location.href='{% url "descargar_excel" id=maquina.id %}'">
+            <button type="button" class="btn bg-body-tertiary shadow rounded-pill" onclick="window.location.href='{% url "descargar_excel" id=maquina.id %}'">
                 Descargar <i class="bi bi-box-arrow-down "></i>
             </button>
             
 
-            <button type="button" class="btn btn-primary shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-parte">
+            <button type="button" class="btn bg-body-tertiary shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-parte">
                 Crear parte de máquina <i class="bi bi-plus-circle-fill"></i>
             </button>
             <div class="modal fade" id="modal-parte" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -34,7 +34,7 @@
                                 {% csrf_token %}
                                 {{ part_form }}
                                 <div class="d-grid gap-2 mt-3">
-                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                    <button type="submit" class="btn btn-secondary">Guardar</button>
                                 </div>
                             </form> 
                         </div>
@@ -42,7 +42,7 @@
                 </div>
             </div>    
             
-            <button type="button" class="btn btn-warning mt-md-0 mt-2 shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-inventario">
+            <button type="button" class="btn bg-body-tertiary mt-md-0 mt-2 shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-inventario">
                 Inventario de parte de máquina <i class="bi bi-plus-circle-dotted"></i>
             </button>
             <div class="modal fade" id="modal-inventario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -64,7 +64,7 @@
                                 </select>
                                 {{ inve_form }} <!-- Renderizar el formulario de inventario -->
                                 <div class="d-grid gap-2 mt-3">
-                                    <button type="submit" class="btn btn-primary">Guardar Inventario</button>
+                                    <button type="submit" class="btn btn-secondary">Guardar Inventario</button>
                                 </div>
                             </form>
                         </div>
@@ -72,7 +72,7 @@
                 </div>
             </div> 
 
-            <button type="button" class="btn btn-danger shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-eliminar-parte">
+            <button type="button" class="btn bg-body-tertiary shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-eliminar-parte">
                 Eliminar parte de máquina <i class="bi bi-archive"></i>
             </button>
             <div class="modal fade" id="modal-eliminar-parte" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -105,13 +105,14 @@
         </div>
     </div>
 
-    <div class="mt-3 ps-5 pe-5">
+    <div class="mt-2 ps-5 pe-5">
 
         <h3 class="text-center text-dark fst-italic text-uppercase">{{ maquina.nombre }}</h3>
         
-        <table class="table table-striped mt-4 shadow">
+        <div class="table-responsive">
+        <table class="table table-striped mt-1 shadow">
             <thead>
-                <tr>
+                <tr class="border border-end-0 border-start-0 border-top-0 border-3 border-dark-subtle">
                     <th>Partes de la {{ maquina.nombre }}</th>
                     <th>Imagen</th>
                     <th>Tipo</th>
@@ -132,7 +133,7 @@
                     <td rowspan="{{ parte.inventario_set.count }}">{{ parte.nombre }}</td>
                     <td rowspan="{{ parte.inventario_set.count }}">
                         <button type="button" class="btn btn-secondary btn-sm imagen" data-bs-toggle="modal" data-bs-target="#exampleModal{{ parte.id }}">
-                            Ver Imagen
+                            <i class="bi bi-image"></i>
                         </button>
                         <div class="modal fade" id="exampleModal{{ parte.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -163,10 +164,10 @@
                         <td class="">{{ inventario.existencia_fisica }}</td>
                     {% endif %}
                     <td>
-                        <a class="btn btn-info btn-sm" href="{% url "mod_inventario" id=inventario.id %}">Modificar</a>
+                        <a class="btn btn-info btn-sm" href="{% url "mod_inventario" id=inventario.id %}"><i class="bi bi-pencil-square"></i></a>
                     </td>
                     <td>
-                        <a class="btn btn-danger btn-sm" href="{% url "eliminar_inventario" id=inventario.id %}">Eliminar</a>
+                        <a class="btn btn-danger btn-sm" href="{% url "eliminar_inventario" id=inventario.id %}"><i class="bi bi-trash"></i></a>
                     </td>
                     {% else %}
                 </tr>
@@ -180,10 +181,10 @@
                     <td>{{ inventario.salida }}</td>
                     <td>{{ inventario.existencia_fisica }}</td>
                     <td>
-                        <a class="btn btn-info btn-sm" href="{% url "mod_inventario" id=inventario.id %}">Modificar</a>
+                        <a class="btn btn-info btn-sm" href="{% url "mod_inventario" id=inventario.id %}"><i class="bi bi-pencil-square"></i></a>
                     </td>
                     <td>
-                        <a class="btn btn-danger btn-sm" href="{% url "eliminar_inventario" id=inventario.id %}">Eliminar</a>
+                        <a class="btn btn-danger btn-sm" href="{% url "eliminar_inventario" id=inventario.id %}"><i class="bi bi-trash"></i></a>
                     </td>
                 </tr>
                     {% endif %}
@@ -192,8 +193,7 @@
                 {% endfor %}
             </tbody>
         </table>
-        
-                
+        </div>
 
     </div>
 

@@ -27,7 +27,7 @@
                                 {% csrf_token %}
                                 {{ form }}
                                 <div class="d-grid gap-2 mt-3">
-                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                    <button type="submit" class="btn btn-secondary">Guardar</button>
                                 </div>
                             </form> 
                         </div>
@@ -47,14 +47,15 @@
         </div>
     </div>
 
-    <div class="container cabecera shadow bg-primary bg-opacity-50 p-4 bw-5">
+    <div class="container cabecera shadow bg-secondary bg-opacity-50 p-4 bw-5">
         <h1 class="text-center text-light display-1"><strong>REPUESTO</strong></h1>
     </div>
 
-    <div class="mt-5 ps-5 pe-5">
-
+    <div class="mt-2 ps-5 pe-5">
+        
+        <div class="table-responsive">
         <table class="table table-striped mt-4 shadow">
-            <tr>
+            <tr class="border border-end-0 border-start-0 border-top-0 border-3 border-dark-subtle">
                 <th>Máquina</th>
                 <th>ver inventario de partes y piezas</th>
                 <th>Eliminar</th>
@@ -63,14 +64,34 @@
             <tr>
                 <td>{{ maquina.nombre }}</td>
                 <td>
-                    <a class="btn btn-primary btn-sm" href="{% url "detalles_repuesto_maquina" id=maquina.id %}">inventario de partes y piezas</a>
+                    <a class="btn btn-info btn-sm" href="{% url "detalles_repuesto_maquina" id=maquina.id %}"><i class="bi bi-pencil-square"></i></a>
                 </td>
                 <td>
-                    <a class="btn btn-danger btn-sm" href="{% url "eliminar_repuesto_maquina" id=maquina.id %}">Eliminar</a>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-eliminar{{ maquina.id }}">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                    <div class="modal fade" id="modal-eliminar{{ maquina.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Atención</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Esta seguro de <b>eliminar</b> esta herramienta</b>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <a class="btn btn-danger" href="{% url "eliminar_repuesto_maquina" id=maquina.id %}">Estoy seguro</a>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
                 </td>
             </tr>
             {% endfor %}
         </table>
+        </div>
 
     </div>
 

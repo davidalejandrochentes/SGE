@@ -20,7 +20,7 @@ sr.reveal('.tabla', {
 });
 
 sr.reveal('.alert', {
-    duration: 1000,
+    duration: 4500,
 });
 
 sr.reveal('.card', {
