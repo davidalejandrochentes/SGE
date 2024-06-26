@@ -21,17 +21,10 @@ def vehiculo(request):
     total_vehiculos = len(vehiculos)
     alertas = []
     for vehiculo in alert:
-        # Mantenimiento correctivo
-        km_restantes_correctivo = vehiculo.km_restantes_mantenimiento_correctivo()
-        if km_restantes_correctivo <= 10000000:
-            alertas.append({
-                'vehiculo': vehiculo,
-                'km_restantes': km_restantes_correctivo,
-            })
 
         # Cambio de filtro de aceite
         km_restantes_filtro_aceite = vehiculo.km_restantes_cambio_de_filtro_aceite()
-        if km_restantes_filtro_aceite <= 10000000:
+        if km_restantes_filtro_aceite <= 500:
             alertas.append({
                 'vehiculo': vehiculo,
                 'km_restantes': km_restantes_filtro_aceite,
@@ -39,7 +32,7 @@ def vehiculo(request):
 
         # Cambio de filtro de aire/combustible
         km_restantes_filtro_aire_combustible = vehiculo.km_restantes_cambio_filtro_aire_combustible()
-        if km_restantes_filtro_aire_combustible <= 10000000:
+        if km_restantes_filtro_aire_combustible <= 500:
             alertas.append({
                 'vehiculo': vehiculo,
                 'km_restantes': km_restantes_filtro_aire_combustible,
@@ -47,7 +40,7 @@ def vehiculo(request):
 
         # Cambio de filtro de caja/corona
         km_restantes_filtro_caja_corona = vehiculo.km_restantes_cambio_filtro_caja_corona()
-        if km_restantes_filtro_caja_corona <= 10000000:
+        if km_restantes_filtro_caja_corona <= 500:
             alertas.append({
                 'vehiculo': vehiculo,
                 'km_restantes': km_restantes_filtro_caja_corona,
@@ -73,17 +66,9 @@ def alertas(request):
     alertas = []
 
     for vehiculo in vehiculos:
-        # Mantenimiento correctivo
-        km_restantes_correctivo = vehiculo.km_restantes_mantenimiento_correctivo()
-        if km_restantes_correctivo <= 10000000:
-            alertas.append({
-                'vehiculo': vehiculo,
-                'km_restantes': km_restantes_correctivo,
-                'tipo': TipoMantenimientoVehiculo.objects.get(id=1).tipo
-            })
         # Cambio de filtro de aceite
         km_restantes_filtro_aceite = vehiculo.km_restantes_cambio_de_filtro_aceite()
-        if km_restantes_filtro_aceite <= 10000000:
+        if km_restantes_filtro_aceite <= 500:
             alertas.append({
                 'vehiculo': vehiculo,
                 'km_restantes': km_restantes_filtro_aceite,
@@ -91,7 +76,7 @@ def alertas(request):
             })
         # Cambio de filtro de aire/combustible
         km_restantes_filtro_aire_combustible = vehiculo.km_restantes_cambio_filtro_aire_combustible()
-        if km_restantes_filtro_aire_combustible <= 10000000:
+        if km_restantes_filtro_aire_combustible <= 500:
             alertas.append({
                 'vehiculo': vehiculo,
                 'km_restantes': km_restantes_filtro_aire_combustible,
@@ -99,7 +84,7 @@ def alertas(request):
             })
         # Cambio de filtro de caja/corona
         km_restantes_filtro_caja_corona = vehiculo.km_restantes_cambio_filtro_caja_corona()
-        if km_restantes_filtro_caja_corona <= 10000000:
+        if km_restantes_filtro_caja_corona <= 500:
             alertas.append({
                 'vehiculo': vehiculo,
                 'km_restantes': km_restantes_filtro_caja_corona,
