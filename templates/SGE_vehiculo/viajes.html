@@ -67,8 +67,13 @@
                 </div>
             </div>
             {% endif %} 
-
+            
+            {% if ultimo_viaje.kilometraje_de_salida >= ultimo_viaje.kilometraje_de_llegada %}
+            <a></a>
+            {% else %}
             <a class="btn bg-body-tertiary mantenimineto shadow rounded-pill" href="{% url "nuevo_viaje_vehiculo" id=vehiculo.id %}">nuevo viaje <i class="bi bi-car-front"></i></a>
+            {% endif %} 
+
         </span>
     </div>
 

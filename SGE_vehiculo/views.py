@@ -214,9 +214,11 @@ def eliminar(request, id):
 def viaje(request, id):
     vehiculo = get_object_or_404(Vehiculo, id=id)
     viajes = vehiculo.viaje_set.all().order_by('-fecha_llegada', '-hora_llegada')
+    ultimo_viaje = vehiculo.viaje_set.last()
     context = {
         'vehiculo': vehiculo,
         'viajes': viajes,
+        'ultimo_viaje': ultimo_viaje,
     }
     return render(request, 'SGE_vehiculo/viajes.html', context)
 
@@ -262,10 +264,6 @@ def nuevo_viaje_vehiculo(request, id):
             viaje = viaje_form.save(commit=False)
             viaje.vehiculo = vehiculo
             viaje.kilometraje_de_llegada = int(request.POST.get('kilometraje_de_salida'))
-            
-            if 'imagen_de_salida' in request.FILES:
-                viaje.imagen_de_salida = request.FILES['imagen_de_salida']
-                viaje.imagen_de_llegada = request.FILES['imagen_de_salida']
             viaje.save()
             return redirect('viaje', id=vehiculo.id)
         else:
@@ -300,10 +298,6 @@ def mod_viaje_vehiculo_admin(request, id):
         if form_viaje.is_valid():
             viaje = form_viaje.save(commit=False)
             viaje.vehiculo = vehiculo
-            if 'imagen_de_salida' in request.FILES:
-                viaje.image = request.FILES['imagen_de_salida']
-            if 'imagen_de_llegada' in request.FILES:
-                viaje.image = request.FILES['imagen_de_llegada']    
             viaje.save()
             return redirect('viaje', id=vehiculo.id)
         else:

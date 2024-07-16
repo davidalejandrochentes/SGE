@@ -98,7 +98,7 @@ class Viaje(models.Model):
     fecha_llegada = models.DateField(default=date.today, blank=True, null=True)
     hora_llegada = models.TimeField(default=datetime.now().time(), blank=True, null=True)
     kilometraje_de_llegada = models.BigIntegerField(max_length=50, blank=True, null=True)
-    imagen_de_llegada = models.ImageField(upload_to="vehiculo/viaje/llegada", null=True, blank=True, default='')
+    imagen_de_llegada = models.ImageField(upload_to="vehiculo/viaje/llegada", null=False, blank=False, default='')
 
 
     def __str__(self):
