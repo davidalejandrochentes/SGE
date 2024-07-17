@@ -126,11 +126,10 @@ class ViajeVehiculoForm(forms.ModelForm):
             'origen': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Lugar de partida'}),
             'destino': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Lugar de llegada'}),
             'conductor': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Chofer al volante'}),
-
             'fecha_salida': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de inicio'}),
             'hora_salida': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora de inicio'}),
             'kilometraje_de_salida': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Km?', 'readonly': 'readonly'}),
-            'imagen_de_salida': FileInput(attrs={'class': 'form-control-file m-2'}),
+            'imagen_de_salida': forms.FileInput(attrs={'class': 'form-control-file m-2'}),
         }
 
 
@@ -148,12 +147,12 @@ class ViajeVehiculoModAdminForm(forms.ModelForm):
             'fecha_salida': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de inicio'}),
             'hora_salida': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora de inicio'}),
             'kilometraje_de_salida': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Km?', 'readonly': 'readonly'}),
-            'imagen_de_salida': FileInput(attrs={'class': 'form-control-file m-2'}),
+            'imagen_de_salida': forms.FileInput(attrs={'class': 'form-control-file m-2'}),
 
             'fecha_llegada': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de fin'}),
             'hora_llegada': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora de fin'}),
             'kilometraje_de_llegada': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': 'Km?'}),
-            'imagen_de_llegada': FileInput(attrs={'class': 'form-control-file m-2'}),
+            'imagen_de_llegada': forms.FileInput(attrs={'class': 'form-control-file m-2'}),
         }
 
     def clean(self):
@@ -163,16 +162,16 @@ class ViajeVehiculoModAdminForm(forms.ModelForm):
         kilometraje_de_salida = cleaned_data.get('kilometraje_de_salida')
         kilometraje_de_llegada = cleaned_data.get('kilometraje_de_llegada')
 
-        if kilometraje_de_salida > kilometraje_de_llegada:
+        if kilometraje_de_salida and kilometraje_de_llegada and kilometraje_de_salida > kilometraje_de_llegada:
             self.add_error('kilometraje_de_salida', 'El kilometraje de salida no puede ser mayor al de llegada')
 
-        if kilometraje_de_llegada < kilometraje_de_salida:
+        if kilometraje_de_salida and kilometraje_de_llegada and kilometraje_de_llegada < kilometraje_de_salida:
             self.add_error('kilometraje_de_llegada', 'El kilometraje de llegada no puede ser menor al de salida')    
         
-        if fecha_salida > date.today():
+        if fecha_salida and fecha_salida > date.today():
             self.add_error('fecha_salida', 'La fecha de salida no puede ser en el futuro.')
         
-        if fecha_llegada > date.today():
+        if fecha_llegada and fecha_llegada > date.today():
             self.add_error('fecha_llegada', 'La fecha de llegada no puede ser en el futuro.')
         
-        return cleaned_data                
+        return cleaned_data           
