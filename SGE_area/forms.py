@@ -1,6 +1,6 @@
 from django import forms
 from .models import Area, MantenimientoArea
-from django.forms import Textarea
+from django.forms import Textarea, FileInput
 from datetime import date
 
 class AreaForm(forms.ModelForm):    
@@ -28,10 +28,10 @@ class MantenimientoAreaForm(forms.ModelForm):
     class Meta:
         model = MantenimientoArea
         fields = '__all__'
-        exclude = ['area']
+        exclude = ['area', 'tipo']
         labels = {
             'image_antes': 'Imagen Antes',
-            'image': 'Imagen Despues',
+            'image': 'Imagen Después',
             'fecha': 'fecha de fin',
             'hora': 'hora de fin',
         }
@@ -42,7 +42,9 @@ class MantenimientoAreaForm(forms.ModelForm):
             'hora': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora de fin'}),
             'operador': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre de quien lo realizó'}),
             'tipo': forms.Select(attrs={'class': 'form-select m-2', 'placeholder': 'Tipo de mantenimiento'}),
-            'descripción': Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción del mantenimiento'}),
+            'descripción': Textarea(attrs={'class': 'form-control m-2', 'placeholder': 'Descripción del mantenimiento'}),
+            'image_antes': FileInput(attrs={'class': 'form-control-file m-2'}),
+            'image': FileInput(attrs={'class': 'form-control-file m-2'}),
         }
 
     def clean(self):

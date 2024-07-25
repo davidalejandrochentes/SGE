@@ -1278,7 +1278,7 @@ def documento_viajes_vehiculo(request, id):
     ws = wb.active
 
     # Define los encabezados de la tabla
-    headers = ['Origen', 'Destino', 'Fecha de salida', 'Hora de salida', 'Kilometraje de salida', 'Fecha de llegada', 'Hora de llegada', 'Kilometraje de llegada']
+    headers = ['Origen', 'Destino', 'Conductor', 'Fecha de salida', 'Hora de salida', 'Kilometraje de salida', 'Fecha de llegada', 'Hora de llegada', 'Kilometraje de llegada']
     for col, header in enumerate(headers, start=1):
         ws.cell(row=1, column=col, value=header)
         ws.cell(row=1, column=col).font = Font(bold=True)
@@ -1290,6 +1290,7 @@ def documento_viajes_vehiculo(request, id):
         ws.append([
             viaje.origen,
             viaje.destino,
+            viaje.conductor,
             viaje.fecha_salida,
             viaje.hora_salida,
             viaje.kilometraje_de_salida,

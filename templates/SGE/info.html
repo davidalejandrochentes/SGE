@@ -1,0 +1,74 @@
+{% extends "layout/base.html" %}
+
+{% load static %}
+
+{% block 'title'%} info {% endblock %}
+
+
+{% block 'content' %}
+<div class="container">
+    <div class="d-flex p-2 justify-content-between">
+        <a class="text-decoration-none text-dark" href="{% url "index" %}">
+            <i class="bi bi-arrow-left fs-1"></i>
+        </a>
+    </div>
+    
+    <div class="container cabecera shadow bg-secondary bg-opacity-50 p-4 bw-5">
+        <h1 class="text-center text-light text-uppercase display-1"><strong>Manuales</strong></h1>
+        <h5 class="text-center text-light text-uppercase">Descargue el manual de operaciones del módulo que desee</h5>
+    </div>
+
+    <div class="row mt-5 d-flex justify-content-center align-item-center ps-5 pe-5">
+        <div class="col-12 col-md-3 card carta-home p-0 m-3 bg-body-tertiary shadow-lg">
+            <a class="text-decoration-none text-dark" href="">
+                <img src="{% static "images/preventivo.png" %}" class="card-img-top" alt="..." style="max-height: 200px;">
+                <div class="card-body">
+                    <h5 class="card-title text-uppercase">áreas</h5>
+                </div>      
+            </a>
+        </div>
+        <div class="col-12 col-md-3 card carta-home p-0 m-3 bg-body-tertiary shadow-lg">
+            <a class="text-decoration-none text-dark" href="">
+                <img src="{% static "images/preventivo.png" %}" class="card-img-top" alt="..." style="max-height: 200px;">
+                <div class="card-body">
+                    <h5 class="card-title text-uppercase">maquinarias</h5>
+                </div>      
+            </a>
+        </div>
+        <div class="col-12 col-md-3 card carta-home p-0 m-3 bg-body-tertiary shadow-lg">
+            <a class="text-decoration-none text-dark" href="">
+                <img src="{% static "images/preventivo.png" %}" class="card-img-top" alt="..." style="max-height: 200px;">
+                <div class="card-body">
+                    <h5 class="card-title text-uppercase">repuestos</h5>
+                </div>      
+            </a>
+        </div>
+        <div class="col-12 col-md-3 card carta-home p-0 m-3 bg-body-tertiary shadow-lg">
+            <a class="text-decoration-none text-dark" href="">
+                <img src="{% static "images/preventivo.png" %}" class="card-img-top" alt="..." style="max-height: 200px;">
+                <div class="card-body">
+                    <h5 class="card-title text-uppercase">vehículos</h5>
+                </div>      
+            </a>
+        </div>
+        <div class="col-12 col-md-3 card carta-home p-0 m-3 bg-body-tertiary shadow-lg">
+            <a class="text-decoration-none text-dark" href="">
+                <img src="{% static "images/preventivo.png" %}" class="card-img-top" alt="..." style="max-height: 200px;">
+                <div class="card-body">
+                    <h5 class="card-title text-uppercase">Equipos de cómputo</h5>
+                </div>      
+            </a>
+        </div>
+        <div class="col-12 col-md-3 card carta-home p-0 m-3 bg-body-tertiary shadow-lg">
+            <a class="text-decoration-none text-dark" href="">
+                <img src="{% static "images/preventivo.png" %}" class="card-img-top" alt="..." style="max-height: 200px;">
+                <div class="card-body">
+                    <h5 class="card-title text-uppercase">Herraminetas</h5>
+                </div>      
+            </a>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
