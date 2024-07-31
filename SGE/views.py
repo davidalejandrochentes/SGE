@@ -34,3 +34,29 @@ def soporte(request):
 @login_required
 def info(request):
     return render(request, 'SGE/info.html', {})  
+
+
+
+@login_required
+def manual_maquina(request):
+    return render(request, 'SGE/manual_maquina.html', {})   
+
+@login_required
+def manual_vehiculo(request):
+    return render(request, 'SGE/manual_vehiculo.html', {})  
+
+@login_required
+def manual_area(request):
+    return render(request, 'SGE/manual_area.html', {})  
+
+@login_required
+def manual_repuesto(request):
+    return render(request, 'SGE/manual_repuesto.html', {})   
+
+@login_required
+def manual_pc(request):
+    return render(request, 'SGE/manual_pc.html', {})  
+
+@login_required
+def manual_herramienta(request):
+    return render(request, 'SGE/manual_herramienta.html', {})                        
