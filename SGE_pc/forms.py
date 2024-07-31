@@ -1,6 +1,6 @@
 from django import forms
 from .models import PC, MantenimientoPC
-from django.forms import Textarea
+from django.forms import Textarea, FileInput
 from datetime import date
 
 class PCForm(forms.ModelForm):    
@@ -34,7 +34,7 @@ class MantenimientoPCForm(forms.ModelForm):
     class Meta:
         model = MantenimientoPC
         fields = '__all__'
-        exclude = ['pc']
+        exclude = ['pc', 'tipo']
         labels = {
             'image': 'Imagen',
             'fecha': 'fecha de fin',
@@ -45,10 +45,10 @@ class MantenimientoPCForm(forms.ModelForm):
             'hora_inicio': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora de inicio'}),
             'fecha': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha de fin'}),
             'hora': forms.TimeInput(attrs={'class': 'form-control m-2', 'placeholder': 'Hora de fin'}),
-            'tipo': forms.Select(attrs={'class': 'form-select m-2', 'placeholder': 'Tipo de mantenimiento'}),
             'operador': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre de quien lo realizó'}),
-            'partes_y_piezas': Textarea(attrs={'class': 'form-control', 'placeholder': 'Partes y piezas implicadas'}),
-            'descripción': Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción del mantenimiento'}),
+            'partes_y_piezas': Textarea(attrs={'class': 'form-control m-2', 'placeholder': 'Partes y piezas implicadas'}),
+            'descripción': Textarea(attrs={'class': 'form-control m-2', 'placeholder': 'Descripción del mantenimiento'}),
+            'image': FileInput(attrs={'class': 'form-control-file m-2'}),
         } 
 
     def clean(self):

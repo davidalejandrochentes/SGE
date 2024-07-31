@@ -212,24 +212,24 @@ def mod_mantenimineto_area_preventivo(request, id):
         return render(request, 'SGE_area/mod_mantenimineto_preventivo.html', context)
 
     if request.method == 'POST':
-            mantenimiento = get_object_or_404(MantenimientoArea, id=id)
-            tipo_mantenimiento = get_object_or_404(TipoMantenimientoArea, id=1) 
-            area =mantenimiento.area
-            form_mant = MantenimientoAreaForm(request.POST, request.FILES, instance=mantenimiento)
+        mantenimiento = get_object_or_404(MantenimientoArea, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoArea, id=1) 
+        area =mantenimiento.area
+        form_mant = MantenimientoAreaForm(request.POST, request.FILES, instance=mantenimiento)
 
-            if form_mant.is_valid():
-                mantenimiento = form_mant.save(commit=False)
-                mantenimiento.area = area
-                mantenimiento.tipo = tipo_mantenimiento
-                mantenimiento.save()
-                return redirect('mantenimientos_area_preventivo', id=area.id)
-            else:
-                context = {
-                    'form_mant': form_mant,
-                    'area': area,
-                }
-                messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo") 
-                return render(request, 'SGE_area/mod_mantenimineto.html', context)    
+        if form_mant.is_valid():
+            mantenimiento = form_mant.save(commit=False)
+            mantenimiento.area = area
+            mantenimiento.tipo = tipo_mantenimiento
+            mantenimiento.save()
+            return redirect('mantenimientos_area_preventivo', id=area.id)
+        else:
+            context = {
+                'form_mant': form_mant,
+                'area': area,
+            }
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo") 
+            return render(request, 'SGE_area/mod_mantenimineto_preventivo.html', context)    
     
     return HttpResponse("Method Not Allowed", status=405)            
 

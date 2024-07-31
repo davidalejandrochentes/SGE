@@ -11,7 +11,6 @@
         <a class="text-decoration-none text-dark flecha-atras" href="{% url "index" %}">
             <i class="bi bi-arrow-left fs-1"></i>
         </a>
-        <h5 class="text-center text-dark text-uppercase mt-auto mb-auto mas">Cantidad total de equipos de cómputo "{{ total_pcs }}"</h5>
         <div class="pt-2 me-3 me-md-0">
             <a class="ms-1 fs-3 me-1 me-md-4 text-decoration-none text-secondary mas" href="{% url "pc_nueva" %}">
                 <i class="bi bi-plus-circle"></i>
@@ -29,12 +28,14 @@
         </div>
     </div>
 
-    <div class="container cabecera shadow bg-primary bg-opacity-50">
+    <div class="container cabecera shadow bg-secondary bg-opacity-50 p-4 bw-5">
+        <h1 class="text-center text-light text-uppercase display-1"><strong>equipos de cómputo</strong></h1>
+        <h5 class="text-center text-light text-uppercase">Cantidad total: {{ total_pcs }}</h5>
     </div>
 
     <div class="row mt-5 d-flex justify-content-center align-item-center ps-5 pe-5">
         {% for pc in pcs %}
-        <div class="col-12 col-md-3 card carta-home p-0 m-3">
+        <div class="col-12 col-md-3 p-0 card bg-body-tertiary carta-home  m-3 shadow-lg">
             <a class="text-decoration-none text-dark" href="{% url "detalles_pc" id=pc.id %}">
                 <img src="{{ pc.image.url }}" class="card-img-top" alt="..." style="max-height: 200px;">
                 <div class="card-body">

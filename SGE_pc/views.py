@@ -10,6 +10,9 @@ import openpyxl
 from openpyxl.styles import Font, PatternFill
 
 
+
+# vistas generales ----------------------------------------------------------
+
 @login_required
 def pc(request):
     alert = PC.objects.all()
@@ -34,6 +37,9 @@ def pc(request):
     }
     return render(request, 'SGE_pc/pc.html', context)
 
+
+
+
 @login_required
 def alertas(request):
     alert = PC.objects.filter(nombre__icontains=request.GET.get('search', ''))
@@ -41,6 +47,7 @@ def alertas(request):
     for pc in alert:
         dias_restantes = pc.dias_restantes_mantenimiento()
         if dias_restantes <= 7:
+            
             alertas.append({
                 'pc': pc,
                 'dias_restantes': dias_restantes
@@ -53,6 +60,9 @@ def alertas(request):
     }
     return render(request, 'SGE_pc/alertas.html', context)
 
+
+
+
 @login_required
 def tabla_mantenimientos(request):
     pcs = PC.objects.all()
@@ -64,6 +74,9 @@ def tabla_mantenimientos(request):
         'tipos_mantenimiento': tipos_mantenimiento,
     }
     return render(request, 'SGE_pc/tablas.html', context)
+
+
+
 
 @login_required
 def crear_pc(request):
@@ -87,7 +100,6 @@ def crear_pc(request):
                 # Manejo del archivo de imagen
                 if 'image' in request.FILES:
                     form.instance.image = request.FILES['image']
-
                 form.save()
                 return redirect('pc')
         else:
@@ -97,11 +109,69 @@ def crear_pc(request):
             messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo") 
             return render(request, 'SGE_pc/nueva.html', context)
 
+
+
+
+@login_required    
+def detalles(request, id):
+    if request.method == 'GET':
+        pc = get_object_or_404(PC, id=id)
+        mantenimientos = pc.mantenimientopc_set.all().order_by('-fecha', '-hora')
+        form = PCForm(instance=pc)
+        context = {
+            'pc': pc,
+            'form': form,
+            'id': id,
+            'mantenimientos': mantenimientos,
+            }
+        return render(request, 'SGE_pc/detalles.html', context)
+    
+    if request.method == 'POST':
+        pc = get_object_or_404(PC, id=id)
+        form = PCForm(instance=pc)
+        form = PCForm(request.POST, request.FILES, instance=pc)
+
+        if form.is_valid():
+            intervalo_mantenimiento = form.cleaned_data.get('intervalo_mantenimiento')
+            if intervalo_mantenimiento < 0:
+                mantenimientos = pc.mantenimientopc_set.all().order_by('-fecha', '-hora')
+                form.add_error('intervalo_mantenimiento', 'El intervalo de mantenimiento no puede ser un número negativo')
+                context = {
+                    'pc': pc,
+                    'form': form,
+                    'id': id,
+                    'mantenimientos': mantenimientos,
+                }
+                previous_url = request.META.get('HTTP_REFERER')
+                return HttpResponseRedirect(previous_url)
+            else:
+                form.save()
+                mantenimientos = pc.mantenimientopc_set.all().order_by('-fecha', '-hora')
+                context = {
+                    'pc': pc,
+                    'form': form,
+                    'id': id,
+                    'mantenimientos': mantenimientos,
+                }
+                return render(request, 'SGE_pc/detalles.html', context) 
+        
+        else:
+            previous_url = request.META.get('HTTP_REFERER')
+            return HttpResponseRedirect(previous_url)            
+
+
+
+
 @login_required
 def eliminar(request, id):
     pc = get_object_or_404(PC, id=id)
     pc.delete()
     return redirect('pc')
+
+# fin de vistas generales---------------------------------------------    
+
+
+
 
 @login_required
 def eliminar_mantenimiento(request, id):
@@ -110,86 +180,27 @@ def eliminar_mantenimiento(request, id):
     previous_url = request.META.get('HTTP_REFERER')
     return HttpResponseRedirect(previous_url)
 
-@login_required    
-def detalles(request, id):
+
+
+
+@login_required
+def mantenimientos_pc_preventivos(request, id):
     if request.method == 'GET':
         pc = get_object_or_404(PC, id=id)
-        mantenimientos = pc.mantenimientopc_set.all().order_by('-fecha', '-hora')
-        form = PCForm(instance=pc)
-        form_mant = MantenimientoPCForm()
-        tipos_mantenimiento = TipoMantenimientoPC.objects.all()
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=1) 
+        mantenimientos = pc.mantenimientopc_set.filter(tipo=tipo_mantenimiento).order_by('-fecha', '-hora')
         context = {
             'pc': pc,
-            'form': form,
-            'id': id,
-            'form_mant': form_mant,
+            'tipo_mantenimiento': tipo_mantenimiento,
             'mantenimientos': mantenimientos,
-            'tipos_mantenimiento': tipos_mantenimiento,
-            }
-        return render(request, 'SGE_pc/detalles.html', context)
-    
-    if request.method == 'POST':
-        pc = get_object_or_404(PC, id=id)
-        form_mant = MantenimientoPCForm(request.POST, request.FILES)
-        form = PCForm(instance=pc)
-        form = PCForm(request.POST, request.FILES, instance=pc)
-
-        if form.is_valid():
-            intervalo_mantenimiento = form.cleaned_data.get('intervalo_mantenimiento')
-            if intervalo_mantenimiento < 0:
-                form_mant = MantenimientoPCForm()
-                tipos_mantenimiento = TipoMantenimientoPC.objects.all()
-                mantenimientos = pc.mantenimientopc_set.all().order_by('-fecha', '-hora')
-                form.add_error('intervalo_mantenimiento', 'El intervalo de mantenimiento no puede ser un número negativo')
-                context = {
-                    'pc': pc,
-                    'form': form,
-                    'id': id,
-                    'form_mant': form_mant,
-                    'mantenimientos': mantenimientos,
-                    'tipos_mantenimiento': tipos_mantenimiento,
-                }
-                previous_url = request.META.get('HTTP_REFERER')
-                return HttpResponseRedirect(previous_url)
-            else:
-                form.save()
-                form_mant = MantenimientoPCForm()
-                tipos_mantenimiento = TipoMantenimientoPC.objects.all()
-                mantenimientos = pc.mantenimientopc_set.all().order_by('-fecha', '-hora')
-                context = {
-                    'pc': pc,
-                    'form': form,
-                    'id': id,
-                    'form_mant': form_mant,
-                    'mantenimientos': mantenimientos,
-                    'tipos_mantenimiento': tipos_mantenimiento,
-                }
-                return render(request, 'SGE_pc/detalles.html', context) 
-        
-        if form_mant.is_valid():
-            mantenimiento = form_mant.save(commit=False)
-            mantenimiento.pc = pc
-            if 'image' in request.FILES:
-                mantenimiento.image = request.FILES['image'] 
-            mantenimiento.save()
-            form = PCForm(instance=pc)
-            tipos_mantenimiento = TipoMantenimientoPC.objects.all()
-            mantenimientos = pc.mantenimientopc_set.all().order_by('-fecha', '-hora')
-            context = {
-            'pc': pc,
-            'form': form,
-            'id': id,
-            'form_mant': form_mant,
-            'mantenimientos': mantenimientos,
-            'tipos_mantenimiento': tipos_mantenimiento,
-            }
-            return render(request, 'SGE_pc/detalles.html', context)  
-        else:
-            previous_url = request.META.get('HTTP_REFERER')
-            return HttpResponseRedirect(previous_url)
+        }
+        return render(request, 'SGE_pc/mantenimientos_preventivo.html', context) 
 
 
-def mod_mantenimiento_pc(request, id):
+
+
+@login_required
+def mod_mantenimiento_pc_preventivo(request, id):
     if request.method == 'GET':
         mantenimiento = get_object_or_404(MantenimientoPC, id=id)
         pc = mantenimiento.pc
@@ -198,30 +209,164 @@ def mod_mantenimiento_pc(request, id):
             'form_mant': form_mant,
             'pc': pc,
         }
-        return render(request, 'SGE_pc/mod_mantenimiento.html', context) 
+        return render(request, 'SGE_pc/mod_mantenimiento_preventivo.html', context) 
 
     if request.method == 'POST':
         mantenimiento = get_object_or_404(MantenimientoPC, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=1) 
         pc = mantenimiento.pc 
         form_mant = MantenimientoPCForm(request.POST, request.FILES, instance=mantenimiento)
 
         if form_mant.is_valid():
             mantenimiento = form_mant.save(commit=False)
             mantenimiento.pc = pc
-            if 'image' in request.FILES:
-                mantenimiento.image = request.FILES['image']
+            mantenimiento.tipo = tipo_mantenimiento
             mantenimiento.save()
-            return redirect('detalles_pc', id=pc.id)
+            return redirect('mantenimientos_pc_preventivos', id=pc.id)
         else:
             context = {
             'form_mant': form_mant,
             'pc': pc,
             }
             messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo") 
-            return render(request, 'SGE_pc/mod_mantenimiento.html', context)                  
+            return render(request, 'SGE_pc/mod_mantenimiento_preventivo.html', context)                  
+
+    return HttpResponse("Method Not Allowed", status=405) 
+
+
+
 
 @login_required
-def generar_documento_mantenimientos_por_mes(request):
+def nuevo_mantenimiento_pc_preventivo(request, id):
+    if request.method == 'GET':
+        pc = get_object_or_404(PC, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=1) 
+        form_mant = MantenimientoPCForm()
+        context = {
+            'form_mant': form_mant,
+            'pc': pc,
+            'tipo_mantenimiento': tipo_mantenimiento,
+        }
+        return render(request, 'SGE_pc/nuevo_mantenimiento_preventivo.html', context)
+    
+    if request.method == 'POST':
+        pc = get_object_or_404(PC, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=1) 
+        form_mant = MantenimientoPCForm(request.POST, request.FILES)
+
+        if form_mant.is_valid():
+            mantenimiento = form_mant.save(commit=False)
+            mantenimiento.pc = pc
+            mantenimiento.tipo = tipo_mantenimiento
+            mantenimiento.save()
+            return redirect('mantenimientos_pc_preventivos', id=pc.id)
+        else:
+            context = {
+                'form_mant': form_mant,
+                'pc': pc,
+                'tipo_mantenimiento': tipo_mantenimiento,
+            }
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo") 
+            return render(request, 'SGE_pc/nuevo_mantenimiento_preventivo.html', context)
+
+    return HttpResponse("Method Not Allowed", status=405)
+
+
+
+
+@login_required
+def mantenimientos_pc_correctivos(request, id):
+    if request.method == 'GET':
+        pc = get_object_or_404(PC, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=2) 
+        mantenimientos = pc.mantenimientopc_set.filter(tipo=tipo_mantenimiento).order_by('-fecha', '-hora')
+        context = {
+            'pc': pc,
+            'tipo_mantenimiento': tipo_mantenimiento,
+            'mantenimientos': mantenimientos,
+        }
+        return render(request, 'SGE_pc/mantenimientos_correctivo.html', context) 
+
+
+
+
+@login_required
+def mod_mantenimiento_pc_correctivo(request, id):
+    if request.method == 'GET':
+        mantenimiento = get_object_or_404(MantenimientoPC, id=id)
+        pc = mantenimiento.pc
+        form_mant = MantenimientoPCForm(instance=mantenimiento)
+        context = {
+            'form_mant': form_mant,
+            'pc': pc,
+        }
+        return render(request, 'SGE_pc/mod_mantenimiento_correctivo.html', context) 
+
+    if request.method == 'POST':
+        mantenimiento = get_object_or_404(MantenimientoPC, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=2) 
+        pc = mantenimiento.pc 
+        form_mant = MantenimientoPCForm(request.POST, request.FILES, instance=mantenimiento)
+
+        if form_mant.is_valid():
+            mantenimiento = form_mant.save(commit=False)
+            mantenimiento.pc = pc
+            mantenimiento.tipo = tipo_mantenimiento
+            mantenimiento.save()
+            return redirect('mantenimientos_pc_correctivos', id=pc.id)
+        else:
+            context = {
+            'form_mant': form_mant,
+            'pc': pc,
+            }
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo") 
+            return render(request, 'SGE_pc/mod_mantenimiento_correctivo.html', context)                  
+
+    return HttpResponse("Method Not Allowed", status=405) 
+
+
+
+
+@login_required
+def nuevo_mantenimiento_pc_correctivo(request, id):
+    if request.method == 'GET':
+        pc = get_object_or_404(PC, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=2) 
+        form_mant = MantenimientoPCForm()
+        context = {
+            'form_mant': form_mant,
+            'pc': pc,
+            'tipo_mantenimiento': tipo_mantenimiento,
+        }
+        return render(request, 'SGE_pc/nuevo_mantenimiento_correctivo.html', context)
+    
+    if request.method == 'POST':
+        pc = get_object_or_404(PC, id=id)
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=2) 
+        form_mant = MantenimientoPCForm(request.POST, request.FILES)
+
+        if form_mant.is_valid():
+            mantenimiento = form_mant.save(commit=False)
+            mantenimiento.pc = pc
+            mantenimiento.tipo = tipo_mantenimiento
+            mantenimiento.save()
+            return redirect('mantenimientos_pc_correctivos', id=pc.id)
+        else:
+            context = {
+                'form_mant': form_mant,
+                'pc': pc,
+                'tipo_mantenimiento': tipo_mantenimiento,
+            }
+            messages.error(request, "Alguno de los datos introducidos no son válidos, revise nuevamente cada campo") 
+            return render(request, 'SGE_pc/nuevo_mantenimiento_correctivo.html', context)
+
+    return HttpResponse("Method Not Allowed", status=405)    
+
+
+
+
+@login_required
+def documento_general_mantenimientos_pc(request):
     mes = request.GET.get('mes')
     anio = request.GET.get('anio')
     tipo_mantenimiento_id = request.GET.get('tipo_mantenimiento')
@@ -282,35 +427,36 @@ def generar_documento_mantenimientos_por_mes(request):
     return response
 
 
+
+
 @login_required
-def generar_documento_mantenimientos_pc(request, id):
+def documento_mantenimientos_preventivos_pc(request, id):
     mes = request.GET.get('mes')
     anio = request.GET.get('anio')
-    tipo_mantenimiento_id = request.GET.get('tipo_mantenimiento')
+    tipo_mantenimiento_id = 1
 
     pc = get_object_or_404(PC, pk=id)
-    
     mantenimientos = MantenimientoPC.objects.filter(pc=pc).order_by('-fecha', '-hora')
 
     if mes:
         mantenimientos = mantenimientos.filter(fecha__month=mes)
     if anio:
         mantenimientos = mantenimientos.filter(fecha__year=anio)
-    if tipo_mantenimiento_id:  # Si se seleccionó un tipo de mantenimiento
+    if tipo_mantenimiento_id: # Si se seleccionó un tipo de mantenimiento
         tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, pk=tipo_mantenimiento_id)
         mantenimientos = mantenimientos.filter(tipo=tipo_mantenimiento)
 
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     if mes:
-        response['Content-Disposition'] = 'attachment; filename="mantenimientos_pc_{}_{}_{}.xlsx"'.format(pc.nombre, mes, anio)
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_preventivos_de_{}_{}_{}.xlsx"'.format(pc.nombre, mes, anio)
     else:
-        response['Content-Disposition'] = 'attachment; filename="mantenimientos_pc_{}_{}.xlsx"'.format(pc.nombre, anio)   
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_preventivos_de_{}_{}.xlsx"'.format(pc.nombre, anio)
 
     wb = openpyxl.Workbook()
     ws = wb.active
 
     # Define los encabezados de la tabla
-    headers = ['Tipo', 'Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Operador', 'Partes y Piezas', 'Descripción']
+    headers = ['Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Operador', 'Partes y Piezas', 'Descripción']
     for col, header in enumerate(headers, start=1):
         ws.cell(row=1, column=col, value=header)
         ws.cell(row=1, column=col).font = Font(bold=True)
@@ -320,7 +466,6 @@ def generar_documento_mantenimientos_pc(request, id):
     row = 2
     for mantenimiento in mantenimientos:
         ws.append([
-            mantenimiento.tipo.tipo,
             mantenimiento.fecha_inicio,
             mantenimiento.hora_inicio,
             mantenimiento.fecha,
@@ -344,5 +489,69 @@ def generar_documento_mantenimientos_pc(request, id):
         ws.column_dimensions[column].width = adjusted_width
 
     wb.save(response)
-    return response
+    return response    
 
+
+
+
+@login_required
+def documento_mantenimientos_correctivos_pc(request, id):
+    mes = request.GET.get('mes')
+    anio = request.GET.get('anio')
+    tipo_mantenimiento_id = 2
+
+    pc = get_object_or_404(PC, pk=id)
+    mantenimientos = MantenimientoPC.objects.filter(pc=pc).order_by('-fecha', '-hora')
+
+    if mes:
+        mantenimientos = mantenimientos.filter(fecha__month=mes)
+    if anio:
+        mantenimientos = mantenimientos.filter(fecha__year=anio)
+    if tipo_mantenimiento_id: # Si se seleccionó un tipo de mantenimiento
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, pk=tipo_mantenimiento_id)
+        mantenimientos = mantenimientos.filter(tipo=tipo_mantenimiento)
+
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    if mes:
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_correctivo_de_{}_{}_{}.xlsx"'.format(pc.nombre, mes, anio)
+    else:
+        response['Content-Disposition'] = 'attachment; filename="mantenimientos_correctivo_de_{}_{}.xlsx"'.format(pc.nombre, anio)
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+
+    # Define los encabezados de la tabla
+    headers = ['Fecha I', 'Hora I', 'Fecha F', 'Hora F', 'Operador', 'Partes y Piezas', 'Descripción']
+    for col, header in enumerate(headers, start=1):
+        ws.cell(row=1, column=col, value=header)
+        ws.cell(row=1, column=col).font = Font(bold=True)
+        ws.cell(row=1, column=col).fill = PatternFill(start_color="BFBFBF", end_color="BFBFBF", fill_type="solid")
+
+    # Agrega los datos de los mantenimientos
+    row = 2
+    for mantenimiento in mantenimientos:
+        ws.append([
+            mantenimiento.fecha_inicio,
+            mantenimiento.hora_inicio,
+            mantenimiento.fecha,
+            mantenimiento.hora,
+            mantenimiento.operador,
+            mantenimiento.partes_y_piezas,
+            mantenimiento.descripción
+        ])
+
+    # Ajusta el ancho de las columnas automáticamente
+    for col in ws.columns:
+        max_length = 0
+        column = col[0].column_letter
+        for cell in col:
+            try:
+                if len(str(cell.value)) > max_length:
+                    max_length = len(cell.value)
+            except:
+                pass
+        adjusted_width = (max_length + 2) * 1.2
+        ws.column_dimensions[column].width = adjusted_width
+
+    wb.save(response)
+    return response   

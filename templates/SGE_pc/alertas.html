@@ -11,11 +11,15 @@
             <i class="bi bi-arrow-left fs-1"></i>
         </a>
     </div>
+
+    <div class="container cabecera shadow bg-danger bg-opacity-50 p-4 bw-5">
+        <h1 class="text-center text-light text-uppercase display-3"><strong> alertas de equipos de cómputo</strong></h1>
+        <h5 class="text-center text-light text-uppercase">Cantidad total: {{ total_alertas }}</h5>
+    </div>
     
-    <h5 class="text-center text-uppercase">Cantidad total de alertas "{{ total_alertas }}"</h5>
     <div class="row mt-3 d-flex justify-content-center align-item-center ps-5 pe-5">
         {% for alerta in alertas %}
-        <div class="col-12 col-md-4 p-0 card text-bg-danger carta-home m-3">
+        <div class="col-12 col-md-4 p-0 card text-bg-danger carta-home m-3 shadow-lg">
             <a class="text-decoration-none text-light" href="{% url "detalles_pc" id=alerta.pc.id %}">
                 <img src="{{ alerta.pc.image.url }}" class="card-img-top" alt="..." style="max-height: 200px;">
                 <div class="card-body">

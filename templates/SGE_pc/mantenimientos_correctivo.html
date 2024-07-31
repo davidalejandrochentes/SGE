@@ -6,7 +6,7 @@
 {% block 'content' %}
 <div class="container mb-5">
     <div class="d-flex p-2 justify-content-between">
-        <a class="text-decoration-none text-dark flecha-atras" href="{% url "detalles_area" id=area.id %}">
+        <a class="text-decoration-none text-dark flecha-atras" href="{% url "detalles_pc" id=pc.id %}">
             <i class="bi bi-arrow-left fs-1"></i>
         </a>
         <span class="p-3">
@@ -22,7 +22,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="" action="{% url 'documento_mantenimientos_correctivos_area' id=area.id %}" method="get">
+                        <form class="" action="{% url 'documento_mantenimientos_correctivos_pc' id=pc.id %}" method="get">
                             <label class="" for="mes">Mes:</label>
                             <select class="form-select form-select-sm" name="mes" id="mes">
                                 <option value="">Todos los meses</option>
@@ -62,11 +62,11 @@
                 </div>
             </div>
 
-            <a class="btn bg-body-tertiary mantenimineto shadow rounded-pill" href="{% url "nuevo_mantenimineto_area_correctivo" id=area.id %}">Mantenimiento <i class="bi bi-tools"></i></a>
+            <a class="btn bg-body-tertiary mantenimineto shadow rounded-pill" href="{% url "nuevo_mantenimiento_pc_correctivo" id=pc.id %}">Mantenimiento <i class="bi bi-tools"></i></a>
         </span>
     </div>
 
-    <h3 class="text-uppercase">Mantenimientos {{ tipo_mantenimiento }} de {{ area }}</h3>
+    <h3 class="text-uppercase">Mantenimientos {{ tipo_mantenimiento }} de {{ pc }}</h3>
     <div class="table-responsive">
     <table class="table table-striped shadow">
         <thead>
@@ -76,9 +76,9 @@
                 <th>Fecha final</th>
                 <th>Hora final</th>
                 <th>Operador</th>
+                <th>Partes y Piezas</th>
                 <th>Descripción</th>
-                <th>Imagen antes</th>
-                <th>Imagen después</th>
+                <th>Imagen</th>
                 <th>Modificar</th>
                 <th>Eliminar<th>
             </tr>
@@ -91,25 +91,8 @@
                     <td>{{ mantenimiento.fecha }}</td>
                     <td>{{ mantenimiento.hora }}</td>
                     <td>{{ mantenimiento.operador }}</td>
+                    <td>{{ mantenimiento.partes_y_piezas }}</td>
                     <td>{{ mantenimiento.descripción }}</td>
-                    <td>
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal{{ mantenimiento.id }}1">
-                            <i class="bi bi-image"></i>
-                        </button>
-                        <div class="modal fade" id="exampleModal{{ mantenimiento.id }}1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Imagen</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <img src="{{ mantenimiento.image_antes.url }}" class="img-fluid" alt="Imagen">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
                     <td>
                         <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal{{ mantenimiento.id }}">
                             <i class="bi bi-image"></i>
@@ -129,7 +112,7 @@
                         </div>
                     </td>
                     <td>
-                        <a class="btn btn-info btn-sm" href="{% url "mod_mantenimineto_area_correctivo" id=mantenimiento.id %}"><i class="bi bi-pencil-square"></i></a>
+                        <a class="btn btn-info btn-sm" href="{% url "mod_mantenimiento_pc_correctivo" id=mantenimiento.id %}"><i class="bi bi-pencil-square"></i></a>
                     </td>
                     <td>
                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-eliminar{{ mantenimiento.id }}">
@@ -147,7 +130,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                    <a class="btn btn-danger" href="{% url "eliminar_mantenimiento_area" id=mantenimiento.id %}">Estoy seguro</a>
+                                    <a class="btn btn-danger" href="{% url "eliminar_mantenimiento_pc" id=mantenimiento.id %}">Estoy seguro</a>
                                 </div>
                                 </div>
                             </div>
