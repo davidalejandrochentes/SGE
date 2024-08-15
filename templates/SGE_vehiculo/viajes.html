@@ -16,7 +16,7 @@
 
         <span class="p-3">
             {% if user.is_authenticated %}
-            <button type="button" class="btn bg-body-tertiary descargar shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-descargar">
+            <button type="button" class="btn custom descargar shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-descargar">
                 Descargar <i class="bi bi-box-arrow-down "></i>
             </button>
             <div class="modal fade" id="modal-descargar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -71,7 +71,7 @@
             {% if ultimo_viaje.kilometraje_de_salida >= ultimo_viaje.kilometraje_de_llegada %}
             <a></a>
             {% else %}
-            <a class="btn bg-body-tertiary mantenimineto shadow rounded-pill" href="{% url "nuevo_viaje_vehiculo" id=vehiculo.id %}">nuevo viaje <i class="bi bi-car-front"></i></a>
+            <a class="btn custom mantenimineto shadow rounded-pill" href="{% url "nuevo_viaje_vehiculo" id=vehiculo.id %}">nuevo viaje <i class="bi bi-car-front"></i></a>
             {% endif %} 
 
         </span>

@@ -35,10 +35,10 @@
 
     <div class="row mt-5 d-flex justify-content-center align-item-center ps-5 pe-5">
         {% for pc in pcs %}
-        <div class="col-12 col-md-3 p-0 card bg-body-tertiary carta-home  m-3 shadow-lg">
+        <div class="col-12 col-md-3 p-0 card custom  m-3 shadow-lg">
             <a class="text-decoration-none text-dark" href="{% url "detalles_pc" id=pc.id %}">
-                <img src="{{ pc.image.url }}" class="card-img-top" alt="..." style="max-height: 200px;">
-                <div class="card-body">
+                <img src="{{ pc.image.url }}" class="card-img-top" alt="..." style="max-height: 200px; min-height: 200px; object-fit: cover;">
+                <div class="card-body custom">
                     <h5 class="card-title">{{ pc.nombre }}</h5>
                     <p class="card-text m-0"><b>Modelo:</b> {{ pc.modelo }}</p>
                     <p class="card-text m-0"><b>Número de inventario:</b> {{ pc.número_de_inventario }}</p>

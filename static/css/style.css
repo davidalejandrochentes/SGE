@@ -1,6 +1,7 @@
 :root{
     --color-primary: #6c757d;
     --color-secondary: #212529;
+    --color-tertiary: #f8f9fa;
     --body: #ffffff;
     --footer: #aaadaf;
 }
@@ -21,7 +22,7 @@ body{
     background-repeat: no-repeat;
     background-attachment: scroll;
     background-size: cover;
-    background-color: #ffffff;
+    background-color: var(--body);
     background-blend-mode: multiply;
 }
 
@@ -69,8 +70,6 @@ ul {
     background-blend-mode: multiply;
 }
 
-
-
 .carta-home:hover {
     background-color: var(--color-secondary) !important;
     color: white !important;
@@ -78,6 +77,17 @@ ul {
 .carta-home a :hover {
     color: white !important;
 }
+
+.custom{
+    background-color: var(--color-tertiary);
+}
+
+.custom:hover {
+    background-color: var(--color-secondary); /* Cambia el fondo a primary */
+    color: var(--body); /* Cambia el color del texto a light */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 
 .footer{
     background-color: var(--footer);

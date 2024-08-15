@@ -13,7 +13,7 @@
         </a>
         <span class="p-3">
 
-        <button type="button" class="btn bg-body-tertiary imagen shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <button type="button" class="btn custom imagen shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Ver Imagen <i class="bi bi-image"></i>
         </button>
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -31,7 +31,7 @@
         </div>
 
             
-            <button type="button" class="btn bg-body-tertiary editar shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-editar">
+            <button type="button" class="btn custom editar shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-editar">
                 Editar <i class="bi bi-pencil-square"></i>
             </button>
             <div class="modal fade modal-lg" id="modal-editar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -59,7 +59,7 @@
                 </div>
             </div>
                         
-            <button type="button" class="btn bg-body-tertiary eliminar mt-md-0 mt-2 shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-eliminar">
+            <button type="button" class="btn custom eliminar mt-md-0 mt-2 shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-eliminar">
                 Eliminar <i class="bi bi-trash"></i>
             </button>
             <div class="modal fade" id="modal-eliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -142,19 +142,19 @@
     </div>
                         
     <div class="row mt-3 d-flex justify-content-center align-item-center ps-5 pe-5">
-        <div class="col-12 col-md-4 p-0 shadow-lg bg-body-tertiary card carta-home m-3">
+        <div class="col-12 col-md-4 p-0 shadow-lg custom card m-3">
             <a class="text-decoration-none text-dark" href="{% url "mantenimientos_pc_preventivos" id=pc.id %}">
                 <img src="{% static "images/Mantenimiento-preventivo-PC.jpg" %}" class="card-img-top" alt="..." style="max-height: 200px;">
-                <div class="card-body">
+                <div class="card-body custom">
                     <h5 class="card-title text-uppercase">Mantenimientos Preventivo</h5>
                     <p class="card-text m-0">Acciones y tareas programadas y realizadas regularmente para de prevenir fallos y problemas</p>
                 </div>
             </a>
         </div>
-        <div class="col-12 col-md-4 p-0 shadow-lg bg-body-tertiary card carta-home m-3">
+        <div class="col-12 col-md-4 p-0 shadow-lg custom card m-3">
             <a class="text-decoration-none text-dark" href="{% url "mantenimientos_pc_correctivos" id=pc.id %}">
                 <img src="{% static "images/mantenimiento-correctivo-de-computadores-ID-01-1024x512.webp" %}" class="card-img-top" alt="..." style="max-height: 200px;">
-                <div class="card-body">
+                <div class="card-body custom">
                     <h5 class="card-title text-uppercase">Mantenimientos Correctivo</h5>
                     <p class="card-text m-0">Su objetivo es reparar o restaurar el equipo o sistema a su estado operativo normal</p>
                 </div>

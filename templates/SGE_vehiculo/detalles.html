@@ -13,9 +13,9 @@
         </a>
         <span class="p-3">
 
-            <a class="btn bg-body-tertiary shadow rounded-pill viajes" href="{% url "viaje" id=vehiculo.id %}">viajes <i class="bi bi-car-front"></i></a>
+            <a class="btn custom shadow rounded-pill viajes" href="{% url "viaje" id=vehiculo.id %}">viajes <i class="bi bi-car-front"></i></a>
             
-            <button type="button" class="btn bg-body-tertiary imagen shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" class="btn custom imagen shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Ver Imagen <i class="bi bi-image"></i>
             </button>
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -32,7 +32,7 @@
                 </div>
             </div>
 
-            <button type="button" class="btn bg-body-tertiary editar shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-editar">
+            <button type="button" class="btn custom editar shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-editar">
                 Editar <i class="bi bi-pencil-square"></i>
             </button>
             <div class="modal fade modal-lg" id="modal-editar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -60,7 +60,7 @@
                 </div>
             </div>
             
-            <button type="button" class="btn bg-body-tertiary eliminar mt-md-0 mt-2 shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-eliminar">
+            <button type="button" class="btn custom eliminar mt-md-0 mt-2 shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-eliminar">
                 Eliminar <i class="bi bi-trash"></i>
             </button>
             <div class="modal fade" id="modal-eliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -147,42 +147,42 @@
 
     
     <div class="row mt-3 d-flex justify-content-center align-item-center ps-5 pe-5">
-        <div class="col-12 col-md-2 p-0 card m-3 shadow-lg bg-body-tertiary carta-home">
+        <div class="col-12 col-md-2 p-0 card m-3 shadow-lg custom">
             <a class="text-decoration-none text-dark" href="{% url "mantenimientos_vehiculo_preventivo" id=vehiculo.id %}">
                 <img src="{% static "images/mantenimiento-preventivo-autos-1.jpg" %}" class="card-img-top" alt="..." style="max-height: 100px;">
-                <div class="card-body">
+                <div class="card-body custom">
                     <h6 class="card-title text-uppercase">Mantenimientos Preventivo</h6>
                 </div>
             </a>
         </div>
-        <div class="col-12 col-md-2 p-0 card m-3 shadow-lg bg-body-tertiary carta-home">
+        <div class="col-12 col-md-2 p-0 card m-3 shadow-lg custom">
             <a class="text-decoration-none text-dark" href="{% url "mantenimientos_vehiculo_correctivo" id=vehiculo.id %}">
                 <img src="{% static "images/mantenimineto_correctivo_vehiculo.jpg" %}" class="card-img-top" alt="..." style="max-height: 100px;">
-                <div class="card-body">
+                <div class="card-body custom">
                     <h6 class="card-title text-uppercase">Mantenimientos Correctivo</h6>
                 </div>
             </a>
         </div>
-        <div class="col-12 col-md-2 p-0 card m-3 shadow-lg bg-body-tertiary carta-home">
+        <div class="col-12 col-md-2 p-0 card m-3 shadow-lg custom">
             <a class="text-decoration-none text-dark" href="{% url "mantenimientos_vehiculo_cambio_filtro_aceite" id=vehiculo.id %}">
                 <img src="{% static "images/taller-mecanico-859x483.jpg" %}" class="card-img-top" alt="..." style="max-height: 100px;">
-                <div class="card-body">
+                <div class="card-body custom">
                     <h6 class="card-title text-uppercase">Cambio del filtro de aceite</h6>
                 </div>
             </a>
         </div>
-        <div class="col-12 col-md-2 p-0 card m-3 shadow-lg bg-body-tertiary carta-home">
+        <div class="col-12 col-md-2 p-0 card m-3 shadow-lg custom">
             <a class="text-decoration-none text-dark" href="{% url "mantenimientos_vehiculo_cambio_filtro_aire_combustible" id=vehiculo.id %}">
                 <img src="{% static "images/filtro-del-aire-coche--860x573.jpg" %}" class="card-img-top" alt="..." style="max-height: 100px;">
-                <div class="card-body">
+                <div class="card-body custom">
                     <h6 class="card-title text-uppercase">Cambio del filtro de aire y combustible</h6>
                 </div>
             </a>
         </div>
-        <div class="col-12 col-md-2 p-0 card m-3 shadow-lg bg-body-tertiary carta-home">
+        <div class="col-12 col-md-2 p-0 card m-3 shadow-lg custom">
             <a class="text-decoration-none text-dark" href="{% url "mantenimientos_vehiculo_cambio_filtro_caja_corona" id=vehiculo.id %}">
                 <img src="{% static "images/sstt-min.jpg" %}" class="card-img-top" alt="..." style="max-height: 100px;">
-                <div class="card-body">
+                <div class="card-body custom">
                     <h6 class="card-title text-uppercase">Cambio de aceite de caja y corona</h6>
                 </div>
             </a>

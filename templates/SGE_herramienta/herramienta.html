@@ -39,10 +39,10 @@
 
     <div class="row mt-5 d-flex justify-content-center align-item-center ps-5 pe-5">
         {% for herramienta in herramientas %}
-        <div class="col-12 col-md-3 card carta-home p-0 m-3 shadow-lg">
+        <div class="col-12 col-md-3 card custom p-0 m-3 shadow-lg">
             <a class="text-decoration-none text-dark" href="{% url "detalles_herramienta" id=herramienta.id %}">
-                <img src="{{ herramienta.image.url }}" class="card-img-top" alt="..." style="max-height: 200px;">
-                <div class="card-body">
+                <img src="{{ herramienta.image.url }}" class="card-img-top" alt="..." style="max-height: 200px; min-height: 200px; object-fit: cover;">
+                <div class="card-body custom">
                     <h5 class="card-title">{{ herramienta.nombre }}</h5>
                     <p class="card-text m-0"><b>Número de serie:</b> {{ herramienta.número_de_serie }}</p>
                     <p class="card-text m-0"><b>Encargado:</b> {{ herramienta.encargado }}</p>

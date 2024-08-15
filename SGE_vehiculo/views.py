@@ -132,12 +132,33 @@ def crear_vehiculo(request):
         form = VehiculoForm(request.POST, request.FILES)  # Asegúrate de pasar request.FILES al formulario
         if form.is_valid():
             intervalo_mantenimiento = form.cleaned_data.get('intervalo_mantenimiento')
+            intervalo_mantenimiento_cambio_filtro_aceite = form.cleaned_data.get('intervalo_mantenimiento_cambio_filtro_aceite')
+            intervalo_mantenimiento_cambio_filtro_aire_combustible = form.cleaned_data.get('intervalo_mantenimiento_cambio_filtro_aire_combustible')
+            intervalo_mantenimiento_cambio_filtro_caja_corona = form.cleaned_data.get('intervalo_mantenimiento_cambio_filtro_caja_corona')
             if intervalo_mantenimiento < 0:
                 form.add_error('intervalo_mantenimiento', 'El intervalo de mantenimiento no puede ser un número negativo')
                 context = {
                     'form': form
                 }
                 return render(request, 'SGE_vehiculo/nuevo.html', context)
+            if intervalo_mantenimiento_cambio_filtro_aceite  < 0:
+                form.add_error('intervalo_mantenimiento_cambio_filtro_aceite', 'El intervalo de mantenimiento no puede ser un número negativo')
+                context = {
+                    'form': form
+                }
+                return render(request, 'SGE_vehiculo/nuevo.html', context)
+            if intervalo_mantenimiento_cambio_filtro_aire_combustible < 0:
+                form.add_error('intervalo_mantenimiento_cambio_filtro_aire_combustible', 'El intervalo de mantenimiento no puede ser un número negativo')
+                context = {
+                    'form': form
+                }
+                return render(request, 'SGE_vehiculo/nuevo.html', context)
+            if intervalo_mantenimiento_cambio_filtro_caja_corona < 0:
+                form.add_error('intervalo_mantenimiento_cambio_filtro_caja_corona', 'El intervalo de mantenimiento no puede ser un número negativo')
+                context = {
+                    'form': form
+                }
+                return render(request, 'SGE_vehiculo/nuevo.html', context)            
             else:
                 if 'image' in request.FILES:
                     form.instance.image = request.FILES['image']
@@ -174,6 +195,9 @@ def detalles(request, id):
 
         if form.is_valid():
             intervalo_mantenimiento = form.cleaned_data.get('intervalo_mantenimiento')
+            intervalo_mantenimiento_cambio_filtro_aceite = form.cleaned_data.get('intervalo_mantenimiento_cambio_filtro_aceite')
+            intervalo_mantenimiento_cambio_filtro_aire_combustible = form.cleaned_data.get('intervalo_mantenimiento_cambio_filtro_aire_combustible')
+            intervalo_mantenimiento_cambio_filtro_caja_corona = form.cleaned_data.get('intervalo_mantenimiento_cambio_filtro_caja_corona')
             if intervalo_mantenimiento < 0:
                 mantenimientos = vehiculo.mantenimientovehiculo_set.all().order_by('-fecha_fin', '-hora_fin')
                 form.add_error('intervalo_mantenimiento', 'El intervalo de mantenimiento no puede ser un número negativo')
@@ -185,6 +209,39 @@ def detalles(request, id):
                 }
                 previous_url = request.META.get('HTTP_REFERER')
                 return HttpResponseRedirect(previous_url)
+            if intervalo_mantenimiento_cambio_filtro_aceite < 0:
+                mantenimientos = vehiculo.mantenimientovehiculo_set.all().order_by('-fecha_fin', '-hora_fin')
+                form.add_error('intervalo_mantenimiento_cambio_filtro_aceite', 'El intervalo de mantenimiento no puede ser un número negativo')
+                context = {
+                    'vehiculo': vehiculo,
+                    'form': form,
+                    'id': id,
+                    'mantenimientos': mantenimientos,
+                }
+                previous_url = request.META.get('HTTP_REFERER')
+                return HttpResponseRedirect(previous_url)
+            if intervalo_mantenimiento_cambio_filtro_aire_combustible < 0:
+                mantenimientos = vehiculo.mantenimientovehiculo_set.all().order_by('-fecha_fin', '-hora_fin')
+                form.add_error('intervalo_mantenimiento_cambio_filtro_aire_combustible', 'El intervalo de mantenimiento no puede ser un número negativo')
+                context = {
+                    'vehiculo': vehiculo,
+                    'form': form,
+                    'id': id,
+                    'mantenimientos': mantenimientos,
+                }
+                previous_url = request.META.get('HTTP_REFERER')
+                return HttpResponseRedirect(previous_url)
+            if intervalo_mantenimiento_cambio_filtro_caja_corona < 0:
+                mantenimientos = vehiculo.mantenimientovehiculo_set.all().order_by('-fecha_fin', '-hora_fin')
+                form.add_error('intervalo_mantenimiento_cambio_filtro_caja_corona', 'El intervalo de mantenimiento no puede ser un número negativo')
+                context = {
+                    'vehiculo': vehiculo,
+                    'form': form,
+                    'id': id,
+                    'mantenimientos': mantenimientos,
+                }
+                previous_url = request.META.get('HTTP_REFERER')
+                return HttpResponseRedirect(previous_url)            
             else:
                 form.save()
                 mantenimientos = vehiculo.mantenimientovehiculo_set.all().order_by('-fecha_fin', '-hora_fin')

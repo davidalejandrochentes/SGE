@@ -14,12 +14,12 @@
         
         <div class="pt-2 me-3 me-md-0">
 
-            <button type="button" class="btn bg-body-tertiary shadow rounded-pill" onclick="window.location.href='{% url "descargar_excel" id=maquina.id %}'">
+            <button type="button" class="btn custom shadow rounded-pill" onclick="window.location.href='{% url "descargar_excel" id=maquina.id %}'">
                 Descargar <i class="bi bi-box-arrow-down "></i>
             </button>
             
 
-            <button type="button" class="btn bg-body-tertiary shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-parte">
+            <button type="button" class="btn custom shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-parte">
                 Crear parte de máquina <i class="bi bi-plus-circle-fill"></i>
             </button>
             <div class="modal fade" id="modal-parte" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -42,7 +42,7 @@
                 </div>
             </div>    
             
-            <button type="button" class="btn bg-body-tertiary mt-md-0 mt-2 shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-inventario">
+            <button type="button" class="btn custom mt-md-0 mt-2 shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-inventario">
                 Inventario de parte de máquina <i class="bi bi-plus-circle-dotted"></i>
             </button>
             <div class="modal fade" id="modal-inventario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -72,7 +72,7 @@
                 </div>
             </div> 
 
-            <button type="button" class="btn bg-body-tertiary shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-eliminar-parte">
+            <button type="button" class="btn custom shadow rounded-pill" data-bs-toggle="modal" data-bs-target="#modal-eliminar-parte">
                 Eliminar parte de máquina <i class="bi bi-archive"></i>
             </button>
             <div class="modal fade" id="modal-eliminar-parte" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
