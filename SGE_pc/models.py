@@ -57,21 +57,23 @@ class MantenimientoPC(models.Model):
 
 @receiver(post_save, sender=MantenimientoPC)
 def actualizar_fecha_ultimo_mantenimiento(sender, instance, **kwargs):
-    pc = instance.pc
-    if instance.fecha > pc.fecha_ultimo_mantenimiento:
-        pc.fecha_ultimo_mantenimiento = instance.fecha
-        pc.save()   
+    if instance.tipo.id == 1:
+        pc = instance.pc
+        if instance.fecha > pc.fecha_ultimo_mantenimiento:
+            pc.fecha_ultimo_mantenimiento = instance.fecha
+            pc.save()   
 
 @receiver(pre_delete, sender=MantenimientoPC)
 def revertir_fecha_ultimo_mantenimiento(sender, instance, **kwargs):
-    pc = instance.pc
-    mantenimientos_restantes = MantenimientoPC.objects.filter(pc=pc).exclude(id=instance.id).order_by('-fecha')
-    if mantenimientos_restantes.exists():
-        ultimo_mantenimiento = mantenimientos_restantes.first()
-        pc.fecha_ultimo_mantenimiento = ultimo_mantenimiento.fecha
-    else:
-        pc.fecha_ultimo_mantenimiento = pc.fecha_ultimo_mantenimiento  # Otra opción si no hay mantenimientos restantes
-    pc.save()
+    if instance.tipo.id == 1:
+        pc = instance.pc
+        mantenimientos_restantes = MantenimientoPC.objects.filter(pc=pc).exclude(id=instance.id).order_by('-fecha')
+        if mantenimientos_restantes.exists():
+            ultimo_mantenimiento = mantenimientos_restantes.first()
+            pc.fecha_ultimo_mantenimiento = ultimo_mantenimiento.fecha
+        else:
+            pc.fecha_ultimo_mantenimiento = pc.fecha_ultimo_mantenimiento  # Otra opción si no hay mantenimientos restantes
+        pc.save()
 
 @receiver(pre_delete, sender=PC)
 def eliminar_imagen_de_pc(sender, instance, **kwargs):

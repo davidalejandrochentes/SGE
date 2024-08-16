@@ -187,7 +187,7 @@ def eliminar_mantenimiento(request, id):
 def mantenimientos_pc_preventivos(request, id):
     if request.method == 'GET':
         pc = get_object_or_404(PC, id=id)
-        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=1) 
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=2) 
         mantenimientos = pc.mantenimientopc_set.filter(tipo=tipo_mantenimiento).order_by('-fecha', '-hora')
         context = {
             'pc': pc,
@@ -213,7 +213,7 @@ def mod_mantenimiento_pc_preventivo(request, id):
 
     if request.method == 'POST':
         mantenimiento = get_object_or_404(MantenimientoPC, id=id)
-        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=1) 
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=2) 
         pc = mantenimiento.pc 
         form_mant = MantenimientoPCForm(request.POST, request.FILES, instance=mantenimiento)
 
@@ -240,7 +240,7 @@ def mod_mantenimiento_pc_preventivo(request, id):
 def nuevo_mantenimiento_pc_preventivo(request, id):
     if request.method == 'GET':
         pc = get_object_or_404(PC, id=id)
-        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=1) 
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=2) 
         form_mant = MantenimientoPCForm()
         context = {
             'form_mant': form_mant,
@@ -251,7 +251,7 @@ def nuevo_mantenimiento_pc_preventivo(request, id):
     
     if request.method == 'POST':
         pc = get_object_or_404(PC, id=id)
-        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=1) 
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=2) 
         form_mant = MantenimientoPCForm(request.POST, request.FILES)
 
         if form_mant.is_valid():
@@ -278,7 +278,7 @@ def nuevo_mantenimiento_pc_preventivo(request, id):
 def mantenimientos_pc_correctivos(request, id):
     if request.method == 'GET':
         pc = get_object_or_404(PC, id=id)
-        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=2) 
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=1) 
         mantenimientos = pc.mantenimientopc_set.filter(tipo=tipo_mantenimiento).order_by('-fecha', '-hora')
         context = {
             'pc': pc,
@@ -304,7 +304,7 @@ def mod_mantenimiento_pc_correctivo(request, id):
 
     if request.method == 'POST':
         mantenimiento = get_object_or_404(MantenimientoPC, id=id)
-        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=2) 
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=1) 
         pc = mantenimiento.pc 
         form_mant = MantenimientoPCForm(request.POST, request.FILES, instance=mantenimiento)
 
@@ -331,7 +331,7 @@ def mod_mantenimiento_pc_correctivo(request, id):
 def nuevo_mantenimiento_pc_correctivo(request, id):
     if request.method == 'GET':
         pc = get_object_or_404(PC, id=id)
-        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=2) 
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=1) 
         form_mant = MantenimientoPCForm()
         context = {
             'form_mant': form_mant,
@@ -342,7 +342,7 @@ def nuevo_mantenimiento_pc_correctivo(request, id):
     
     if request.method == 'POST':
         pc = get_object_or_404(PC, id=id)
-        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=2) 
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoPC, id=1) 
         form_mant = MantenimientoPCForm(request.POST, request.FILES)
 
         if form_mant.is_valid():
@@ -433,7 +433,7 @@ def documento_general_mantenimientos_pc(request):
 def documento_mantenimientos_preventivos_pc(request, id):
     mes = request.GET.get('mes')
     anio = request.GET.get('anio')
-    tipo_mantenimiento_id = 1
+    tipo_mantenimiento_id = 2
 
     pc = get_object_or_404(PC, pk=id)
     mantenimientos = MantenimientoPC.objects.filter(pc=pc).order_by('-fecha', '-hora')
@@ -498,7 +498,7 @@ def documento_mantenimientos_preventivos_pc(request, id):
 def documento_mantenimientos_correctivos_pc(request, id):
     mes = request.GET.get('mes')
     anio = request.GET.get('anio')
-    tipo_mantenimiento_id = 2
+    tipo_mantenimiento_id = 1
 
     pc = get_object_or_404(PC, pk=id)
     mantenimientos = MantenimientoPC.objects.filter(pc=pc).order_by('-fecha', '-hora')

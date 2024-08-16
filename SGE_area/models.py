@@ -23,8 +23,8 @@ class Area(models.Model):
     def dias_restantes_mantenimiento(self):
         dias_pasados = (date.today() - self.fecha_ultimo_mantenimiento).days
         dias_restantes = self.intervalo_mantenimiento - dias_pasados
-        return dias_restantes 
-    
+        return dias_restantes
+
     def __str__(self):
         return self.nombre
 
@@ -50,24 +50,26 @@ class MantenimientoArea(models.Model):
         txt = "Area: {}, Tipo: {}, Fecha: {}"
         return txt.format(self.area, self.tipo, self.fecha)
     
-
 @receiver(post_save, sender=MantenimientoArea)
 def actualizar_fecha_ultimo_mantenimiento(sender, instance, **kwargs):
-    area = instance.area
-    if instance.fecha > area.fecha_ultimo_mantenimiento:
-        area.fecha_ultimo_mantenimiento = instance.fecha
-        area.save()   
+    if instance.tipo.id == 1:  # Verificar si el tipo de mantenimiento tiene id=1
+        area = instance.area
+        if instance.fecha > area.fecha_ultimo_mantenimiento:
+            area.fecha_ultimo_mantenimiento = instance.fecha
+            area.save()   
 
 @receiver(pre_delete, sender=MantenimientoArea)
 def revertir_fecha_ultimo_mantenimiento(sender, instance, **kwargs):
-    area = instance.area
-    mantenimientos_restantes = MantenimientoArea.objects.filter(area=area).exclude(id=instance.id).order_by('-fecha')
-    if mantenimientos_restantes.exists():
-        ultimo_mantenimiento = mantenimientos_restantes.first()
-        area.fecha_ultimo_mantenimiento = ultimo_mantenimiento.fecha
-    else:
-        area.fecha_ultimo_mantenimiento = area.fecha_ultimo_mantenimiento  # Otra opción si no hay mantenimientos restantes
-    area.save()
+    if instance.tipo.id == 1:  # Verificar si el tipo de mantenimiento tiene id=1
+        area = instance.area
+        mantenimientos_restantes = MantenimientoArea.objects.filter(area=area).exclude(id=instance.id).order_by('-fecha')
+        if mantenimientos_restantes.exists():
+            ultimo_mantenimiento = mantenimientos_restantes.first()
+            area.fecha_ultimo_mantenimiento = ultimo_mantenimiento.fecha
+        else:
+            area.fecha_ultimo_mantenimiento = None  # Otra opción si no hay mantenimientos restantes
+        area.save()
+
 
 @receiver(pre_delete, sender=Area)
 def eliminar_imagen_de_area(sender, instance, **kwargs):

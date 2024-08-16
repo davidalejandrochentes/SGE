@@ -187,7 +187,7 @@ def eliminar_mantenimiento(request, id):
 def mantenimientos_area_preventivo(request, id):
     if request.method == 'GET':
         area = get_object_or_404(Area, id=id)
-        tipo_mantenimiento = get_object_or_404(TipoMantenimientoArea, id=1) 
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoArea, id=2) 
         mantenimientos = area.mantenimientoarea_set.filter(tipo=tipo_mantenimiento).order_by('-fecha', '-hora')
         context = {
             'area': area,
@@ -213,7 +213,7 @@ def mod_mantenimineto_area_preventivo(request, id):
 
     if request.method == 'POST':
         mantenimiento = get_object_or_404(MantenimientoArea, id=id)
-        tipo_mantenimiento = get_object_or_404(TipoMantenimientoArea, id=1) 
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoArea, id=2) 
         area =mantenimiento.area
         form_mant = MantenimientoAreaForm(request.POST, request.FILES, instance=mantenimiento)
 
@@ -240,7 +240,7 @@ def mod_mantenimineto_area_preventivo(request, id):
 def nuevo_mantenimineto_area_preventivo(request, id):
     if request.method == 'GET':
         area = get_object_or_404(Area, id=id)
-        tipo_mantenimiento = get_object_or_404(TipoMantenimientoArea, id=1) 
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoArea, id=2) 
         form_mant = MantenimientoAreaForm()
         context = {
             'form_mant': form_mant,
@@ -251,7 +251,7 @@ def nuevo_mantenimineto_area_preventivo(request, id):
     
     if request.method == 'POST':
         area = get_object_or_404(Area, id=id)
-        tipo_mantenimiento = get_object_or_404(TipoMantenimientoArea, id=1) 
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoArea, id=2) 
         form_mant = MantenimientoAreaForm(request.POST, request.FILES)
 
         if form_mant.is_valid():
@@ -277,7 +277,7 @@ def nuevo_mantenimineto_area_preventivo(request, id):
 def mantenimientos_area_correctivo(request, id):
     if request.method == 'GET':
         area = get_object_or_404(Area, id=id)
-        tipo_mantenimiento = get_object_or_404(TipoMantenimientoArea, id=2) 
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoArea, id=1) 
         mantenimientos = area.mantenimientoarea_set.filter(tipo=tipo_mantenimiento).order_by('-fecha', '-hora')
         context = {
             'area': area,
@@ -303,7 +303,7 @@ def mod_mantenimineto_area_correctivo(request, id):
 
     if request.method == 'POST':
             mantenimiento = get_object_or_404(MantenimientoArea, id=id)
-            tipo_mantenimiento = get_object_or_404(TipoMantenimientoArea, id=2) 
+            tipo_mantenimiento = get_object_or_404(TipoMantenimientoArea, id=1) 
             area =mantenimiento.area
             form_mant = MantenimientoAreaForm(request.POST, request.FILES, instance=mantenimiento)
 
@@ -330,7 +330,7 @@ def mod_mantenimineto_area_correctivo(request, id):
 def nuevo_mantenimineto_area_correctivo(request, id):
     if request.method == 'GET':
         area = get_object_or_404(Area, id=id)
-        tipo_mantenimiento = get_object_or_404(TipoMantenimientoArea, id=2) 
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoArea, id=1) 
         form_mant = MantenimientoAreaForm()
         context = {
             'form_mant': form_mant,
@@ -341,7 +341,7 @@ def nuevo_mantenimineto_area_correctivo(request, id):
     
     if request.method == 'POST':
         area = get_object_or_404(Area, id=id)
-        tipo_mantenimiento = get_object_or_404(TipoMantenimientoArea, id=2) 
+        tipo_mantenimiento = get_object_or_404(TipoMantenimientoArea, id=1) 
         form_mant = MantenimientoAreaForm(request.POST, request.FILES)
 
         if form_mant.is_valid():
@@ -431,7 +431,7 @@ def documento_general_mantenimientos_area(request):
 def documento_mantenimientos_preventivos_area(request, id):
     mes = request.GET.get('mes')
     anio = request.GET.get('anio')
-    tipo_mantenimiento_id = 1
+    tipo_mantenimiento_id = 2
 
     area = get_object_or_404(Area, pk=id)
     mantenimientos = MantenimientoArea.objects.filter(area=area).order_by('-fecha', '-hora')
@@ -495,7 +495,7 @@ def documento_mantenimientos_preventivos_area(request, id):
 def documento_mantenimientos_correctivos_area(request, id):
     mes = request.GET.get('mes')
     anio = request.GET.get('anio')
-    tipo_mantenimiento_id = 2
+    tipo_mantenimiento_id = 1
 
     area = get_object_or_404(Area, pk=id)
     mantenimientos = MantenimientoArea.objects.filter(area=area).order_by('-fecha', '-hora')
