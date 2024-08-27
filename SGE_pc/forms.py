@@ -9,7 +9,8 @@ class PCForm(forms.ModelForm):
         fields = '__all__' 
         exclude = ['fecha_ultimo_mantenimiento']
         labels = {
-            'image': 'Imagen',  # Aquí especificamos la etiqueta con tilde
+            'image': 'Imagen',
+            'intervalo_mantenimiento': 'intervalo mantenimiento correctivo'  # Aquí especificamos la etiqueta con tilde
         }
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre del PC'}),
@@ -17,7 +18,7 @@ class PCForm(forms.ModelForm):
             'número_de_inventario': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: B145C394'}),
             'encargado': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: David A. Chentes'}),
             'teléfono_encargado': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: +53589874'}),
-            'descripción': Textarea(attrs={'class': 'form-control', 'placeholder': 'Observaciones'}),
+            'descripción': Textarea(attrs={'class': 'form-control m-2', 'placeholder': 'Observaciones'}),
             'ubicación': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: oficina de ...'}),
             'costo_de_adquisición': forms.NumberInput(attrs={'class': 'form-control m-2', 'type': 'number', 'placeholder': '$'}),
             'fecha_de_adquisición': forms.DateInput(attrs={'class': 'form-control m-2', 'placeholder': 'Fecha'}),

@@ -9,14 +9,15 @@ class AreaForm(forms.ModelForm):
         fields = '__all__' 
         exclude = ['fecha_ultimo_mantenimiento']
         labels = {
-            'image': 'Imagen',  # Aquí especificamos la etiqueta con tilde
+            'image': 'Imagen',
+            'intervalo_mantenimiento': 'intervalo mantenimiento correctivo'  # Aquí especificamos la etiqueta con tilde
         }
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre del area de trabajo'}),
             'tamaño': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: 4x4, 5x9'}),
             'encargado': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'David A. Chentes'}),
             'teléfono_encargado': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: +53589874'}),
-            'descripción': Textarea(attrs={'class': 'form-control', 'placeholder': 'Observaciones'}),
+            'descripción': Textarea(attrs={'class': 'form-control m-2', 'placeholder': 'Observaciones'}),
             'ubicación': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: primer piso'}),
             'capacidad': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: 4 personas, 3 Carros'}),
             'tipo_de_área': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: Oficina, Comedor'}),

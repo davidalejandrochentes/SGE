@@ -9,14 +9,15 @@ class MaquinaForm(forms.ModelForm):
         fields = '__all__' 
         exclude = ['fecha_ultimo_mantenimiento']
         labels = {
-            'image': 'Imagen',  # Aquí especificamos la etiqueta con tilde
+            'image': 'Imagen',
+            'intervalo_mantenimiento': 'intervalo mantenimiento correctivo'  # Aquí especificamos la etiqueta con tilde
         }
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Nombre de la máquina'}),
             'tipo_de_máquina': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'De tornedo, exe...'}),
             'encargado': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: David A. Chentes'}),
             'teléfono_encargado': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: +53589874'}),
-            'descripción': Textarea(attrs={'class': 'form-control', 'placeholder': 'Observaciones'}),
+            'descripción': Textarea(attrs={'class': 'form-control m-2', 'placeholder': 'Observaciones'}),
             'ubicación': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: Taller de ...'}),
             'número_de_serie_o_modelo': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: B145C394'}),
             'proveedor': forms.TextInput(attrs={'class': 'form-control m-2', 'placeholder': 'Eje: "Makita'}),
